@@ -1,0 +1,426 @@
+<?php
+	
+	# Days
+	$s_plugin_agileMantis_days										= 	'Days';
+	$s_plugin_agileMantis_monday									= 	'Monday';
+	$s_plugin_agileMantis_tuesday									= 	'Tuesday';
+	$s_plugin_agileMantis_wednesday									= 	'Wednesday';
+	$s_plugin_agileMantis_thursday									= 	'Thursday';
+	$s_plugin_agileMantis_friday									= 	'Friday';
+	$s_plugin_agileMantis_saturday									= 	'Saturday';
+	$s_plugin_agileMantis_sunday									= 	'Sunday';
+	$s_plugin_agileMantis_mo										= 	'Mo';
+	$s_plugin_agileMantis_tu										= 	'Tu';
+	$s_plugin_agileMantis_we										= 	'We';
+	$s_plugin_agileMantis_th										= 	'Th';
+	$s_plugin_agileMantis_fr										= 	'Fr';
+	$s_plugin_agileMantis_sa										= 	'Sa';
+	$s_plugin_agileMantis_su										= 	'Su';
+	
+	# Months
+	$s_plugin_agileMantis_months									=	'Months';
+	$s_plugin_agileMantis_january									=	'January';
+	$s_plugin_agileMantis_february									=	'February';
+	$s_plugin_agileMantis_march										=	'March';
+	$s_plugin_agileMantis_april										=	'April';
+	$s_plugin_agileMantis_may										=	'May';
+	$s_plugin_agileMantis_june										=	'June';
+	$s_plugin_agileMantis_july										=	'July';
+	$s_plugin_agileMantis_august									=	'August';
+	$s_plugin_agileMantis_september									=	'September';
+	$s_plugin_agileMantis_october									=	'October';
+	$s_plugin_agileMantis_november									=	'November';
+	$s_plugin_agileMantis_december									=	'December';
+	
+	# Status
+	$s_plugin_agileMantis_status_all								=	'all';
+	$s_plugin_agileMantis_status_new								=	'new';
+	$s_plugin_agileMantis_status_assigned							=	'assigned';
+	$s_plugin_agileMantis_status_open								=	'open';
+	$s_plugin_agileMantis_status_running							=	'running';
+	$s_plugin_agileMantis_status_confirmed							=	'confirmed';
+	$s_plugin_agileMantis_status_resolved							=	'resolved';
+	$s_plugin_agileMantis_status_closed								=	'closed';
+	
+	# Buttons
+	$s_plugin_agileMantis_button_edit								= 	'Edit';
+	$s_plugin_agileMantis_button_delete								= 	'Delete';
+	$s_plugin_agileMantis_button_remove								= 	'Remove';
+	$s_plugin_agileMantis_button_open_calendar						= 	'Open calendar';
+	$s_plugin_agileMantis_button_save								= 	'Save';
+	$s_plugin_agileMantis_button_back								= 	'Back';
+	$s_plugin_agileMantis_button_add								= 	'Add';
+	$s_plugin_agileMantis_button_change								= 	'Change';
+	$s_plugin_agileMantis_button_assume								= 	'Adopt';
+	$s_plugin_agileMantis_button_resolve							= 	'Resolve';
+	
+	# Common Language Strings 
+	$s_plugin_agileMantis_common_description						= 	'Description';
+	$s_plugin_agileMantis_common_actions							= 	'Actions';	
+	$s_plugin_agileMantis_common_chose								= 	'Please choose';	
+
+	# Custom Field Strings
+	$s_plugin_agileMantis_custom_chose_product_backlog				=	'Choose Product Backlog';
+	$s_plugin_agileMantis_custom_chose_sprint						=	'Choose Sprint';	
+	
+	# Info-Page
+	$s_plugin_agileMantis_info_title								=	'agileMantis - information';
+	$s_plugin_agileMantis_info_company								=	'Company';
+	$s_plugin_agileMantis_info_website								=	'Website';
+	$s_plugin_agileMantis_info_contact_email						=	'Email';
+	$s_plugin_agileMantis_info_error_921000							=	'[<span style="font-size:14px;">921000</span>] You have not got the right to display the information site.';
+
+	# Manage agileMantis Users
+	$s_plugin_agileMantis_manage_user_title							= 	'Manage agileMantis Users';
+	$s_plugin_agileMantis_manage_user_successful_saved				= 	'Your changes have been saved successfully.';
+	$s_plugin_agileMantis_manage_user_show_all						= 	'All';
+	$s_plugin_agileMantis_manage_user_show_only_participants		= 	'agileMantis Participants only';
+	$s_plugin_agileMantis_manage_user_show_only_developers			= 	'agileMantis Developers only';
+	$s_plugin_agileMantis_manage_user_show_only_administrators		= 	'agileMantis Administrators only';
+	$s_plugin_agileMantis_manage_user_username						= 	'Username';
+	$s_plugin_agileMantis_manage_user_realname						= 	'Real Name';
+	$s_plugin_agileMantis_manage_user_participant					= 	'agileMantis Participants';
+	$s_plugin_agileMantis_manage_user_developer						= 	'agileMantis Developers';
+	$s_plugin_agileMantis_manage_user_administrator					= 	'agileMantis Administrators';
+	$s_plugin_agileMantis_manage_user_error_921A00					= 	'[<span style="font-size:14px;">912A00</span>] You have not got the right to display the agileMantis users.';
+	
+	# Manage Product Backlogs
+	$s_plugin_agileMantis_manage_product_backlogs_title				= 	'Manage Product Backlogs';
+	$s_plugin_agileMantis_manage_product_backlogs_add				= 	'Add Product Backlog';
+	
+	# Delete Product Backlog
+	$s_plugin_agileMantis_delete_product_backlog 					=	'Shall the product backlog be deleted together with all associated settings?';
+	$s_plugin_agileMantis_delete_product_backlog_delete_button		=	'Delete Product Backlog';
+	
+	# Remove Project from Product Backlog
+	$s_plugin_agileMantis_delete_project_title						= 	'Remove project from product backlog';
+	$s_plugin_agileMantis_delete_project_message					= 	'Shall the project be removed from the product backlog together with all associated settings';
+	$s_plugin_agileMantis_delete_project_name						= 	'Project Name';
+	$s_plugin_agileMantis_delete_project_warning					= 	'<br>Warning: There are unedited user stories in this project.<br>Their assignment to the product backlog will be removed when the product backlog is deleted.<br>';
+	
+	# Edit Product Backlog
+	$s_plugin_agileMantis_edit_product_backlog_title				=	'Edit Product Backlog';
+	$s_plugin_agileMantis_edit_product_backlog_error_100600			=	'[<span style="font-size:14px;">100600</span>] Please notice, that the project is already in use in a different product backlog.';
+	$s_plugin_agileMantis_edit_product_backlog_error_922600			=	'[<span style="font-size:14px;">922600</span>] Please enter a name for the product backlog';
+	$s_plugin_agileMantis_edit_product_backlog_error_923600			=	'[<span style="font-size:14px;">923600</span>] Please enter a valid email address.';
+	$s_plugin_agileMantis_edit_product_backlog_error_982600			=	'[<span style="font-size:14px;">982600</span>] Please enter a unique name for product backlog.';
+	$s_plugin_agileMantis_edit_product_backlog_error_100601			=	'[<span style="font-size:14px;">100601</span>] The assignment of the project-tracker to this product backlog has been removed.';
+	$s_plugin_agileMantis_edit_product_backlog_user_email			=	'Email address of team user';
+	$s_plugin_agileMantis_edit_product_backlog_projects				=	'Projects';
+	$s_plugin_agileMantis_edit_product_backlog_add_project			=	'Add Project';
+	
+	# Manage Team
+	$s_plugin_agileMantis_manage_teams_title						=	'Manage Teams';
+	$s_plugin_agileMantis_manage_teams_add							=	'Add Team';
+	
+	# Edit Team
+	$s_plugin_agileMantis_edit_teams_title							=	'Edit Team';
+	$s_plugin_agileMantis_edit_team_developer						=	'Developer';
+	$s_plugin_agileMantis_edit_team_username						=	'Username';
+	$s_plugin_agileMantis_edit_team_product_user					=	'Product User';
+	$s_plugin_agileMantis_edit_team_customer						=	'Customer';
+	$s_plugin_agileMantis_edit_teams_error_100200					=	'[<span style="font-size:14px;">100200</span>] You have tried to remove the product owner from the team.<br>Currently this is not possible. The former product owner has been reassigned.';
+	$s_plugin_agileMantis_edit_teams_error_100201					=	'[<span style="font-size:14px;">100201</span>] You have tried to remove the scrum master from the team.<br>Currently this is not possible. The former scrum master has been reassigned.';
+	$s_plugin_agileMantis_edit_teams_error_922200					=	'[<span style="font-size:14px;">922200</span>] Please enter a name for the team.';
+	$s_plugin_agileMantis_edit_teams_error_923200					=	'[<span style="font-size:14px;">923200</span>] Please choose a product backlog for the team.';
+	$s_plugin_agileMantis_edit_teams_error_982200					=	'[<span style="font-size:14px;">982200</span>] The name for the team is already in use by another team.<br>Please enter a unique name for each team.';
+
+	# Delete Team
+	$s_plugin_agileMantis_delete_team_title							=	'Delete Team';
+	$s_plugin_agileMantis_delete_team_message						=	'Shall the team be deleted and all members be detached from it?';
+	
+	# Remove Member from Team
+	$s_plugin_agileMantis_remove_member_title						=	'Remove a member from the team';
+	$s_plugin_agileMantis_remove_member_messageA					=	'Shall the team member in his role as ';
+	$s_plugin_agileMantis_remove_member_messageB					=	' be removed from the team?';
+	$s_plugin_agileMantis_remove_member_member						=	'Team Member';
+	$s_plugin_agileMantis_remove_member_developer					=	'Developer';
+	$s_plugin_agileMantis_remove_member_customer					=	'Customer';
+	$s_plugin_agileMantis_remove_member_user						=	'Product User';
+	
+	# Manage Availability
+	$s_plugin_agileMantis_manage_availability_title					=	'Manage Availability';	
+	$s_plugin_agileMantis_manage_availability_show_all				=	'All';	
+	$s_plugin_agileMantis_manage_availability_successful_saved		=	'The Standard Availability has been successfully saved.';	
+	$s_plugin_agileMantis_manage_availability_standard_title		=	'Manage Standard Availability';	
+	$s_plugin_agileMantis_manage_availability_user					=	'User';	
+	$s_plugin_agileMantis_manage_availability_total					=	'Total';	
+	$s_plugin_agileMantis_manage_availability_planning				=	'Planning Availability';	
+	$s_plugin_agileMantis_manage_availability_planning_for			=	'Planning availability for';	
+	$s_plugin_agileMantis_manage_availability_save_standard			=	'Save standard';	
+	$s_plugin_agileMantis_manage_availability_save_all				=	'Save all';	
+	$s_plugin_agileMantis_manage_availability_error_985300			=	'[<span style="font-size:14px;">985300</span>] You entered values in a invalid format.';	
+	$s_plugin_agileMantis_manage_availability_error_984302			=	'[<span style="font-size:14px;">984302</span>] Availability of a day cannot exceed 24h.';	
+	$s_plugin_agileMantis_manage_availability_error_984303			=	'[<span style="font-size:14px;">984303</span>] Availability of a day cannot be negative.';	
+	$s_plugin_agileMantis_manage_availability_error_985301			=	'[<span style="font-size:14px;">985301</span>] Values have been reset to 0.00 due to invalid format.';	
+	$s_plugin_agileMantis_manage_availability_error_984301			=	'[<span style="font-size:14px;">984301</span>] Availability of a day cannot exceed 24h.<br> Value has been reset to 0.00.';	
+	$s_plugin_agileMantis_manage_availability_error_984300			=	'[<span style="font-size:14px;">984300</span>] Availability of a day cannot be negative.<br> Value has been reset to 0.00.';	
+	$s_plugin_agileMantis_manage_availability_error_108300			=	'[<span style="font-size:14px;">108300</span>] Availability of the developer exceeds planned capacity.<br> Please modify capacity and/or availability.';	
+	$s_plugin_agileMantis_manage_availability_error_108301			=	'[<span style="font-size:14px;">108301</span>] Availability is exceeded.';
+	$s_plugin_agileMantis_manage_availability_error_108302			=	'[<span style="font-size:14px;">108302</span>] Availability of some developers are exceeding planned capacity.<br> Please modify capacity and/or availability.';
+
+	# Manage Capacity
+	$s_plugin_agileMantis_manage_capacity_title						=	'Manage Developer Capacities';	
+	$s_plugin_agileMantis_manage_capacity_end						=	'End';	
+	$s_plugin_agileMantis_manage_capacity_planning_for				=	'Planning Developer Capacities for Team';	
+	$s_plugin_agileMantis_manage_capacity_add_availability			=	'Completing Availability';	
+	$s_plugin_agileMantis_manage_capacity_realised_by				=	' realised by ';	
+	$s_plugin_agileMantis_manage_capacity_from						=	' from ';	
+	$s_plugin_agileMantis_manage_capacity_till						=	' until ';
+	$s_plugin_agileMantis_manage_capacity_totally_planned			=	' Totally planned ';	
+	$s_plugin_agileMantis_manage_capacity_of						=	' of ';	
+	$s_plugin_agileMantis_manage_capacity_error_984401				=	'[<span style="font-size:14px;">984401</span>] Developer capacities cannot be negative.';	
+	$s_plugin_agileMantis_manage_capacity_error_984400				=	'[<span style="font-size:14px;">984400</span>] Some capacites exceed 24h.';	
+	$s_plugin_agileMantis_manage_capacity_error_108400				=	'[<span style="font-size:14px;">108400</span>] Capacities of some developers exceed planned availabilities.<br> Please modify capacities and/or availabilities.';	
+	$s_plugin_agileMantis_manage_capacity_error_108401				=	'[<span style="font-size:14px;">108401</span>] Capacity is higher than Availability';	
+	$s_plugin_agileMantis_manage_capacity_error_985402				=	'[<span style="font-size:14px;">985402</span>] Start date has invalid format.';	
+	$s_plugin_agileMantis_manage_capacity_error_985400				=	'[<span style="font-size:14px;">985400</span>] End date has invalid format.';	
+	$s_plugin_agileMantis_manage_capacity_error_985403				=	'[<span style="font-size:14px;">985403</span>] Start date has invalid format.';	
+	$s_plugin_agileMantis_manage_capacity_error_985401				=	'[<span style="font-size:14px;">985401</span>] End date has invalid format.';	
+	$s_plugin_agileMantis_manage_capacity_error_985404				=	'[<span style="font-size:14px;">985404</span>] Start date has invalid format.';	
+	$s_plugin_agileMantis_manage_capacity_error_985406				=	'[<span style="font-size:14px;">985406</span>] End date has invalid format.';	
+	$s_plugin_agileMantis_manage_capacity_error_180401				=	'[<span style="font-size:14px;">180401</span>] Start date is too far in future and has been reset.';	
+	$s_plugin_agileMantis_manage_capacity_error_180400				=	'[<span style="font-size:14px;">180400</span>] End date is too far in future.';
+	$s_plugin_agileMantis_manage_capacity_error_180402				=	'[<span style="font-size:14px;">180402</span>] The end date cannot be earlier than the start date.';	
+	$s_plugin_agileMantis_manage_capacity_error_923400				=	'[<span style="font-size:14px;">923400</span>] Please enter an end date.';	
+	$s_plugin_agileMantis_manage_capacity_error_980400				=	'[<span style="font-size:14px;">980400</span>] Start- and end date are too far in the past.';
+	$s_plugin_agileMantis_manage_capacity_error_923402				=	'[<span style="font-size:14px;">923402</span>] Please enter a start date.';	
+	$s_plugin_agileMantis_manage_capacity_error_923401				=	'[<span style="font-size:14px;">923401</span>] Please select a team.';	
+	$s_plugin_agileMantis_manage_capacity_error_985405				=	'[<span style="font-size:14px;">985405</span>] The values had invalid format and have been reset';	
+	
+	# Manage Sprints
+	$s_plugin_agileMantis_manage_sprints_title						=	'Manage Sprints';
+	$s_plugin_agileMantis_manage_sprints_add						=	'Add Sprint';
+	$s_plugin_agileMantis_manage_sprints_show_closed				=	'Display closed Sprints too';
+	$s_plugin_agileMantis_manage_sprints_begin						=	'Begin';
+	$s_plugin_agileMantis_manage_sprints_end						=	'End';
+	$s_plugin_agileMantis_manage_sprints_rest						=	'Remaining Time';
+	$s_plugin_agileMantis_manage_sprints_error_921500				=	'[<span style="font-size:14px;">921500</span>] You do not have the rights to display sprints.';
+	
+	# Edit Sprint
+	$s_plugin_agileMantis_edit_sprint_title							=	'Edit Sprint';
+	$s_plugin_agileMantis_edit_sprint_goals							=	'Sprint Goal';
+	$s_plugin_agileMantis_edit_sprints_begin						=	'Begin';
+	$s_plugin_agileMantis_edit_sprints_end							=	'End';
+	$s_plugin_agileMantis_edit_sprints_status						=	'Status';
+	$s_plugin_agileMantis_edit_sprints_change_description			=	'Change Decription';
+	$s_plugin_agileMantis_edit_sprints_date_format					=	'(DD.MM.YYYY)';
+	$s_plugin_agileMantis_edit_sprints_error_922500					=	'[<span style="font-size:14px;">922500</span>] Please enter a name for the sprint.';
+	$s_plugin_agileMantis_edit_sprints_error_982500					=	'[<span style="font-size:14px;">982500</span>] The name is in use for a different sprint already. Please enter another name.';
+	$s_plugin_agileMantis_edit_sprints_error_923501					=	'[<span style="font-size:14px;">923501</span>] Please enter a start date for this sprint.';
+	$s_plugin_agileMantis_edit_sprints_error_985500					=	'[<span style="font-size:14px;">985500</span>] Please enter a valid start date.';
+	$s_plugin_agileMantis_edit_sprints_error_985502					=	'[<span style="font-size:14px;">985502</span>] Please enter a valid start date.';
+	$s_plugin_agileMantis_edit_sprints_error_985503					=	'[<span style="font-size:14px;">985503</span>] Please enter a valid start date.';
+	$s_plugin_agileMantis_edit_sprints_error_985504					=	'[<span style="font-size:14px;">985504</span>] Please enter a valid end date.';
+	$s_plugin_agileMantis_edit_sprints_error_985505					=	'[<span style="font-size:14px;">985505</span>] Please enter a valid end date.';
+	$s_plugin_agileMantis_edit_sprints_error_985501					=	'[<span style="font-size:14px;">985501</span>] Please enter a valid end date.';
+	$s_plugin_agileMantis_edit_sprints_error_980503					=	'[<span style="font-size:14px;">980503</span>] Start date cannot be in the past.';
+	$s_plugin_agileMantis_edit_sprints_error_923500					=	'[<span style="font-size:14px;">923500</span>] Please enter an end date for this sprint.';
+	$s_plugin_agileMantis_edit_sprints_error_980501					=	'[<span style="font-size:14px;">980501</span>] End date cannot be in the past.';
+	$s_plugin_agileMantis_edit_sprints_error_980502					=	'[<span style="font-size:14px;">980502</span>] The end date is before the start date.';
+	$s_plugin_agileMantis_edit_sprints_error_923502					=	'[<span style="font-size:14px;">923502</span>] Please select a team for the sprint.';
+	$s_plugin_agileMantis_edit_sprints_error_980500					=	'[<span style="font-size:14px;">980500</span>] The sprint time overlaps with an earlier sprint.';
+	
+	# Delete Sprint
+	$s_plugin_agileMantis_delete_sprint_title						= 	'Delete Sprint';
+	$s_plugin_agileMantis_delete_sprint_message						= 	'Shall the sprint be deleted together with all its settings?';
+	
+	# Manage Settings
+	$s_plugin_agileMantis_manage_settings_title						=	'Manage Settings';
+	$s_plugin_agileMantis_manage_settings_options					=	'Options';
+	$s_plugin_agileMantis_manage_settings_standard_length			=	'Standard Sprint Duration';
+	$s_plugin_agileMantis_manage_settings_show_storypoints			=	'Display Story Points';
+	$s_plugin_agileMantis_manage_settings_show_rankingorder			=	'Display Ranking Order';
+	$s_plugin_agileMantis_manage_settings_sprint_view				=	'Presentation of current Sprint';
+	$s_plugin_agileMantis_manage_settings_storypoints_mode			=	'Enter Story Points as ..';
+	$s_plugin_agileMantis_manage_settings_fibonnaci_numbers			=	'Count of Fibonacci numbers';
+	$s_plugin_agileMantis_manage_settings_free_mode					=	'Free Mode';
+	$s_plugin_agileMantis_manage_settings_fibonnaci					=	'Fibonacci-Numbers';
+	$s_plugin_agileMantis_manage_settings_userstory_unit			=	'Unit of Work for User Stories';
+	$s_plugin_agileMantis_manage_settings_task_unit					=	'Unit of Work for Tasks';
+	$s_plugin_agileMantis_manage_settings_workday_length			=	'Length of Working Day (in hours)';
+	$s_plugin_agileMantis_manage_settings_additional_fields			=	'(De-)Activate Useful Additional Information';
+	$s_plugin_agileMantis_manage_settings_field						=	'Field';
+	$s_plugin_agileMantis_manage_settings_activate					=	'Activate';
+	$s_plugin_agileMantis_manage_settings_remove_from_project		=	'Remove from Projects';
+	$s_plugin_agileMantis_manage_settings_no_unit					=	'None';
+	$s_plugin_agileMantis_manage_settings_hours						=	'Working hours (h)';
+	$s_plugin_agileMantis_manage_settings_days						=	'Working days (d)';
+	$s_plugin_agileMantis_manage_settings_storypoints				=	'Story points (SP)';
+	$s_plugin_agileMantis_manage_settings_successfully_saved		=	'Configurations have been saved successfully.';
+	$s_plugin_agileMantis_manage_settings_error_984100				=	'[<span style="font-size:14px;">984100</span>] A working day cannot be longer than 24 hours and not shorter than 1h. Please enter a value within this range.';
+	$s_plugin_agileMantis_manage_settings_error_984101				=	'[<span style="font-size:14px;">984100</span>] The sprint length can only be entered as an integer count of days.';
+	$s_plugin_agileMantis_manage_settings_error_921100				=	'[<span style="font-size:14px;">921100</span>] You do not have the right to edit the configurations.';
+	$s_plugin_agileMantis_manage_settings_error_106102				=	"[106102] It is not possible to operate with work in different units.";
+	$s_plugin_agileMantis_manage_settings_error_106102B				=	"Already entered work in tasks with no- or future sprints will thus be reset to zero.";
+	$s_plugin_agileMantis_manage_settings_error_106102C				=	"Do you want to proceed?";
+	
+	# View Issue Page
+	$s_plugin_agileMantis_view_issue_save_infos						=	'Save information';
+	$s_plugin_agileMantis_view_issue_edit_tasks						=	'Edit Tasks';
+	$s_plugin_agileMantis_view_issue_successfully_saved				=	'Changes have been saved successfully';
+	$s_plugin_agileMantis_view_issue_non_presentable				=	'Not presentable';
+	$s_plugin_agileMantis_view_issue_technical_presentable			=	'Presentable technically';
+	$s_plugin_agileMantis_view_issue_functional_presentable			=	'Presentable functionally';
+	$s_plugin_agileMantis_view_issue_chose_product_backlog			=	'Choose Product Backlog';
+	
+	# Edit Tasks
+	$s_plugin_agileMantis_edit_tasks_title							=	'Edit Tasks';
+	$s_plugin_agileMantis_edit_tasks_category						=	'Category';
+	$s_plugin_agileMantis_edit_tasks_severity						=	'Severity';
+	$s_plugin_agileMantis_edit_tasks_save_changes					=	'Save changes';
+	$s_plugin_agileMantis_edit_tasks_name							=	'Name';
+	$s_plugin_agileMantis_edit_tasks_assigned_developer				=	'Assigned Developer';
+	$s_plugin_agileMantis_edit_tasks_planned						=	'Planned Work';
+	$s_plugin_agileMantis_edit_tasks_rest							=	'Remaining Work';
+	$s_plugin_agileMantis_edit_tasks_add							=	'Add Task';
+	$s_plugin_agileMantis_edit_tasks_edit							=	'Edit Task';
+	$s_plugin_agileMantis_edit_tasks_developer						=	'Developer';
+	$s_plugin_agileMantis_edit_tasks_error_985800					=	'[<span style="font-size:14px;">985800</span>] Please enter a value for the planned work.';
+	$s_plugin_agileMantis_edit_tasks_error_922800					=	'[<span style="font-size:14px;">922800</span>] Please enter a name for the task.';
+	$s_plugin_agileMantis_edit_tasks_error_106800					=	'[<span style="font-size:14px;">106800</span>] The work unit in the sprint is different from the initially configured unit.<br>Work of tasks can only be planned in the configured unit.';
+	$s_plugin_agileMantis_edit_tasks_error_107800					=	'[<span style="font-size:14px;">107800</span>] The task has been set to the status <span style="font-size: 16px;font-style:italic;">resolved</span>, since the remaining work ist zero.';
+	$s_plugin_agileMantis_edit_tasks_error_107801					=	'[<span style="font-size:14px;">107801</span>] The task has been set to the status <span style="font-size: 16px;font-style:italic;">closed</span>.';
+	$s_plugin_agileMantis_edit_tasks_error_120800					=	'[<span style="font-size:14px;">120800</span>] Planned work already exist for other tasks of this sprint.';
+	$s_plugin_agileMantis_edit_tasks_error_108800					=	'[<span style="font-size:14px;">108800</span>] The developer has not got any capacity left for the work of this task.';
+	
+	# Edit Task
+	$s_plugin_agileMantis_edit_task_title							=	'Edit Task';
+	$s_plugin_agileMantis_edit_task_name							=	'Name';
+	$s_plugin_agileMantis_edit_task_developer						=	'Developer';
+	$s_plugin_agileMantis_edit_task_planned							=	'Planned Work';
+	$s_plugin_agileMantis_edit_task_rest							=	'Remaining Work';
+	$s_plugin_agileMantis_edit_task_performed						=	'Work performed';
+	$s_plugin_agileMantis_edit_task_log								=	'Task log';
+	$s_plugin_agileMantis_edit_task_created							=	'Created at';
+	$s_plugin_agileMantis_edit_task_assigned						=	'Assigned at';
+	$s_plugin_agileMantis_edit_task_resolved						=	'Completed at';
+	$s_plugin_agileMantis_edit_task_reopened						=	'Reopened at';
+	$s_plugin_agileMantis_edit_task_closed							=	'Closed at';
+	$s_plugin_agileMantis_edit_task_error_922900					=	'[<span style="font-size:14px;">922900</span>] Please enter a name for the task.';
+	$s_plugin_agileMantis_edit_task_error_985902					=	'[<span style="font-size:14px;">985902</span>] Please enter a number for the remaining work.';
+	$s_plugin_agileMantis_edit_task_error_985901					=	'[<span style="font-size:14px;">985901</span>] Please enter a value for the planned work.';
+	$s_plugin_agileMantis_edit_task_error_985900					=	'[<span style="font-size:14px;">985900</span>] Please enter a number for the performed work.';
+	$s_plugin_agileMantis_edit_task_error_127902					=	'[<span style="font-size:14px;">127902</span>] Please enter the remaining work. The task could not be set to <span style="font-size: 16px;font-style:italic;">assigned</span>.';
+	$s_plugin_agileMantis_edit_task_error_127903					=	'[<span style="font-size:14px;">127903</span>] Please enter the remaining work. The task could not be set to <span style="font-size: 16px;font-style:italic;">assigned</span>.';
+	$s_plugin_agileMantis_edit_task_error_127904					=	'[<span style="font-size:14px;">127904</span>] Please enter the remaining work. The task could not be set to <span style="font-size: 16px;font-style:italic;">assigned</span>.';
+	$s_plugin_agileMantis_edit_task_error_127905					=	'[<span style="font-size:14px;">127905</span>] The changes could not be saved. The remaining work cannot be negative.';
+	$s_plugin_agileMantis_edit_task_error_106900					=	'[<span style="font-size:14px;">106900</span>] The unit of work in the sprint is different from the units configured initially.<br>Work of tasks can only be planned in the configured unit.';
+	$s_plugin_agileMantis_edit_task_error_127900					=	'[<span style="font-size:14px;">127900</span>] You have not entered performed work into the task.<br> Please enter a value (0 ist allowed) to close the task.';	
+	$s_plugin_agileMantis_edit_task_error_127901					=	'[<span style="font-size:14px;">127901</span>] You have not entered performed work into the task.<br> Please enter a value (0 ist allowed) to close the task.';	
+	$s_plugin_agileMantis_edit_task_error_127906					=	'[<span style="font-size:14px;">127906</span>] The entered performed work cannot be saved.';	
+	
+	# Split User Stories
+	$s_plugin_agileMantis_divide_userstories_title					=	'Split User Stories';
+	$s_plugin_agileMantis_divide_userstories_single_title			=	'Split User Story';
+	$s_plugin_agileMantis_divide_userstories_subtitle				=	'Split Incomplete User Stories';
+	$s_plugin_agileMantis_divide_userstories_chose_sprint			=	'Choose a Sprint';
+	$s_plugin_agileMantis_divide_userstories_chose_status			=	'Choose a Status';
+	$s_plugin_agileMantis_divide_userstories_from					=	'From ';
+	$s_plugin_agileMantis_divide_userstories_of						=	'Of ';
+	$s_plugin_agileMantis_divide_userstories_splitted				=	' Created for later processing.';
+	$s_plugin_agileMantis_divide_userstories_divided				=	'divided';
+	$s_plugin_agileMantis_divide_userstories_old_estimation			=	'Previous estimation for user story ';
+	$s_plugin_agileMantis_divide_userstories_with					=	' with ';
+	$s_plugin_agileMantis_divide_userstories_error_106D00			=	'[<span style="font-size:14px;">106D00</span>] The unit of work in the sprint is different from the unit configured initially.<br>While splitting user stories remaining work will not be adopted into the new tasks.';
+	
+	# Adopt User Stories
+	$s_plugin_agileMantis_assume_userstories_title					=	'Adopt User Stories';
+	$s_plugin_agileMantis_assume_userstories_chosen_sp				=	'Story Points Chosen';
+	$s_plugin_agileMantis_assume_userstories_rankingorder			=	'Ranking Order';
+	$s_plugin_agileMantis_assume_userstories_planned_work			=	'Planned Work';
+	$s_plugin_agileMantis_assume_userstories_summary				=	'Summary';
+	$s_plugin_agileMantis_assume_userstories_assume_to_sprint		=	'Adopt to Sprint';
+	$s_plugin_agileMantis_assume_userstories_assume_successfull		=	'The selected user stories have been successfully adopted to the sprint';
+	$s_plugin_agileMantis_assume_userstories_error_120C01			=	'[<span style="font-size:14px;">120C01</span>] No incomplete user stories found.';
+	$s_plugin_agileMantis_assume_userstories_error_106C00			=	'[<span style="font-size:14px;">106C00</span>] The unit of work in the sprint is different from the unit configured initially,<br>hence the planned work will be removed while adopting the tasks';
+	$s_plugin_agileMantis_assume_userstories_error_120C00			=	'[<span style="font-size:14px;">120C00</span>] You have not selected any user story to be adopted to the sprint.';
+	
+	# Product Backlog
+	$s_plugin_agileMantis_product_backlog_title						=	'Edit Product Backlog';
+	$s_plugin_agileMantis_product_backlog_chose						=	'Choose a Product Backlog';
+	$s_plugin_agileMantis_product_backlog_name						=	'Name';
+	$s_plugin_agileMantis_product_backlog_running_sprint			=	'Running Sprint';
+	$s_plugin_agileMantis_product_backlog_projects					=	'Projects';
+	$s_plugin_agileMantis_product_backlog_open_backlog				=	'Backlog';
+	$s_plugin_agileMantis_product_backlog_add_sprint				=	'Create a Sprint';
+	$s_plugin_agileMantis_product_backlog_current_sprint			=	'Current Sprint';
+	$s_plugin_agileMantis_product_backlog_availability				=	'Manage Availability';
+	$s_plugin_agileMantis_product_backlog_from						=	' from ';
+	$s_plugin_agileMantis_product_backlog_till						=	' until ';
+	$s_plugin_agileMantis_product_backlog_capacity					=	'Move to Developer Capacities';
+	$s_plugin_agileMantis_product_backlog_capacityB					=	'Manage Developer Capacities';
+	$s_plugin_agileMantis_product_backlog_saved_successfully		=	'Changes have been successfully saved.';
+	$s_plugin_agileMantis_product_backlog_without_sp				=	'User Stories without Story Points only';
+	$s_plugin_agileMantis_product_backlog_show_resolved				=	'Completed User Stories too';
+	$s_plugin_agileMantis_product_backlog_show_closed				=	'Closed User Stories too';
+	$s_plugin_agileMantis_product_backlog_without_sprint			=	'User Stories without Sprint only';
+	$s_plugin_agileMantis_product_backlog_current_project			=	'User Stories for current Project only';
+	$s_plugin_agileMantis_product_backlog_show_project_version		=	'Display Project / Target Version';
+	$s_plugin_agileMantis_product_backlog_rankingorder				=	'Ranking Order';
+	$s_plugin_agileMantis_product_backlog_category					=	'Category';
+	$s_plugin_agileMantis_product_backlog_target_version			=	'Target version';
+	$s_plugin_agileMantis_product_backlog_summary					=	'Summary';
+	$s_plugin_agileMantis_product_backlog_time						=	'Date';
+	$s_plugin_agileMantis_product_backlog_amount					=	'Count';
+	$s_plugin_agileMantis_product_backlog_opened					=	'Still opened';
+	$s_plugin_agileMantis_product_backlog_error_921B00				=	'[<span style="font-size:14px;">921B00</span>] You have not got the right to display the product backlog';
+	
+	# Sprint Backlog
+	$s_plugin_agileMantis_sprint_backlog_title						=	'Edit Sprint Backlog';
+	$s_plugin_agileMantis_sprint_backlog_hint						=	'No Sprints found.';
+	$s_plugin_agileMantis_sprint_backlog_edit_alt					=	'Edit Details of User Story';
+	$s_plugin_agileMantis_sprint_backlog_add_task					=	'Add Task';
+	$s_plugin_agileMantis_sprint_backlog_remove_userstory			=	'Remove Story';
+	$s_plugin_agileMantis_sprint_backlog_divide_userstory			=	'Split Story';
+	$s_plugin_agileMantis_sprint_backlog_enter						=	'Enter';
+	$s_plugin_agileMantis_sprint_backlog_project					=	'Display Project / Target Version';
+	$s_plugin_agileMantis_sprint_backlog_only_undone				=	'Incomplete User Stories only';
+	$s_plugin_agileMantis_sprint_backlog_only_own					=	'Your own User Stories only';
+	$s_plugin_agileMantis_sprint_backlog_summary					=	'Summary';
+	$s_plugin_agileMantis_sprint_backlog_developer					=	'Developer';
+	$s_plugin_agileMantis_sprint_backlog_planned					=	'Planned';
+	$s_plugin_agileMantis_sprint_backlog_performed					=	'Performed';
+	$s_plugin_agileMantis_sprint_backlog_enter_work					=	'Enter performed work';
+	$s_plugin_agileMantis_sprint_backlog_target_version				=	'Target Version';
+	$s_plugin_agileMantis_sprint_backlog_availability				=	'Manage Availability';
+	$s_plugin_agileMantis_sprint_backlog_capacity					=	'Manage Developer Capacities';
+	$s_plugin_agileMantis_sprint_backlog_assume_userstory			=	'Adopt User Stories';
+	$s_plugin_agileMantis_sprint_backlog_edit_sprint				=	'Edit Sprint';
+	$s_plugin_agileMantis_sprint_backlog_confirm_sprint				=	'Confirm Sprint';
+	$s_plugin_agileMantis_sprint_backlog_close_sprint_button		=	'Close Sprint';
+	$s_plugin_agileMantis_sprint_backlog_divide_userstories			=	'Split Incomplete User Stories';
+	$s_plugin_agileMantis_sprint_backlog_chose_sprint				=	'Choose a Sprint';
+	$s_plugin_agileMantis_sprint_backlog_show_closed				=	'Display closed Sprints too';
+	$s_plugin_agileMantis_sprint_backlog_end						=	'End';
+	$s_plugin_agileMantis_sprint_backlog_rest						=	'Remaining Time';
+	$s_plugin_agileMantis_sprint_backlog_restB						=	'Remaining Work';
+	$s_plugin_agileMantis_sprint_backlog_restC						=	'Remaining Capacity';
+	$s_plugin_agileMantis_sprint_backlog_sprint_goal				=	'Sprint Goal';
+	$s_plugin_agileMantis_sprint_backlog_backlog					=	'Backlog';
+	$s_plugin_agileMantis_sprint_backlog_begin						=	'Begin';
+	$s_plugin_agileMantis_sprint_backlog_close_sprint				=	'The sprint is closed. Would you like to close the associated user stories too?';
+	$s_plugin_agileMantis_sprint_backlog_really_close_sprint		=	'Do you really want to commit the sprint?';
+	$s_plugin_agileMantis_sprint_backlog_really_stories_left		=	'There still exist stories without tasks and/or tasks without work.\r\n Would you like to commit the sprit though?';
+	$s_plugin_agileMantis_sprint_backlog_error_100700				=	'[<span style="font-size:14px;">100700</span>] Other tasks with planned work already exist in this sprint.';
+	$s_plugin_agileMantis_sprint_backlog_error_108700				=	'[<span style="font-size:14px;">108700</span>] The developer has not got any more capacity for the planned work of this task.';
+	$s_plugin_agileMantis_sprint_backlog_error_108701				=	'[<span style="font-size:14px;">108701</span>] The developer has not got any more capacity for the planned work of this task.';
+	$s_plugin_agileMantis_sprint_backlog_error_107700				=	'[<span style="font-size:14px;">107700</span>] The remaining work of this task is zero, so it has been set to <span style="font-size: 16px;font-style:italic;">resolved</span>';
+	$s_plugin_agileMantis_sprint_backlog_error_980700				=	'[<span style="font-size:14px;">980700</span>] The entered work cannot be saved.';
+	$s_plugin_agileMantis_sprint_backlog_error_107702				=	'[<span style="font-size:14px;">107702</span>] The status of the task has been set to <span style="font-size: 16px;font-style:italic;">closed</span>.';
+	$s_plugin_agileMantis_sprint_backlog_error_108702				=	'[<span style="font-size:14px;">108702</span>] The remaining work exceeds the remaining capacity.';
+	$s_plugin_agileMantis_sprint_backlog_error_127700				=	'[<span style="font-size:14px;">127700</span>] You have not entered performed work into the task today.<br> Please enter a value (0 is allowed) to set the task to <span style="font-size: 16px;font-style:italic;">resolved</span>';
+	$s_plugin_agileMantis_sprint_backlog_error_107701				=	'[<span style="font-size:14px;">107701</span>] The remaining work of this task is zero, so it is set to <span style="font-size: 16px;font-style:italic;">resolved</span>';
+	
+	# Statistics
+	$s_plugin_agileMantis_statistics_title							=	'Statistics';
+	
+	# Taskboard
+	$s_plugin_agileMantis_taskboard_title							=	'Edit Taskboard';
+	
+	# Screenshots 
+	$s_plugin_agileMantis_screenshot_title							=	'Expert Component Screenshot (in development)';
+	$s_plugin_agileMantis_screenshot_title_more						=	'More Expert Component Screenshots (in development)';
+	$s_plugin_agileMantis_screenshot_dialog_title					=	'Expert Component Screenshot';
+	$s_plugin_agileMantis_screenshot_dialog_text					=	'This action is currently not allowed, because this is only a screenshot of an expert component.<br><br>For further information please visit ';
+?>
