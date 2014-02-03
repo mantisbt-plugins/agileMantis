@@ -172,7 +172,7 @@ echo '
 			<td colspan="'.$colspan.'">
 				<select name="presentable">
 					<option value="3" '.$marked_3.'>'.plugin_lang_get( 'view_issue_non_presentable' ).'</option>
-					<option value="1" '.$marked_1.'>'.plugin_lang_get( 'issue_technical_presentable' ).'</option>
+					<option value="1" '.$marked_1.'>'.plugin_lang_get( 'view_issue_technical_presentable' ).'</option>
 					<option value="2" '.$marked_2.'>'.plugin_lang_get( 'view_issue_functional_presentable' ).'</option>
 				</select>
 			</td>

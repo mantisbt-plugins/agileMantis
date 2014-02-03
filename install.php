@@ -21,7 +21,7 @@
 		@copy($filename,$filename.'.bak');
 		
 		# Rewrite Mantis-Config file
-		$string = '<?'."\r\n";
+		$string = '<?php'."\r\n";
 		$string.= 'define("SUBFOLDER","'.$subdir.'");'."\r\n";
 		$string.= 'define("PLUGIN_URL","http://".$_SERVER[\'HTTP_HOST\']."".SUBFOLDER."plugins/agileMantis/");'."\r\n";
 		$string.= 'define("BASE_URL","http://".$_SERVER[\'HTTP_HOST\']."".SUBFOLDER);'."\r\n";
@@ -80,7 +80,7 @@
 		$string.= '// Load agileMantis Sprint Functions'."\r\n";
 		$string.= 'include_once(PLUGIN_CLASS_URI.\'class_sprint.php\');'."\r\n";
 		$string.= '$sprint = new gadiv_sprint();'."\r\n";
-		$string.= '?>'."\r\n";
+		$string.= "\r\n";
 		
 		$string.= '// Load agileMantis Sprint Functions'."\r\n";
 		$string.= 'include_once(PLUGIN_CLASS_URI.\'class_version.php\');'."\r\n";
@@ -104,7 +104,7 @@
 		}
 
 		# rewrite custom_strings_inc.php 
-		$string = '<?'."\r\n";
+		$string = '<?php'."\r\n";
 		$string.= 'switch( lang_get_current() ){'."\r\n";
 		$string.= "case 'german':"."\r\n";
 		$string.= '$s_Presentable = "Pr&auml;sentabel";'."\r\n";
@@ -562,4 +562,22 @@
 
 	$sql = "INSERT INTO mantis_config_table SET config_id = 'plugin_agileMantis_gadiv_sitekey', access_reqd = 90, type = 0, value = '".$sitekey."'";
 	mysql_query($sql);
+	
+	$sql = "SELECT id FROM mantis_custom_field_table WHERE name IN('Technical','Sprint','RankingOrder','Presentable', 'InReleaseDocu', 'PlannedWork','Storypoints','ProductBacklog','BusinessValue','PlannedWorkUnit') ORDER BY id ASC";
+	$result = mysql_query($sql);
+	$customFields = array();
+	while($row = mysql_fetch_assoc($result)){
+		$customFields[] = $row['id'];
+	}
+	
+	$sql = "SELECT id FROM mantis_bug_table ORDER BY id ASC";
+	$result = mysql_query($sql);
+	
+	while($row = mysql_fetch_assoc($result)){
+		foreach($customFields AS $key => $value){
+			$sql = "INSERT INTO mantis_custom_field_string_table SET field_id='".$value."', bug_id = '".$row['id']."'";
+			mysql_query($sql);
+		}
+	}
+	
 ?>
