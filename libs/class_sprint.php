@@ -542,6 +542,26 @@
 			$sql = "UPDATE gadiv_sprints SET closed	= '".date('Y')."-".date('m')."-".date('d')." ".date('H').":".date('i').":".date('s')."' WHERE id = '".$id."'";
 			mysql_query($sql);
 		}
+		
+		function getLatestSprints($team_id, $amountOfSprints="", $sprintName=""){
+			if($amountOfSprints != ""){
+				$addSql = " ORDER BY id DESC LIMIT 0, ".(int) $amountOfSprints;
+			}
+
+			if($sprintName != ""){
+				$addSql = " AND name = '".$sprintName."'";
+			}
+
+			$this->sql = "SELECT * FROM gadiv_sprints LEFT JOIN gadiv_rel_sprint_closed_information ON sprint_id = id WHERE team_id = '".$team_id."' AND status = 2".$addSql;
+			return $this->executeQuery();
+		}
+		
+		function getTeamCapacityInSprint($team_id, $sprint_start, $sprint_end) {
+			$sql = "SELECT sum( capacity ) AS total_cap FROM gadiv_rel_user_team_capacity WHERE team_id = '".$team_id."' AND date >= '".$sprint_start."' AND date <= '".$sprint_end."'";
+			$result = mysql_query($sql);
+			$team = mysql_fetch_assoc($result);
+			return $team['total_cap'];
+		}
 
 	}
 ?>

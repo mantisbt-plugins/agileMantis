@@ -66,24 +66,42 @@
 				return $resultSet;
 			}
 		}
+		
+		# count current user sessions
+		function countSessions(){
+			$sql = "SELECT count(session_id) AS sessions FROm gadiv_additional_user_fields WHERE session_id != ''";
+			$result = mysql_query($sql);
+			$amountOf = mysql_fetch_assoc($result);
+			return $amountOf['sessions'];
+		}
 
 		# redirects a user to a specific page, sprint backlog or taskboard
 		function forwardReturnToPage($page_name){
 
-			if($_POST['fromSprintBacklog'] == 1 && $_POST['fromTaskPage'] != 1){
-				$header = "Location: ".plugin_page('sprint_backlog.php')."&sprintName=".urlencode($_POST['sprintName']);
-			}
+			if($_POST['fromDailyScrum'] == 1) {
+				$header = "Location: ".plugin_page('daily_scrum_meeting.php')."&sprintName=".urlencode($_POST['sprintName']);
+			} else {
 
-			if($_POST['fromProductBacklog'] == 1) {
-				$header = "Location: ".plugin_page('product_backlog.php')."&productBacklogName=".$_POST['productBacklogName'];
-			}
+				if($_POST['fromSprintBacklog'] == 1 && $_POST['fromTaskPage'] != 1){
+					$header = "Location: ".plugin_page('sprint_backlog.php')."&sprintName=".urlencode($_POST['sprintName']);
+				}
 
-			if($_POST['fromSprintBacklog'] == 0 && $_POST['fromProductBacklog'] == 0){
-				$header = "Location: ".plugin_page($page_name);
-			}
+				if($_POST['fromTaskboard'] == 1) {
+					$header = "Location: ".plugin_page('taskboard.php')."&sprintName=".urlencode($_POST['sprintName']);
+				}
 
-			if($_POST['fromSprintBacklog'] == 1 && $_POST['fromTaskPage'] == 1){
-				$header = "Location: ".plugin_page($page_name);
+				if($_POST['fromProductBacklog'] == 1) {
+					$header = "Location: ".plugin_page('product_backlog.php')."&productBacklogName=".$_POST['productBacklogName'];
+				}
+
+				if($_POST['fromSprintBacklog'] == 0 && $_POST['fromTaskboard'] == 0 && $_POST['fromProductBacklog'] == 0){
+					$header = "Location: ".plugin_page($page_name);
+				}
+
+				if($_POST['fromSprintBacklog'] == 1 && $_POST['fromTaskPage'] == 1){
+					$header = "Location: ".plugin_page($page_name);
+				}
+
 			}
 
 			return $header;
@@ -351,6 +369,11 @@
 
 			return $userstory;
 
+		}
+		
+		function getUserStoryChanges($id){
+			$this->sql = "SELECT new_value,date_modified FROM mantis_bug_history_table WHERE bug_id = '".$id."' AND field_name = 'status' AND new_value >= 80 ORDER BY date_modified ASC LIMIT 1";
+			return $this->executeQuery();
 		}
 
 		# copy user story
@@ -730,6 +753,12 @@
 			}
 			$sql = "DELETE FROM gadiv_task_log WHERE task_id = '".$id."'".$addsql;
 			mysql_query($sql);
+		}
+
+		# get all task log information
+		function getTaskLog($id){
+			$this->sql = "SELECT * FROM gadiv_task_log WHERE task_id = ".$id;
+			return $this->executeQuery();
 		}
 
 		# get user story status

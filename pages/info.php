@@ -20,7 +20,7 @@
 
 <?php if ( current_user_is_administrator() || $au->authUser() == 2 || $au->authUser() == 3 ) {?>
 <br>
-<?include(PLUGIN_URI.'/pages/footer_menu.php')?>
+<?php include(PLUGIN_URI.'/pages/footer_menu.php')?>
 <?php echo form_security_field('plugin_format_config_edit') ?>
 <br>
 <table align="center" class="width75" cellspacing="1">
@@ -29,7 +29,7 @@
 </tr>
 <tr <?php echo helper_alternate_class() ?>>
 	<td class="category">Version</td>
-	<td>1.2.0</td>
+	<td>1.2.5</td>
 </tr>
 <tr <?php echo helper_alternate_class() ?>>
 	<td class="category"><?php echo plugin_lang_get( 'info_company' )?></td>
@@ -45,5 +45,10 @@
 </tr>
 </table>
 <br>
+<?php 
+if(plugin_is_loaded('agileMantisExpert')){
+	event_signal( 'EVENT_LOAD_THIRDPARTY');	
+} 
+?>
 <?php } else {echo '<br><center><span style="color:red;font-size:16px;font-weight:bold;">'.plugin_lang_get( 'info_error_921000' ).'</span></center>';}?>
 <?php html_page_bottom() ?>

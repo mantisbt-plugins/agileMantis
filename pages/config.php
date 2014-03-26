@@ -38,21 +38,34 @@
 	if($_GET['error'] == 'sprint_length_error'){
 		$system = plugin_lang_get( 'manage_settings_error_984101' );
 	}
+	
+	if($_GET['error'] == 'no_license_error'){
+		$system = plugin_lang_get( 'manage_settings_error_984102' );
+	}
+
+	if($_GET['error'] == 'could_not_find_error'){
+		$system = plugin_lang_get( 'manage_settings_error_984103' );
+	}
+	
+	if($_GET['error'] == 'empty_license_error'){
+		$system = plugin_lang_get( 'manage_settings_error_984104' );
+	}
+	
+	if($_GET['error'] == 'file_upload_error'){
+		$system = plugin_lang_get( 'manage_settings_error_984105' );
+	}
 
 	include(PLUGIN_URI.'/pages/footer_menu.php');
 
 	if($_GET['save'] == 'success'){
 		echo '<br><center><span style="color:green; font-size:16px; font-weight:bold;">'.plugin_lang_get( 'manage_settings_successfully_saved' ).'</span></center>';
 	}
+	
 ?>
 <?php if($system){?>
 	<br>
 	<center><span style="color:red; font-size:16px; font-weight:bold;"><?php echo $system?></span></center>
 <?php }?>
-<form action="<?php echo plugin_page('config_edit.php') ?>" method="post" id="config_form">
-<?php echo form_security_field('plugin_format_config_edit') ?>
-<input type="hidden" id="deleteField" name="deleteField" value="">
-<input type="hidden" id="changeUnit" name="changeUnit" value="">
 <br>
 <table align="center" class="width75" cellspacing="1">
 <tr>
@@ -62,6 +75,32 @@
 	<td class="category"><b><?php echo plugin_lang_get( 'manage_settings_options' )?></b></td>
 	<td class="category"><b><?php echo plugin_lang_get( 'common_actions' )?></b></td>
 </tr>
+<?php if(plugin_is_loaded('agileMantisExpert')){?>
+<tr <?php echo helper_alternate_class() ?>>
+	<td><?php echo plugin_lang_get( 'manage_settings_license_info' )?></td>
+	<td class="left">
+		<?php
+			if(plugin_is_loaded('agileMantisExpert')){
+				event_signal( 'EVENT_LOAD_SETTINGS', array( auth_get_current_user_id()) );
+			}
+		?>
+	</td>
+</tr>
+<?php } ?>
+<form action="<?php echo plugin_page('config_edit.php') ?>" method="post" id="config_form" enctype="multipart/form-data">
+<input type="hidden" id="deleteField" name="deleteField" value="">
+<input type="hidden" id="changeUnit" name="changeUnit" value="">
+<?php echo form_security_field('plugin_format_config_edit') ?>
+<?php
+	if(plugin_is_loaded('agileMantisExpert')){
+?>
+<tr <?php echo helper_alternate_class() ?>>
+	<td><?php echo plugin_lang_get( 'manage_settings_upload_license' )?></td>
+	<td><input type="file" name="license" size="50" /></td>
+</tr>
+<?php
+	}
+?>
 <tr <?php echo helper_alternate_class() ?>>
 	<td><?php echo plugin_lang_get( 'manage_settings_standard_length' )?> (<?php echo plugin_lang_get( 'days' )?>)</td>
 	<td class="left">
@@ -80,6 +119,10 @@
 			<input type="checkbox" name="gadiv_show_rankingorder" <?php if(plugin_config_get('gadiv_show_rankingorder') == '1'){echo 'checked';}?> <?php if(plugin_config_get('gadiv_ranking_order')=='0'){echo 'disabled';}?> id="show_rankingorder" value="1"> <?php echo plugin_lang_get( 'manage_settings_show_rankingorder' )?>
 		</div>
 	</td>
+</tr>
+<tr <?php echo helper_alternate_class() ?>>
+	<td>Daily Scrum Meeting mit Taskboard</td>
+	<td><input type="checkbox" name="gadiv_daily_scrum" <?if(plugin_config_get('gadiv_daily_scrum')=='1'){echo 'checked';}?> value="1"></td>
 </tr>
 <tr <?php echo helper_alternate_class() ?>>
 	<td><?php echo plugin_lang_get( 'manage_settings_storypoints_mode' )?></td>
@@ -198,7 +241,6 @@
     </td>
 </tr>
 </table>
-<br><br>
 	<script type="text/javascript" language="javascript">
 		// change task unit warning
 		function changeTaskUnit(){
@@ -247,12 +289,12 @@
 		}
 	</script>
 </form>
-<?
+<?php
 	} else {
 ?>
 		<br>
 			<center><span style="color:red; font-size:16px; font-weight:bold;"><?php echo plugin_lang_get( 'manage_settings_error_921100' )?></span></center>
-<?
+<?php
 	}
 ?>
 <?php html_page_bottom() ?>

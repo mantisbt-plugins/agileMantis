@@ -1,4 +1,4 @@
-<?
+<?php
 	# agileMantis - makes Mantis ready for Scrum
 
 	# agileMantis is free software: you can redistribute it and/or modify
@@ -55,11 +55,10 @@
 		if($tasks->rest_capacity > 0 && $_POST['performed'] != ""){$tasks->status = 3;}
 
 		# change status to resolved
-		if($_POST['resolved'] == plugin_lang_get( 'button_resolve' ) && ($tasks->getPerformedCapacity($tasks->id) == 0.00 || $tasks->getPerformedCapacity($tasks->id) == '') && str_replace(',','.',$_POST['performed_capacity_today']) == ''){
-			$system = plugin_lang_get( 'sprint_backlog_error_127700' );
-		} elseif($_POST['resolved'] == plugin_lang_get( 'button_resolve' )) {
+		if($_POST['resolved'] == plugin_lang_get( 'button_resolve' )) {
 			$tasks->status = 4;
 			$tasks->rest_capacity = 0;
+			$tasks->capacity = 0;
 		}
 		
 		# check wether developer has enough capacity or not
@@ -101,11 +100,13 @@
 		}
 	}
 	# show chose sprint page or open chosen sprint directly
+	
 	if($show_all_sprints == true){
 		include(PLUGIN_URI.'pages/chose_sprint.php');
 	} else {
 		include(PLUGIN_URI.'pages/sprint_backlog_header.php');
 ?>
+
 <?php if($no_sprints == false){?>
 	<br>
 	<?php include(PLUGIN_URI.'pages/sprint_backlog_actions.php');?>
@@ -128,7 +129,7 @@
 				<div style="float:left;">
 					<b>User Stories & Tasks</b>
 				</div>
-				<form action="<?php echo plugin_page("sprint_backlog.php")?>" method="post" style="float:right">
+				<form action="<?php echo plugin_page("sprint_backlog.php")?>" method="post" style="float:right;margin:0; padding:0;">
 					<input type="hidden" name="id" value="<?php echo $s['id']?>">
 					<input type="hidden" name="sprintName" value="<?php echo $s['name']?>">
 					<input type="hidden" name="action" value="save_sprint_options">

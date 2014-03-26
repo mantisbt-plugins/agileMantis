@@ -38,7 +38,7 @@ if($au->authUser() == 2 || $au->authUser() == 3 || current_user_is_administrator
 			<form action="" method="POST" style="float:right">
 			<?php if($_GET['klickStatus']==1){?>
 				<input type="hidden" name="disable_click" value="1">
-			<?}?>
+			<?php } ?>
 			<input type="checkbox" name="show_all_sprints" <?php if($_POST['show_all_sprints']=='1' || ($_GET['klickStatus']==1 && $_POST['disable_click']!=1)){$klick=1;?>checked<?} else {$klick = 0;}?> value="1" onClick="this.form.submit();">
 			<?php echo plugin_lang_get( 'manage_sprints_show_closed' )?>
 			</form>
@@ -128,11 +128,11 @@ if($au->authUser() == 2 || $au->authUser() == 3 || current_user_is_administrator
 			</form>
 			<form method="post" action="<?php echo plugin_page('delete_sprint.php') ?>">
 				<input type="hidden" name="sprint_id" value="<?php echo $row['sid']?>">
-				<input type="submit" name="deleteSprint" value="<?php echo plugin_lang_get( 'button_delete' )?>" <?php if($do_not_delete==false){?>disabled<?}?>>
+				<input type="submit" name="deleteSprint" value="<?php echo plugin_lang_get( 'button_delete' )?>" <?php if($do_not_delete==false){?>disabled<?php } ?>>
 			</form>
 		</td>
 	</tr>
-	<?}?>
+	<?php } ?>
 </table>
 <br>
 <table align="center" class="width100" cellspacing="1">

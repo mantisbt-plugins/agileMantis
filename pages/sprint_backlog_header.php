@@ -119,9 +119,9 @@
 		}
 
 		if($userIsScrumMaster == true && $userIsDeveloper == false){
-			$disable_button = 'disabled';
-		} else {
 			$disable_button = '';
+		} else {
+			$disable_button = 'disabled';
 		}
 
 		if($userIsScrumMaster == false && $userIsDeveloper == true){
@@ -153,8 +153,35 @@
 	
 	if($page_name == 'sprint_backlog'){$header_title = 'Sprint Backlog';}
 	if($page_name == 'taskboard'){$header_title = 'Taskboard';}
+	if($page_name == 'daily_scrum_meeting'){$header_title = 'Daily Scrum Board';}
 ?>
+<style type="text/css">
+.version_tooltip {
+	color				: #000;
+	position			: relative;
+	text-decoration		: underline;
+}
+.version_tooltip span {
+	background-color	: #FFF;
+	border				: 1px solid #000;
+	margin-left			: -999em;
+	position			: absolute;
+	text-decoration		: none;
+	padding				: 0.8em 1em;
+}
+.version_tooltip:hover span {
+	display				: block;
+	font-family			: Arial;
+	left				: 10em;
+	margin-left			: 0;
+	position			: absolute;
+	top					: -5em;
+	width				: 250px;
+	z-index				: 99;
+}
+</style>
 <?php html_page_top($header_title);?>
+<?php print_recently_visited();?>
 <?php if($_GET['warning'] == 1){
 	$warning = plugin_lang_get( 'sprint_backlog_error_100700' ).'<br>';?>
 <?php }?>

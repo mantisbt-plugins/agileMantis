@@ -34,6 +34,7 @@
 		var $planned_capacity;
 		var $performed_capacity;
 		var $rest_capacity;
+		var $daily_scrum;
 
 		
 		# adds a new Team
@@ -302,7 +303,7 @@
 
 		# checks if user is scrum master
 		function isScrumMaster($team_id, $user_id){
-			$sql = "SELECT * FROM gadiv_rel_team_user WHERE team_id = '".$team_id."' AND user_id = '".$user_id."' AND role = 1";
+			$sql = "SELECT * FROM gadiv_rel_team_user WHERE team_id = '".$team_id."' AND user_id = '".$user_id."' AND role = 2";
 			$result = mysql_query($sql);
 			if(mysql_num_rows($result) == 1){
 				return true;
@@ -330,6 +331,28 @@
 		function getProductBacklogTeamRole($product_backlog, $user_id, $role){
 			$this->sql = "SELECT * FROM gadiv_rel_team_user tu LEFT JOIN gadiv_teams t ON tu.team_id = t.id LEFT JOIN gadiv_productbacklogs pb ON t.pb_id = pb.id WHERE tu.user_id = '".$user_id."' AND pb.name = '".$product_backlog."' AND role = '".$role."'";
 			return $this->executeQuery();
+		}
+		
+		function getTotalTeamMemberCapacityBySprint($user_id,$sprint_name){
+			$this->sql = "SELECT start,status, end, team_id FROM gadiv_sprints WHERE name = '".$sprint_name."'";
+			$result = $this->executeQuery();
+
+			if($result[0]['status'] == 2){
+				return 0;
+			}
+
+			if($result[0]['status'] == 1){
+				$date_start = date('Y-m-d');
+			}
+
+			if($result[0]['status'] == 0){
+				$date_start = $result[0]['start'];
+			}
+
+			$this->sql = "SELECT sum(capacity) AS capacity FROM `gadiv_rel_user_team_capacity` WHERE user_id = '".$user_id."' AND team_id = '".$result[0]['team_id']."' AND date >= '".$date_start."' AND date <= '".$result[0]['end']."'";
+			$result = $this->executeQuery();
+
+			return $result[0]['capacity'];
 		}
 	}
 ?>

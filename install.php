@@ -22,11 +22,12 @@
 		
 		# Rewrite Mantis-Config file
 		$string = '<?php'."\r\n";
-		$string.= 'define("SUBFOLDER","'.$subdir.'");'."\r\n";
-		$string.= 'define("PLUGIN_URL","http://".$_SERVER[\'HTTP_HOST\']."".SUBFOLDER."plugins/agileMantis/");'."\r\n";
-		$string.= 'define("BASE_URL","http://".$_SERVER[\'HTTP_HOST\']."".SUBFOLDER);'."\r\n";
-		$string.= 'define("PLUGIN_URI",$_SERVER[\'DOCUMENT_ROOT\'].SUBFOLDER."plugins/agileMantis/");'."\r\n";
-		$string.= 'define("PLUGIN_CLASS_URI",PLUGIN_URI.\'libs/\');'."\r\n";
+		$string.= 'define("SUBFOLDER","'.dirname($_SERVER['PHP_SELF']).'/");'."\r\n";
+		$string.= 'define("PLUGIN_URL","http://".$_SERVER[\'HTTP_HOST\']. SUBFOLDER . "plugins/agileMantis/");'."\r\n";
+		$string.= 'define("BASE_URL","http://".$_SERVER[\'HTTP_HOST\']."".SUBFOLDER."/");'."\r\n";
+		$string.= 'define("BASE_URI", dirname( __FILE__ ) . DIRECTORY_SEPARATOR);'."\r\n";
+		$string.= 'define("PLUGIN_URI",BASE_URI."plugins" . DIRECTORY_SEPARATOR . "agileMantis" . DIRECTORY_SEPARATOR . "");'."\r\n";
+		$string.= 'define("PLUGIN_CLASS_URI",PLUGIN_URI.\'libs\' . DIRECTORY_SEPARATOR);'."\r\n";
 		$string.= "\r\n";
 
 		$string.= 'include_once(PLUGIN_CLASS_URI.\'class_commonlib.php\');'."\r\n";
@@ -96,7 +97,7 @@
 	$file_content = file_get_contents($filename_custom);
 
 	if(!stristr($file_content,"gadiv")){
-		$filename_custom = $_SERVER['DOCUMENT_ROOT'].$subdir."custom_strings_inc.php";
+		$filename_custom = $_SERVER['DOCUMENT_ROOT'].dirname($_SERVER['PHP_SELF'])."/custom_strings_inc.php";
 
 		# backup custom_strings_inc.php if necessary
 		if(is_file($filename_custom)){
@@ -300,9 +301,9 @@
 	$sql = "
 		CREATE TABLE IF NOT EXISTS `gadiv_additional_user_fields` (
 		  `user_id` int(11) unsigned NOT NULL,
-		  `developer` bit(1) NOT NULL DEFAULT b'0',
-		  `participant` bit(1) NOT NULL,
-		  `administrator` bit(1) NOT NULL,
+		  `developer` int(1) NOT NULL DEFAULT b'0',
+		  `participant` int(1) NOT NULL,
+		  `administrator` int(1) NOT NULL,
 		  PRIMARY KEY (`user_id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 	";
@@ -547,8 +548,7 @@
 
 	$sql = "INSERT INTO mantis_plugin_table SET basename = 'agileMantis', enabled = 1, protected = 0, priority = 3";
 	mysql_query($sql);
-
-	# generate random sitekey
+	
 	$number_1 = rand(1,10000);
 	$number_2 = rand(1,10000);
 	$number_3 = rand(1,10000);
@@ -563,6 +563,7 @@
 	$sql = "INSERT INTO mantis_config_table SET config_id = 'plugin_agileMantis_gadiv_sitekey', access_reqd = 90, type = 0, value = '".$sitekey."'";
 	mysql_query($sql);
 	
+
 	$sql = "SELECT id FROM mantis_custom_field_table WHERE name IN('Technical','Sprint','RankingOrder','Presentable', 'InReleaseDocu', 'PlannedWork','Storypoints','ProductBacklog','BusinessValue','PlannedWorkUnit') ORDER BY id ASC";
 	$result = mysql_query($sql);
 	$customFields = array();

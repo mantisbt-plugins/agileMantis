@@ -32,6 +32,7 @@ if($_SESSION['ISMANTISADMIN'] && $teams == 0 && $_POST['sprintName'] != ""){$sho
 if($_SESSION['ISMANTISADMIN'] && $sprint->countUserSprints($user_id) == 0 && $teams >= 1){$show_all_sprints = true;}
 if($_POST['sprintName'] != ""){$show_all_sprints = false;}
 if($_GET['sprintName'] != ""){$show_all_sprints = false;$_POST['sprintName'] = urldecode($_GET['sprintName']);}
+if($_GET['chose_sprint'] != ""){$show_all_sprints = true;}
 
 # call revoke user story function
 if($_POST['revoke_userstory']){
@@ -91,6 +92,14 @@ if(!config_is_set('current_user_sprint_backlog_filter',auth_get_current_user_id(
 
 if(!config_is_set('current_user_sprint_backlog_filter_direction',auth_get_current_user_id())){
 	config_set('current_user_sprint_backlog_filter_direction', 'ASC', auth_get_current_user_id());
+}
+
+if(!config_is_set('plugin_agileMantis_gadiv_show_storypoints')){
+	config_set('plugin_agileMantis_gadiv_show_storypoints', 0);
+}
+
+if(!config_is_set('plugin_agileMantis_gadiv_show_rankingorder')){
+	config_set('plugin_agileMantis_gadiv_show_rankingorder', 0);
 }
 
 # set sorting direction of the sprint backlog / user story table

@@ -163,5 +163,51 @@
 			$this->sql = "SELECT * FROM  `mantis_bug_history_table` WHERE  `bug_id` IN ( ".$bugList." ) AND field_name = 'Sprint' AND date_modified BETWEEN '".$dayStart."' AND '".$dayEnd."'";
 			return $this->executeQuery();
 		}
+		
+		# get all notices of a user story
+		function getNotices($id){
+			$this->sql = "SELECT * FROM mantis_bugnote_table AS mbnt LEFT JOIN mantis_bugnote_text_table AS mbntt ON mbntt.id = mbnt.id WHERE bug_id =".$id." ";
+			return $this->executeQuery();
+		}
+		
+		# get all developer information by id
+		function getDeveloperDataById($id){
+			$sql = "SELECT * FROM mantis_user_table WHERE id = ".$id;
+			$result = mysql_query($sql);
+			$userdata = mysql_fetch_assoc($result);
+			return $userdata;
+		}
+		
+		function getUserDayCapacity($user_id, $team_id){
+			$sql = "SELECT capacity FROM gadiv_rel_user_team_capacity WHERE team_id = '".$team_id."' AND date = '".date('Y-m-d')."' AND user_id = '".$user_id."'";
+			$result = mysql_query($sql);
+			$user = mysql_fetch_assoc($result);
+			return $user['capacity'];
+		}
+		
+		/**
+		*	Gets daily perfomance for one task
+		*
+		*	@Version: 1.0.0
+		*	@Author: Jan Koch
+		*	@Param: task_id - id of a task
+		*	@Return: return all saved task performances
+		*/
+		function getDailyPerformance($task_id){
+			$this->sql = "SELECT * FROM gadiv_daily_task_performance WHERE task_id = '".$task_id."'";
+			return $this->executeQuery();
+		}
+		
+		function setSession($user_id, $session_id){
+			$this->sql = "UPDATE gadiv_additional_user_fields SET session_id = '".$session_id."' WHERE user_id = '".$user_id."'";
+			$this->executeQuery();
+		}
+		
+		function getSession($user_id){
+			$sql = "SELECT session_id FROM gadiv_additional_user_fields WHERE user_id = '".$user_id."'";
+			$result = mysql_query($sql);
+			$session = mysql_fetch_assoc($result);
+			return $session['session_id'];
+		}
 	}
 ?>

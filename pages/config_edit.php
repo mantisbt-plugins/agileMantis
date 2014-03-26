@@ -14,7 +14,7 @@
 	#
 	# You should have received a copy of the GNU General Public License
 	# along with agileMantis. If not, see <http://www.gnu.org/licenses/>.
-
+	
 	# delete custom field
 	if($_POST['deleteField'] != ""){
 		$removeField = $_POST['deleteField'];
@@ -80,10 +80,39 @@
 					plugin_config_set('gadiv_userstory_unit_mode', $f_gadiv_userstory_unit_mode);
 				}
 
-				# make taskboard / sprint backlog checks
 				$f_gadiv_taskboard = gpc_get_int('gadiv_taskboard', 0);
-				if (plugin_config_get('gadiv_taskboard') != $f_gadiv_taskboard) {
-					plugin_config_set('gadiv_taskboard', $f_gadiv_taskboard);
+				# make taskboard / sprint backlog checks
+				if($f_gadiv_taskboard == 1){
+					if(plugin_is_loaded('agileMantisExpert')){
+						if(is_file(BASE_URI.'plugins/agileMantisExpert/license/license.txt')){
+							$filecontent = file_get_contents(BASE_URI.'plugins/agileMantisExpert/license/license.txt',FILE_USE_INCLUDE_PATH);
+							if($filecontent != ""){
+								if (plugin_config_get('gadiv_taskboard') != $f_gadiv_taskboard) {
+									plugin_config_set('gadiv_taskboard', $f_gadiv_taskboard);
+								}
+							} else {
+								$throw_error_3 = true;
+							}
+						} else {
+							$throw_error_2 = true;
+						}
+					} else {
+						plugin_config_set('gadiv_taskboard', 0);
+						$throw_error_1 = true;
+					}
+				}
+				
+				if($f_gadiv_taskboard == 0){
+					if (plugin_config_get('gadiv_taskboard') != $f_gadiv_taskboard) {
+						plugin_config_set('gadiv_taskboard', 0);
+					}
+				}
+				
+				
+				$f_gadiv_daily_scrum = gpc_get_int('gadiv_daily_scrum', 0);
+
+				if (plugin_config_get('gadiv_daily_scrum') != $f_gadiv_daily_scrum) {
+					plugin_config_set('gadiv_daily_scrum', $f_gadiv_daily_scrum);
 				}
 
 				# activate scrum for mantis
@@ -157,6 +186,18 @@
 		$throw_error_7 = true;
 	}
 
+	if(plugin_is_loaded('agileMantisExpert')){
+		if($_FILES['license']['name'] == 'license.txt'){
+			$uploadfile = config_get_global('plugin_path' ). 'agileMantisExpert' . DIRECTORY_SEPARATOR . 'license' . DIRECTORY_SEPARATOR . basename($_FILES['license']['name']);
+			if (!move_uploaded_file($_FILES['license']['tmp_name'], $uploadfile)) {
+				$throw_error_5 = true;
+				$file_upload = true;
+			}
+		} else {
+			$throw_error_5 = true;
+		}
+	}
+
 	# change task unit action
 	if($_POST['changeUnit'] == 'deleteUnit'){
 		function getTasksWithWrontUnit($task_list,$sprint_name=""){
@@ -199,13 +240,31 @@
 	form_security_purge('plugin_format_config_edit');
 	
 	# redirect back to config page with errors
+	
+	if($throw_error_5){
+		print_successful_redirect(plugin_page('config.php&error=file_upload_error', true));
+	}
+	
 	if(!$throw_error_7){
 		if($throw_error_4){
 			print_successful_redirect(plugin_page('config.php&error=workday_error', true));
 		}
 	}
+	
 	if($throw_error_7){
 		print_successful_redirect(plugin_page('config.php&error=sprint_length_error', true));
+	}
+	
+	if($throw_error_1){
+		print_successful_redirect(plugin_page('config.php&error=no_license_error', true));
+	}
+	
+	if($throw_error_2 && !$file_upload){
+		print_successful_redirect(plugin_page('config.php&error=could_not_find_error', true));
+	}
+	
+	if($throw_error_3){
+		print_successful_redirect(plugin_page('config.php&error=empty_license_error', true));
 	}
 
 	print_successful_redirect(plugin_page('config.php&save=success', true));

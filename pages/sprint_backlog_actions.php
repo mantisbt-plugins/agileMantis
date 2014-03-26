@@ -21,6 +21,7 @@
 	# set sprint backlog or taskboard header title, button textes and links
 	if($page_name == 'sprint_backlog'){$header_title = plugin_lang_get( 'sprint_backlog_title' );$switch_button_text = 'Taskboard'; $switch_button_tag = 'taskboard';$switch_form_link = 'taskboard.php';}
 	if($page_name == 'taskboard'){$header_title = plugin_lang_get( 'taskboard_title' );$switch_button_text = 'Sprint Backlog'; $switch_button_tag = 'sprint_backlog';$switch_form_link = 'sprint_backlog.php';}
+	if($page_name == 'daily_scrum_meeting'){$header_title = 'Daily Scrum Taskboard';$switch_button_text = 'Taskboard'; $switch_button_tag = 'taskboard';$switch_form_link = 'sprint_backlog.php';}
 ?>
 <table align="center" class="width100" cellspacing="1">
 	<tr>
@@ -33,6 +34,12 @@
 				<?php if($page_name == 'sprint_backlog'){?>
 					<input type="hidden" name="fromSprintBacklog" value="1">
 				<?php }?>
+				<?if($page_name == 'taskboard'){?>
+					<input type="hidden" name="fromTaskboard" value="1">
+				<?php } ?>
+				<?if($page_name == 'daily_scrum_meeting'){?>
+					<input type="hidden" name="fromDailyScrum" value="1">
+				<?php } ?>
 				<?php
 					# get all team developer
 					$team->id = $s['team_id'];
@@ -53,6 +60,12 @@
 				<?php if($page_name == 'sprint_backlog'){?>
 					<input type="hidden" name="fromSprintBacklog" value="1">
 				<?php }?>
+				<?if($page_name == 'taskboard'){?>
+					<input type="hidden" name="fromTaskboard" value="1">
+				<?php } ?>
+				<?if($page_name == 'daily_scrum_meeting'){?>
+					<input type="hidden" name="fromDailyScrum" value="1">
+				<?php } ?>
 				<input type="hidden" name="sprintName" value="<?php echo $s['name']?>">
 				<input type="hidden" name="start" value="<?php echo date('d.m.Y',$s['start'])?>">
 				<input type="hidden" name="end" value="<?php echo date('d.m.Y',$s['end'])?>">
@@ -64,11 +77,17 @@
 				<input type="hidden" name="product_backlog" value="<?php echo $sprint->getProductBacklogByTeam($s['team_id']);?>">
 				<input type="hidden" name="sprintName" value="<?php echo $s['name']?>">
 				<input type="hidden" name="fromPage" value="<?php echo $_GET['page']?>">
+				<?if($page_name == 'taskboard'){?>
+					<input type="hidden" name="fromTaskboard" value="1">
+				<?php } ?>
+				<?if($page_name == 'daily_scrum_meeting'){?>
+					<input type="hidden" name="fromDailyScrum" value="1">
+				<?php } ?>
 				<input type="submit" name="assume_userstories" value="<?php echo plugin_lang_get( 'sprint_backlog_assume_userstory' )?>" <?php echo $disable_button?>>
 			</form>
 			<form action="<?php echo plugin_page($switch_form_link)?>" method="post">
 				<input type="hidden" name="sprintName" value="<?php echo $s['name']?>">
-				<input type="submit" name="<?php echo $switch_button_tag?>" value="<?php echo $switch_button_text?>">
+				<input type="submit" name="<?php echo $switch_button_tag?>" value="<?php echo $switch_button_text?>" <?php if($page_name == 'daily_scrum_meeting'){?>disabled<?php }?>>
 			</form>
 			<form action="<?php echo plugin_page("statistics.php")?>" method="post" target="_blank">
 				<input type="hidden" name="sprintName" value="<?php echo $s['name']?>">
@@ -88,6 +107,12 @@
 				<?php if($page_name == 'sprint_backlog'){?>
 					<input type="hidden" name="fromSprintBacklog" value="1">
 				<?php }?>
+				<?if($page_name == 'taskboard'){?>
+					<input type="hidden" name="fromTaskboard" value="1">
+				<?php } ?>
+				<?if($page_name == 'daily_scrum_meeting'){?>
+					<input type="hidden" name="fromDailyScrum" value="1">
+				<?php } ?>
 				<input type="submit" name="edit_sprint" value="<?php echo plugin_lang_get( 'sprint_backlog_edit_sprint' )?>" <?php echo $disable_button?>>
 			</form>
 			<?php 
@@ -133,6 +158,12 @@
 				<input type="hidden" name="sprint_id" value="<?php echo $s['id']?>">
 				<input type="hidden" name="name" value="<?php echo $s['name']?>">
 				<input type="hidden" name="fromPage" value="<?php echo $page_name?>">
+				<?if($page_name == 'taskboard'){?>
+					<input type="hidden" name="fromTaskboard" value="1">
+				<?php } ?>
+				<?if($page_name == 'daily_scrum_meeting'){?>
+					<input type="hidden" name="fromDailyScrum" value="1">
+				<?php } ?>
 				<input type="hidden" name="sprintName" value="<?php echo $s['name']?>">
 				<input type="hidden" name="team_id" value="<?php echo $s['team_id']?>">
 				<input type="submit" name="copy_userstories" value="<?php echo plugin_lang_get( 'sprint_backlog_divide_userstories' )?>" <?php echo $disable_copy?> <?php echo $disable?> <?php echo $disable_button?>>

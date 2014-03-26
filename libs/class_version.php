@@ -18,7 +18,7 @@
 	class gadiv_product_version extends gadiv_commonlib {
 		
 		# get mantis version info by project id
-		function getVersionInformation($project_id, $version){
+		function getVersionInformation($project_id, $version=""){
 			$sql = "SELECT * FROM mantis_project_version_table WHERE project_id = '".$project_id."' AND version = '".$version."'";
 			$result = mysql_query($sql);
 			if(mysql_num_rows($result) == 0){
@@ -29,7 +29,7 @@
 		}
 
 		# get all tracker from a certain version and status
-		function getVersionTracker($project_id, $version,$status){
+		function getVersionTracker($project_id, $version = "",$status){
 			$sql = "SELECT count(*) AS tracker FROM mantis_bug_table WHERE project_id = '".$project_id."' AND target_version = '".$version."' AND status IN(".$status.")";
 			$result = mysql_query($sql);
 			$number_of_tracker = mysql_fetch_assoc($result);

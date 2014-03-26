@@ -35,6 +35,27 @@
 			</center>
 		';
 	}
-
+?>
+<script type="text/javascript">
+	function loadWarning(id){
+		$( "#dialog_"+id ).dialog({
+			autoOpen: 'false',
+			height: 140,
+			resizable: false,
+			width: auto
+		});
+	}
+	function loadUserstory(id){
+		$( "#userstory_"+id ).dialog({
+			autoOpen: 'false',
+			height: 720,
+			resizable: false,
+			width: 760
+		});
+	}
+</script>
+<script src="<?php echo PLUGIN_URL ?>js/jquery-1.9.1.js"></script>
+<script src="<?php echo PLUGIN_URL ?>js/jquery-ui.js"></script>
+<?php
 	html_page_bottom();
 ?>

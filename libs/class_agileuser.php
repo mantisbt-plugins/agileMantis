@@ -102,7 +102,7 @@
 			if($user[0]['user_id'] > 0){
 				$sql = "UPDATE gadiv_additional_user_fields SET participant = ".$participant.", developer = ".$developer.", administrator = ".$administrator."  WHERE user_id = '".$user_id."'";
 			} else {
-				$sql = "INSERT INTO gadiv_additional_user_fields SET user_id = '".$user_id."', participant = ".$participant.", developer = ".$developer.", administrator = ".$administrator;
+				$sql = "INSERT INTO gadiv_additional_user_fields SET user_id = '".$user_id."', participant = '".$participant."', developer = '".$developer."', administrator = '".$administrator."'";
 			}
 			mysql_query($sql);
 		}

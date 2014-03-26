@@ -269,7 +269,7 @@
 					<input type="hidden" name="id" value="<?php echo $pb->id?>">
 					<select name="project_id">
 						<option value="0"><?php echo plugin_lang_get( 'common_chose' )?></option>
-						<? readRecursivly($projects,0); ?>
+						<?php readRecursivly($projects,0); ?>
 					</select>
 					<input type="submit" name="addProjekt" value="<?php echo plugin_lang_get( 'edit_product_backlog_add_project' )?>">
 				</form>

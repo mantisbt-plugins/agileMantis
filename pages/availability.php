@@ -166,10 +166,12 @@ if(!empty($userData)){
 	?>
 </table>
 <br>
-<center><input type="submit" name="submit" value="<?php echo plugin_lang_get( 'button_save' )?>"></center><br>
-<center><span style="color:red; font-weight:bold; font-size:16px;"><?php echo $error?></span></center>
-</form>
+<center><input type="submit" name="submit" value="<?php echo plugin_lang_get( 'button_save' )?>"></center>
+<?php if($error != ""){?>
 <br>
+<center><span style="color:red; font-weight:bold; font-size:16px;"><?php echo $error?></span></center>
+<?php } ?>
+</form>
 <div class="clear"></div>
 <?php }?>
 <?php
@@ -258,13 +260,13 @@ if(!empty($userData)){
 	?>
 		<center><span style="color:red; font-size:16px; font-weight:bold;"><?php echo $hinweis?></span></center>
 		<br>
-	<?}?>
+	<?php } ?>
 	<?php
 		if($system){
 	?>
 		<center><span style="color:red; font-size:16px; font-weight:bold;"><?php echo $system?></span></center>
 		<br>
-	<?}?>
+	<?php } ?>
 	<form action="" method="post">
 	<input type="hidden" name="action" value="saveCal">
 	<input type="hidden" name="month" value="<?php echo $_POST['month']?>">

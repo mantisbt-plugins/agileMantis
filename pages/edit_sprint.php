@@ -38,6 +38,7 @@
 	$sprint->team_id 		= $_POST['team_id'];
 	$sprint->start			= str_replace(',','.',$_POST['start_date']);
 	$sprint->end			= str_replace(',','.',$_POST['end_date']);
+	$sprint->daily_scrum 	= $_POST['daily_scrum'];
 	
 	# only change description when sprint is closed
 	if($_POST['change_description'] && $_POST['status'] == 2){
@@ -251,6 +252,8 @@
 <input type="hidden" name="fromProductBacklog" value="<?php echo  (int) $_POST['fromProductBacklog']?>">
 <input type="hidden" name="productBacklogName" value="<?php echo $_POST['productBacklogName']?>">
 <input type="hidden" name="fromSprintBacklog" value="<?php echo (int) $_POST['fromSprintBacklog']?>">
+<input type="hidden" name="fromTaskboard" value="<?php echo (int) $_POST['fromTaskboard']?>">
+<input type="hidden" name="fromDailyScrum" value="<?php echo (int) $_POST['fromDailyScrum']?>">
 <input type="hidden" name="sprintName" value="<?php echo $_POST['sprintName']?>">
 <?php $sprint->sprint_id = $s['id'];?>
 <table align="center" class="width75" cellspacing="1">
@@ -316,7 +319,7 @@
 	 <td class="left">
 		<select name="team_id" <?php echo $disables?> <?php if($_POST['fromProductBacklog']){?>disabled<?php }?> onChange="this.form.submit();">
 			<option><?php echo plugin_lang_get( 'common_chose' )?></option>
-			<?
+			<?php
 				if($s['id'] && $_POST['team_id'] == 0){$team_id = $s['team_id'];
 				} else {$team_id = $_POST['team_id'];}
 
@@ -326,7 +329,7 @@
 				foreach($teamdata AS $num => $row){?>
 						<option value="<?php echo $row['id']?>" <?php if($row['id']==$team_id){ echo 'selected';$selectedProductBacklog = $row['product_backlog'];$selectedTeam = $row['id'];}?>><?php echo $row['name']?></option>
 
-			<?
+			<?php
 				$team->id = $selectedProductBacklog;
 				$productBacklog = $team->getSelectedProductBacklog();
 			}
@@ -334,10 +337,20 @@
 		</select>
 		<input type="hidden" name="old_team_id" value="<?php if($_POST['old_team_id']){echo $_POST['old_team_id'];} else {echo $team_id;}?>">
 	</tr>
+	<?php if(plugin_config_get('gadiv_daily_scrum') == 1){?>
+	<tr <?php echo helper_alternate_class() ?>>
+		<td class="category">
+			Daily Scrum Meeting mit Taskboard
+		</td>
+		<td class="left">
+		  <input type="checkbox" name="daily_scrum" <?php if(plugin_config_get('gadiv_daily_scrum') == 0 || $s['status'] == 2){?> disabled <?php }?> <?php if($s['daily_scrum'] == 1 || ($s['id'] == 0 && $t[0]['daily_scrum'] == 1)){?> checked <?php }?> value="1">
+		</td>
+	</tr>
+	<?php } ?>
 	<?php if($disables == 'disabled' || $_POST['fromProductBacklog']){?>
 		<input type="hidden" name="team_id" value="<?php echo $team_id?>">
 	<?php }?>
-	<?
+	<?php
 		$team->id = $selectedTeam;
 		$t = $team->getSelectedTeam();
 	?>

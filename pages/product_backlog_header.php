@@ -15,7 +15,8 @@
 	# along with agileMantis. If not, see <http://www.gnu.org/licenses/>.
 	
 	html_page_top(plugin_lang_get( 'product_backlog_title' ));
-
+	print_recently_visited();
+	
 	# merge global $_POST / $_GET array
 	$request = array_merge($_POST,$_GET);
 	

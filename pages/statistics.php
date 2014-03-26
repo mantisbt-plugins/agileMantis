@@ -21,11 +21,129 @@
 	if($show_all_sprints == true){
 		include(PLUGIN_URI.'pages/chose_sprint.php');
 	} else {
-		$request = array_merge($_POST, $_GET);
-		$sitekey = $tasks->getConfigValue('plugin_agileMantis_gadiv_sitekey');
-		$heute = mktime(0,0,0,date('m'),date('d'),date('y'));
-		$current_user = $tasks->getUserPassword(auth_get_current_user_id());
 		
+		if(!config_is_set('velocity_checkbox_selected',auth_get_current_user_id())){
+			config_set('velocity_checkbox_selected', 1, auth_get_current_user_id());
+		}
+
+		if(!config_is_set('velocity_sp_gesamt',auth_get_current_user_id())){
+			config_set('velocity_sp_gesamt', 1, auth_get_current_user_id());
+		}
+
+		if(!config_is_set('velocity_je_entwickler',auth_get_current_user_id())){
+			config_set('velocity_je_entwickler', 1, auth_get_current_user_id());
+		}
+
+		if(!config_is_set('velocity_je_entwickler_tag',auth_get_current_user_id())){
+			config_set('velocity_je_entwickler_tag', 1, auth_get_current_user_id());
+		}
+
+		if(!config_is_set('velocity_je_aufwands_tag',auth_get_current_user_id())){
+			config_set('velocity_je_aufwands_tag', 1, auth_get_current_user_id());
+		}
+		
+		if(!config_is_set('velocity_kapazitaet',auth_get_current_user_id())){
+			config_set('velocity_kapazitaet', 1, auth_get_current_user_id());
+		}
+
+		if(!config_is_set('velocity_referenz_sprint',auth_get_current_user_id())){
+			config_set('velocity_referenz_sprint', 1, auth_get_current_user_id());
+		}
+
+		if(!config_is_set('velocity_vorgaenger_sprint',auth_get_current_user_id())){
+			config_set('velocity_vorgaenger_sprint', 1, auth_get_current_user_id());
+		}
+
+		if(!config_is_set('velocity_letzte_x_vorg_sprints',auth_get_current_user_id())){
+			config_set('velocity_letzte_x_vorg_sprints', 1, auth_get_current_user_id());
+		}
+
+		if(!config_is_set('burndown_hours',auth_get_current_user_id())){
+			config_set('burndown_hours', 1, auth_get_current_user_id());
+		}
+
+		if(!config_is_set('burndown_hours_capacity',auth_get_current_user_id())){
+			config_set('burndown_hours_capacity', 1 , auth_get_current_user_id());
+		}
+
+		if(!config_is_set('burndown_hours_optimal',auth_get_current_user_id())){
+			config_set('burndown_hours_optimal', 1, auth_get_current_user_id());
+		}
+
+		if(!config_is_set('burndown_hours_ideal',auth_get_current_user_id())){
+			config_set('burndown_hours_ideal', 1, auth_get_current_user_id());
+		}
+
+		if(!config_is_set('burndown_hours_actual',auth_get_current_user_id())){
+			config_set('burndown_hours_actual', 1, auth_get_current_user_id());
+		}
+
+		if(!config_is_set('burndown_hours_trend',auth_get_current_user_id())){
+			config_set('burndown_hours_trend', 1, auth_get_current_user_id());
+		}
+
+		if(!config_is_set('burndown_sp',auth_get_current_user_id())){
+			config_set('burndown_sp', 1, auth_get_current_user_id());
+		}
+
+		if(!config_is_set('burndown_sp_ideal',auth_get_current_user_id())){
+			config_set('burndown_sp_ideal', 1, auth_get_current_user_id());
+		}
+
+		if(!config_is_set('burndown_sp_actual',auth_get_current_user_id())){
+			config_set('burndown_sp_actual', 1, auth_get_current_user_id());
+		}
+
+		if(!config_is_set('burndown_sp_trend',auth_get_current_user_id())){
+			config_set('burndown_sp_trend', 1, auth_get_current_user_id());
+		}
+
+		if(!config_is_set('burndown_tasks',auth_get_current_user_id())){
+			config_set('burndown_tasks', 1, auth_get_current_user_id());
+		}
+
+		if(!config_is_set('burndown_tasks_ideal',auth_get_current_user_id())){
+			config_set('burndown_tasks_ideal', 1, auth_get_current_user_id());
+		}
+
+		if(!config_is_set('burndown_tasks_actual',auth_get_current_user_id())){
+			config_set('burndown_tasks_actual', 1, auth_get_current_user_id());
+		}
+
+		if(!config_is_set('burndown_tasks_trend',auth_get_current_user_id())){
+			config_set('burndown_tasks_trend', 1, auth_get_current_user_id());
+		}
+
+		if(!config_is_set('utilization_distribution',auth_get_current_user_id())){
+			config_set('utilization_distribution', 1, auth_get_current_user_id());
+		}
+
+		if(!config_is_set('utilization_utilization',auth_get_current_user_id())){
+			config_set('utilization_utilization', 1, auth_get_current_user_id());
+		}
+
+		if(!config_is_set('utilization_utilizationdetailed',auth_get_current_user_id())){
+			config_set('utilization_utilizationdetailed', 1, auth_get_current_user_id());
+		}
+
+		if(!config_is_set('statistic_velocity_amount_of_sprints',auth_get_current_user_id())){
+			config_set('statistic_velocity_amount_of_sprints', 5, auth_get_current_user_id());
+		}
+
+		if(!config_is_set('statistic_velocity_referenced_sprint',auth_get_current_user_id())){
+			config_set('statistic_velocity_referenced_sprint', "", auth_get_current_user_id());
+		}
+?>
+<?php 
+	html_page_top(plugin_lang_get( 'statistics_title' ));
+	print_recently_visited();	
+?>
+<br>
+<center>
+<?php 
+	if(plugin_is_loaded('agileMantisExpert')){
+		event_signal( 'EVENT_LOAD_STATISTICS', array( auth_get_current_user_id()) );
+	} else {
 		$images = array();
 		
 		$images[] = PLUGIN_URL.'images/statistics_before_sprint_starts.png';
@@ -35,9 +153,6 @@
 		$images[] = PLUGIN_URL.'images/statistics_end_resolved_userstories_of_the_sprint.png';
 		$images[] = PLUGIN_URL.'images/statistics_end_closed_userstories_of_the_sprint.png';
 ?>
-<?php html_page_top(plugin_lang_get( 'statistics_title' )); ?>
-<br>
-<center>
 	<h2><?php echo plugin_lang_get( 'screenshot_title' );?></h2>
 	<img src="<?php echo $images[rand(0,count($images)-1)]?>" alt="Screenshot Statistiken" id="highScreenshot" style="height: auto;max-width: 100%;" onmousedown="loadDescription();">
 	<div style="margin-bottom: 15px;" align="center">
@@ -51,23 +166,7 @@
 		?>
 	</div>
 	<div style="clear:both;"></div>
-</center>
-<br>
-<center>
-	<form action="<?php echo plugin_page("taskboard.php")?>" method="post">
-		<input type="hidden" name="sprintName" value="<?php echo $request['sprintName']?>">
-		<input type="submit" name="taskboard" value="Taskboard">
-	</form>
-	<form action="<?php echo plugin_page("sprint_backlog.php")?>" method="post">
-		<input type="hidden" name="sprintName" value="<?php echo $request['sprintName']?>">
-		<input type="submit" name="submit" value="Sprint Backlog">
-	</form>
-</center>
-<div id="dialog" title="<?php echo plugin_lang_get( 'screenshot_dialog_title' );?>" style="display:none;">
-  <p><?php echo plugin_lang_get( 'screenshot_dialog_text' );?><a href="http://www.gadiv.de">http://gadiv.de</a></p>
-</div>
-<?php }?>
-<script type="text/javascript">
+	<script type="text/javascript">
 	function changeScreenshot(screenshot){
 		document.getElementById("highScreenshot").src = screenshot;
 	}
@@ -90,4 +189,21 @@
 		width				: 250px;
 	}
 </style>
+<?php } ?>
+</center>
+<br>
+<center>
+	<form action="<?php echo plugin_page("taskboard.php")?>" method="post">
+		<input type="hidden" name="sprintName" value="<?php echo $request['sprintName']?>">
+		<input type="submit" name="taskboard" value="Taskboard">
+	</form>
+	<form action="<?php echo plugin_page("sprint_backlog.php")?>" method="post">
+		<input type="hidden" name="sprintName" value="<?php echo $request['sprintName']?>">
+		<input type="submit" name="submit" value="Sprint Backlog">
+	</form>
+</center>
+<div id="dialog" title="<?php echo plugin_lang_get( 'screenshot_dialog_title' );?>" style="display:none;">
+  <p><?php echo plugin_lang_get( 'screenshot_dialog_text' );?><a href="http://www.gadiv.de">http://gadiv.de</a></p>
+</div>
+<?php }?>
 <?php html_page_bottom() ?>

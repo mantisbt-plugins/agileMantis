@@ -65,7 +65,7 @@
 			$tasks->planned_capacity 	= 	0;
 		}
 		$tasks->rest_capacity			= 	$_POST['rest_capacity'];
-		$tasks->capacity 		   		-= $tasks->planned_capacity;
+		$tasks->capacity 		   		= 	0;
 		$tasks->editTask();
 		$tasks->setDailyScrum($tasks->id, $tasks->daily_scrum);
 	}
@@ -224,7 +224,7 @@
 		</tr>
 		<form action="<?php echo plugin_page("task_page.php&us_id=".$tasks->us_id)?>" method="post">
 		<input type="hidden" name="action" value="save">
-		<?$col_rd = 0;$col_pc = 0;$col_tech = 0;$col_pr = 0;$col_ro = 0;?>
+		<?php $col_rd = 0;$col_pc = 0;$col_tech = 0;$col_pr = 0;$col_ro = 0;?>
 		<?php if(plugin_config_get('gadiv_release_documentation')=='1'){$show_rd = true;$col_rd -= 2;$minus -= 2;}?>
 		<?php if(plugin_config_get('gadiv_tracker_planned_costs')=='1'){$show_pc = true;$col_pc -= 2;}?>
 		<?php if(plugin_config_get('gadiv_technical')=='1'){$show_tech = true;$col_tech -= 2;}?>
@@ -247,7 +247,7 @@
 				<?php } else {?>
 					<select name="storypoints" style="width:40px;" <?php echo $disable_storypoints?>>
 					<option value=""></option>
-						<?$pb->getFibonacciNumbers($usData['storypoints']);?>
+						<?php $pb->getFibonacciNumbers($usData['storypoints']);?>
 					</select>
 				<?php }?>
 			</td>
@@ -409,7 +409,7 @@
 		<td class="category"><?php echo plugin_lang_get( 'edit_tasks_rest' )?><?php echo $unit?></td>
 		<td class="category"><?php echo plugin_lang_get( 'common_actions' )?></td>
 	</tr>
-	<?
+	<?php
 		# get all task from a user story
 		$userStoryTasks = $userstory->getUserStoryTasks($tasks->us_id);
 		if(!empty($userStoryTasks)){

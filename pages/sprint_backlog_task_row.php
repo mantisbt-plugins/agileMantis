@@ -32,8 +32,13 @@
 	<?php if(plugin_config_get('gadiv_show_rankingorder')=='1'){?>
 	<td><?php echo $row['ro']?></td>
 	<?php }?>
-	<?php if(config_get('show_project_target_version',null,auth_get_current_user_id()) == 1){?>
-	<td><?php echo project_get_name($row['project_id'])?> <?php echo $row['target_version']?></td>
+	<?php if(config_get('show_project_target_version',null,auth_get_current_user_id()) == 1){
+		# get user story version information
+		$version_info = $version->getVersionInformation($row['project_id'],$row['target_version']);
+
+		# include version dialogue
+		include(PLUGIN_URI.'pages/sprint_backlog_version.php');
+	?>
 	<?php }?>
 	<td>
 		<form action="<?php echo plugin_page("task_page.php")?>&us_id=<?php echo $row['id']?>" method="post">
@@ -90,7 +95,7 @@ if(!empty($t)){
 					<input type="hidden" name="planned_capacity" value="<?php echo $value['planned_capacity']?>">
 					<input type="hidden" name="performed_capacity" value="<?php echo $value['performed_capacity']?>">
 					<input type="hidden" name="currentUnit" value="<?php echo $currentUnit?>">
-					<input type="text" name="performed" value="" maxlength="7" style="width:60px;">
+					<input type="text" name="performed" value="" maxlength="7" style="width:60px;" <?php if($value['status'] > 3 || $value['status'] == 1 || $s['status'] == 0 || $value['rest_capacity'] == 0.00){?>disabled<?php }?>>
 					<input type="submit" name="submit_performed" value="<?php echo plugin_lang_get( 'sprint_backlog_enter' )?>" <?php if($value['status'] > 3 || $value['status'] == 1 || $s['status'] == 0 || $value['rest_capacity'] == 0.00){?>disabled<?php }?> <?php echo $sprint_end_disable?>>
 				</form>
 			</td>
@@ -134,6 +139,7 @@ if(!empty($t)){
 						<input type="hidden" name="delete" value="true">
 					</form>
 				<?php } else {?>
+					<?php if($s['status'] == 1 && $value['planned_capacity'] == 0.00 && $value['rest_capacity'] == 0.00){?>
 					<form action="<?php echo plugin_page("sprint_backlog.php")?>" method="post">
 						<input type="hidden" name="uniqformid" value="<?php echo md5(uniqid(microtime(),1)) ?>"/>
 						<input type="hidden" name="sprintName" value="<?php echo $s['name']?>">
@@ -150,6 +156,23 @@ if(!empty($t)){
 						<input type="hidden" name="fromSprintBacklog" value="1">
 						<input type="submit" name="resolved" value="<?php echo plugin_lang_get( 'button_resolve' )?>" <?php if($value['status'] >= 4){?>disabled<?php }?><?php echo $sprint_end_disable?>>
 					</form>
+					<?php } else {?>
+					<form action="<?php echo plugin_page("edit_task.php")?>" method="post">
+						<input type="hidden" name="sprintName" value="<?php echo $s['name']?>">
+						<input type="hidden" name="id" value="<?php echo $value['id']?>">
+						<input type="hidden" name="us_id" value="<?php echo $row['id']?>">
+						<input type="hidden" name="developer" value="<?php echo $value['developer_id']?>">
+						<input type="hidden" name="action" value="editTask">
+						<input type="hidden" name="name" value="<?php echo $value['name']?>">
+						<input type="hidden" name="description" value="<?php echo $value['description']?>">
+						<input type="hidden" name="status" value="4">
+						<input type="hidden" name="rest_capacity" value="<?php echo $value['rest_capacity']?>">
+						<input type="hidden" name="planned_capacity" value="<?php echo $value['planned_capacity']?>">
+						<input type="hidden" name="performed_capacity" value="<?php echo $value['performed_capacity']?>">
+						<input type="hidden" name="fromSprintBacklog" value="1">
+						<input type="submit" name="resolved" value="<?php echo plugin_lang_get( 'button_resolve' )?>" <?php if($value['status'] >= 4){?>disabled<?php }?><?php echo $sprint_end_disable?>>
+					</form>
+					<?php } ?>
 				<?php }?>
 			</td>
 		</tr>

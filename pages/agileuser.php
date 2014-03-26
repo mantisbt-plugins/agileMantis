@@ -108,15 +108,22 @@
 				<td><a href="<?php echo plugin_page("agileuser.php")?>&filter=x">X</a></td>
 				<td><a href="<?php echo plugin_page("agileuser.php")?>&filter=y">Y</a></td>
 				<td><a href="<?php echo plugin_page("agileuser.php")?>&filter=z">Z</a></td>
-				<td><form action="" method="post"><input type="submit" name="agileMantisParticipant" value="<?php echo plugin_lang_get( 'manage_user_show_only_participants' )?>"></form>
-				<form action="" method="post"><input type="submit" name="agileMantisDeveloper" value="<?php echo plugin_lang_get( 'manage_user_show_only_developers' )?>"></form>
-				<form action="" method="post"><input type="submit" name="agileMantisAdmin" value="<?php echo plugin_lang_get( 'manage_user_show_only_administrators' )?>"></form></td>
+				<td><form action="<?php echo plugin_page("agileuser.php")?>" method="post"><input type="submit" name="agileMantisParticipant" value="<?php echo plugin_lang_get( 'manage_user_show_only_participants' )?>"></form>
+				<form action="<?php echo plugin_page("agileuser.php")?>" method="post"><input type="submit" name="agileMantisDeveloper" value="<?php echo plugin_lang_get( 'manage_user_show_only_developers' )?>"></form>
+				<form action="<?php echo plugin_page("agileuser.php")?>" method="post"><input type="submit" name="agileMantisAdmin" value="<?php echo plugin_lang_get( 'manage_user_show_only_administrators' )?>"></form></td>
 			</tr>
 		</table>
 		<br>
 		<table align="center" class="width100" cellspacing="1">
 			<tr>
-				<td colspan="5"><b><?php echo plugin_lang_get( 'manage_user_title' )?></b></td>
+				<td colspan="5">
+					<b><?php echo plugin_lang_get( 'manage_user_title' )?></b>
+					<?php if(user_get_name(auth_get_current_user_id()) == 'administrator'){?>
+					<form action="<?php echo plugin_page("add_user.php")?>" method="post">
+						<input type="submit" name="submit" value="<?php echo plugin_lang_get( 'manage_user_add_new_user' )?>">
+					</form>
+					<?php } ?>
+				</td>
 			</tr>
 			<tr>
 				<td class="category"><b><a href="<?php echo plugin_page("agileuser.php")?>&sort_by=username"><?php echo plugin_lang_get( 'manage_user_username' )?></a></b></td>

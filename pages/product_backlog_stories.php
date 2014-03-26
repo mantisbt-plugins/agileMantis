@@ -31,7 +31,7 @@
 <?php echo $system?>
 <table align="center" class="width100" cellspacing="1">
 	<tr>
-		<td colspan="3">
+		<td colspan="4">
 			<b>User Stories</b>
 			<input type="button" name="submit" value="<?php echo plugin_lang_get( 'button_save' )?>" onclick="document.getElementById('fileform').submit();">
 		</td>
@@ -63,6 +63,7 @@
 		<?php if(config_get('show_project_target_version') == 1){?>
 		<td class="category"><a href="<?php echo plugin_page("product_backlog.php")?>&productBacklogName=<?php echo $product_backlog?>&sort_by=version&direction=<?php echo $direction?>"><?php echo plugin_lang_get( 'product_backlog_target_version' )?></a></td>
 		<?php }?>
+		<td class="category" width="20"></td>
 		<td class="category"><a href="<?php echo plugin_page("product_backlog.php")?>&productBacklogName=<?php echo $product_backlog?>&sort_by=summary&direction=<?php echo $direction?>"><?php echo plugin_lang_get( 'product_backlog_summary' )?></a></td>
 		<td class="category"><a href="<?php echo plugin_page("product_backlog.php")?>&productBacklogName=<?php echo $product_backlog?>&sort_by=sprint&direction=<?php echo $direction?>">Sprint</a></td>
 	</tr>
@@ -120,6 +121,19 @@
 				include(PLUGIN_URI.'pages/product_backlog_version.php');
 			}
 			?>
+			<td width="20">
+				<?php if(!plugin_is_loaded('agileMantisExpert')){?>
+				<img src="<?php echo PLUGIN_URL?>images/info-icon.png" alt="<?php echo plugin_lang_get( 'product_backlog_show_info' );?>" onclick="loadUserstory(<?php echo $row['id']?>);" height="16" width="16">
+				<div id="userstory_<?php echo $row['id']?>" title="User Story #<?php echo $row['id']?>" style="display:none;" class="SpecialUserStoryView">
+				  <img src="<?php echo PLUGIN_URL?>images/show_userstory_information.png" alt="Expert Screenshot">
+				</div>
+				<?php } else { ?>
+				<img src="<?php echo PLUGIN_URL?>images/info-icon.png" alt="<?php echo plugin_lang_get( 'product_backlog_show_info' );?>" onclick="loadUserstory(<?php echo $row['id']?>);" height="16" width="16">
+				<div id="userstory_<?php echo $row['id']?>" title="User Story #<?php echo $row['id']?>" style="display:none;" class="SpecialUserStoryView">
+					<?php event_signal( 'EVENT_LOAD_USERSTORY', array( $row['id'] ) );?>
+				</div>
+				<?php } ?>
+			</td>
 			<td><?php echo $row['summary']?></td>
 			<td><a href="<?php echo plugin_page("sprint_backlog.php")?>&sprintName=<?php echo urlencode($pb->getSprintValue($row['id']))?>"><?php echo $pb->getSprintValue($row['id']);?></a></td>
 		</tr>
@@ -144,6 +158,7 @@
 			<td style="background-color:#B1DDFF"></td>
 			<td style="background-color:#B1DDFF"></td>
 			<?php if(config_get('show_project_target_version',null,auth_get_current_user_id()) == 1){?>
+			<td style="background-color:#B1DDFF"></td>
 			<td style="background-color:#B1DDFF"></td>
 			<?php }?>
 		<?php }?>

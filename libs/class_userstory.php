@@ -63,5 +63,27 @@
 			$this->sql = "SELECT * FROM gadiv_tasks WHERE us_id = ".$us_id;
 			return $this->executeQuery();
 		}
+		
+		# get user story notices
+		function getNotices($id){
+			$this->sql = "SELECT * FROM mantis_bugnote_table AS mbnt LEFT JOIN mantis_bugnote_text_table AS mbntt ON mbntt.id = mbnt.id WHERE bug_id =".$id." ";
+			return $this->executeQuery();
+		}
+		
+		# get user story sprint history 
+		function getUserStorySprintHistory($bug_id){
+			$sql = "SELECT date_modified FROM `mantis_bug_history_table` WHERE bug_id = '".$bug_id."' AND field_name = 'Sprint' ORDER BY date_modified DESC";
+			$result = mysql_query($sql);
+			$sprint = mysql_fetch_assoc($result);
+			return $sprint['date_modified'];
+		}
+		
+		# get amount of moved work from splitted user stories
+		function getWorkMovedFromSplittedStories($bugList,$date){
+			$sql = "SELECT sum(work_moved) AS total_work_moved FROM `gadiv_rel_userstory_splitting_table` WHERE old_userstory_id IN ( ".$bugList." ) AND DATE LIKE '%".$date."%'";
+			$result = mysql_query($sql);
+			$userstories = mysql_fetch_assoc($result);
+			return $userstories['total_work_moved'];
+		}
 	}
 ?>

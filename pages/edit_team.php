@@ -1,4 +1,4 @@
-<? 	
+<?php	
 	# agileMantis - makes Mantis ready for Scrum
 	
 	# agileMantis is free software: you can redistribute it and/or modify
@@ -103,6 +103,7 @@
 
 			$team->id = (int) $_POST['id'];
 			$team->name = $_POST['t_name'];
+			$team->daily_scrum = $_POST['daily_scrum'];
 
 			if(empty($team->name)){
 					$system = plugin_lang_get( 'edit_teams_error_922200' );
@@ -210,7 +211,17 @@
 				<?php }?>
 			</select>
 		</td>
-	</tr> 
+	</tr>
+	<?php if(plugin_config_get('gadiv_daily_scrum') == 1){?>
+	<tr <?php echo helper_alternate_class() ?>>
+		<td class="category">
+			Daily Scrum Meeting mit Taskboard
+		</td>
+		<td class="left">
+			<input type="checkbox" name="daily_scrum" <?php if($t[0]['daily_scrum'] == 1 || (plugin_config_get('gadiv_daily_scrum') == 1 && $t[0]['daily_scrum'] == 0)){?> checked <?php }?> value="1">
+		</td>
+	</tr>
+	<?php }?>	
 	<tr>
 		<td>
 			<span class="required"> * <?php echo lang_get( 'required' ) ?></span>
@@ -538,6 +549,5 @@
 			</td>
 		</tr>
 	</table>
-	<br>
 <?php }?>
 <?php html_page_bottom() ?>

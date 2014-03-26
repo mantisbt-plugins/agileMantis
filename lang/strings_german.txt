@@ -69,6 +69,7 @@
 	$s_plugin_agileMantis_info_website								=	'Webseite';
 	$s_plugin_agileMantis_info_contact_email						=	'Kontaktadresse';
 	$s_plugin_agileMantis_info_error_921000							=	'[<span style="font-size:14px;">921000</span>] Sie haben nicht die notwendigen Rechte, um die Info-Seite zu verwalten.';
+	$s_plugin_agileMantis_info_error_921001							=	'[<span style="font-size:14px;">921001</span>] Sie haben nicht die notwendigen Rechte, um einen Benutzer zu erstellen.';
 
 	# agileMantis-Benutzer verwalten
 	$s_plugin_agileMantis_manage_user_title							= 	'agileMantis-Benutzer verwalten';
@@ -79,6 +80,7 @@
 	$s_plugin_agileMantis_manage_user_show_only_administrators		= 	'Nur agileMantis-Administrator';
 	$s_plugin_agileMantis_manage_user_username						= 	'Benutzername';
 	$s_plugin_agileMantis_manage_user_realname						= 	'Bürgerlicher Name';
+	$s_plugin_agileMantis_manage_user_add_new_user					= 	'Benutzer erstellen';
 	$s_plugin_agileMantis_manage_user_participant					= 	'agileMantis-Teilnehmer';
 	$s_plugin_agileMantis_manage_user_developer						= 	'agileMantis-Entwickler';
 	$s_plugin_agileMantis_manage_user_administrator					= 	'agileMantis-Administrator';
@@ -104,7 +106,7 @@
 	$s_plugin_agileMantis_edit_product_backlog_error_922600			=	'[<span style="font-size:14px;">922600</span>] Bitte geben Sie einen Namen für das Product Backlog an.';
 	$s_plugin_agileMantis_edit_product_backlog_error_923600			=	'[<span style="font-size:14px;">923600</span>] Bitte geben Sie eine gültige Email-Adresse ein.';
 	$s_plugin_agileMantis_edit_product_backlog_error_982600			=	'[<span style="font-size:14px;">982600</span>] Bitte verwenden Sie einen eindeutigen Namen für das Product Backlog.';
-	$s_plugin_agileMantis_edit_product_backlog_error_100601			=	'[<span style="font-size:14px;">100601</span>] Die Zuordnung der Projekt-Tracker zu diesem Product Backlog wurde aufgehoben.';
+	$s_plugin_agileMantis_edit_product_backlog_error_100601			=	'[<span style="font-size:14px;">100601</span>] Die Zuordnung der Projekt-Eintrag zu diesem Product Backlog wurde aufgehoben.';
 	$s_plugin_agileMantis_edit_product_backlog_user_email			=	'Email-Adresse des Team-Users';
 	$s_plugin_agileMantis_edit_product_backlog_projects				=	'Projekte';
 	$s_plugin_agileMantis_edit_product_backlog_add_project			=	'Projekt hinzufügen';
@@ -248,6 +250,8 @@
 	$s_plugin_agileMantis_manage_settings_hours						=	'Arbeitsstunden (h)';
 	$s_plugin_agileMantis_manage_settings_days						=	'Arbeitstage (T)';
 	$s_plugin_agileMantis_manage_settings_storypoints				=	'Story Points (SP)';
+	$s_plugin_agileMantis_manage_settings_license_info				=	'Lizenzinformationen';
+	$s_plugin_agileMantis_manage_settings_upload_license			=	'Lizenz hochladen';
 	$s_plugin_agileMantis_manage_settings_successfully_saved		=	'Die Einstellungen wurden erfolgreich gespeichert.';
 	$s_plugin_agileMantis_manage_settings_error_984100				=	'[<span style="font-size:14px;">984100</span>] Ein Arbeitstag kann nicht mehr als 24h und nicht weniger als 1h betragen. Bitte geben Sie eine Zahl zwischen 1 und 24 an.';
 	$s_plugin_agileMantis_manage_settings_error_984101				=	'[<span style="font-size:14px;">984101</span>] Die Sprint-Länge kann nur in ganzen Tagen eingetragen werden.';
@@ -255,6 +259,11 @@
 	$s_plugin_agileMantis_manage_settings_error_106102				=	"[106102] Es ist nicht möglich, mit unterschiedlichen Aufwandseinheiten zu arbeiten.";
 	$s_plugin_agileMantis_manage_settings_error_106102B				=	"Daher werden bei einem solchen Wechsel die geplanten Aufwände aus den Tasks, die sich in keinem oder einem neuen Sprint befinden, entfernt.";
 	$s_plugin_agileMantis_manage_settings_error_106102C				=	"Möchten Sie nun fortfahren?";
+	$s_plugin_agileMantis_manage_settings_error_984102				= 	'[<span style="font-size:14px;">984102</span>] Sie können das Taskboard nicht auswählen, weil das Expert-Komponenten Plugin nicht installiert wurde.';
+	$s_plugin_agileMantis_manage_settings_error_984103 				= 	'[<span style="font-size:14px;">984103</span>] Sie können das Taskboard nicht auswählen, weil die Lizenzdatei nicht gefunden wurde.';
+	$s_plugin_agileMantis_manage_settings_error_984104 				= 	'[<span style="font-size:14px;">984104</span>] Sie können das Taskboard nicht auswählen, weil die Lizenzdatei leer ist.';
+	$s_plugin_agileMantis_manage_settings_error_984105 				= 	'[<span style="font-size:14px;">984105</span>] Lizenzdatei konnte nicht hochgeladen werden. Sie haben entweder nicht genug Rechte oder keine Lizenzdatei hochgeladen.';
+	
 	
 	# Einträge anzeigen
 	$s_plugin_agileMantis_view_issue_save_infos						=	'Infos speichern';
@@ -365,6 +374,7 @@
 	$s_plugin_agileMantis_product_backlog_time						=	'Termin';
 	$s_plugin_agileMantis_product_backlog_amount					=	'Anzahl';
 	$s_plugin_agileMantis_product_backlog_opened					=	'davon offen';
+	$s_plugin_agileMantis_product_backlog_show_info					=	'Detailinformationen zur User Story anzeigen';
 	$s_plugin_agileMantis_product_backlog_error_921B00				=	'[<span style="font-size:14px;">921B00</span>] Sie haben nicht die notwendigen Rechte, um das Product Backlog zu verwalten';
 	
 	# Sprint Backlog
@@ -375,7 +385,7 @@
 	$s_plugin_agileMantis_sprint_backlog_remove_userstory			=	'Story entfernen';
 	$s_plugin_agileMantis_sprint_backlog_divide_userstory			=	'Story aufteilen';
 	$s_plugin_agileMantis_sprint_backlog_enter						=	'eintragen';
-	$s_plugin_agileMantis_sprint_backlog_project					=	'Projekt / Zielversion anzeigen';
+	$s_plugin_agileMantis_sprint_backlog_project					=	'Projekt und Zielversion anzeigen';
 	$s_plugin_agileMantis_sprint_backlog_only_undone				=	'Nur unerledigte User Storys';
 	$s_plugin_agileMantis_sprint_backlog_only_own					=	'Nur eigene Tasks/User Storys';
 	$s_plugin_agileMantis_sprint_backlog_summary					=	'Zusammenfassung';
@@ -419,10 +429,24 @@
 	# Taskboard
 	$s_plugin_agileMantis_taskboard_title							=	'Taskboard bearbeiten';
 	
+	# Version
+	$s_plugin_agileMantis_version_issue 							=	'Einträge';
 	
 	# Screenshots 
 	$s_plugin_agileMantis_screenshot_title							=	'Screenshot der Expert-Version (in Entwicklung)';
 	$s_plugin_agileMantis_screenshot_title_more						=	'Weitere Screenshots der Export-Version (in Entwicklung)';
 	$s_plugin_agileMantis_screenshot_dialog_title					=	'Screenshot der Expert-Komponente';
 	$s_plugin_agileMantis_screenshot_dialog_text					=	'Diese Aktion ist zurzeit nicht möglich, da es sich um einen Screenshot für die Expert-Version handelt.<br><br>Für weitere Informationen besuchen Sie bitte ';
+	
+	# API
+	$s_plugin_agileMantis_Presentable 								= 	'Praesentabel';
+	$s_plugin_agileMantis_InReleaseDocu								= 	'In Freigabedoku';
+	$s_plugin_agileMantis_PlannedWork 								= 	'Planaufwand';
+	$s_plugin_agileMantis_RankingOrder 								= 	'Rangfolge';
+	$s_plugin_agileMantis_Technical 								= 	'Technisch';
+	$s_plugin_agileMantis_PlannedWorkUnit 							= 	'Aufwandseinheit';
+	
+	#Lizenzen
+	$s_plugin_agileMantis_license_download							=	'Expert-Komponenten herunterladen';
+	$s_plugin_agileMantis_license_buy								=	'Expert-Lizenz erwerben';
 ?>

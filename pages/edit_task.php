@@ -140,6 +140,26 @@
 						$tasks->unit			=	$tasks->getUnitId(plugin_config_get('gadiv_task_unit_mode'));
 					}
 					
+					if($getSprint['status'] == 1 && str_replace(',','.',$_POST['rest_capacity']) != str_replace(',','.',$_POST['old_rest_capacity']) && str_replace(',','.',$_POST['rest_capacity']) > 0){
+						$tasks->daily_scrum	= 1;
+					}
+
+					if($getSprint['status'] == 1 && str_replace(',','.',$_POST['performed_capacity_today']) != 0){
+						$tasks->daily_scrum	= 1;
+					}
+
+					if($getSprint['status'] == 1 && str_replace(',','.',$_POST['performed_capacity_today']) != 0 || $_POST['oldstatus'] == $_POST['status']){
+						$tasks->daily_scrum	= 1;
+					}
+
+					if($getSprint['status'] == 1 && $tasks->id == 0){
+						$tasks->daily_scrum	= 1;
+					}
+
+					if($getSprint['status'] == 1 && $_POST['oldstatus'] != $_POST['status']){
+						$tasks->daily_scrum	= 1;
+					}
+					
 					# change capacity information
 					$tasks->capacity = str_replace(',','.',$_POST['performed_capacity_today']);
 
@@ -152,7 +172,7 @@
 					}
 
 					if(str_replace(',','.',$_POST['rest_capacity']) < str_replace(',','.',$_POST['old_rest_capacity'])) {
-						$tasks->capacity = str_replace(',','.',$_POST['old_rest_capacity']) - str_replace(',','.',$_POST['rest_capacity']);
+						$tasks->capacity = 0;
 						if($_POST['rest_capacity'] <= 0){
 							$tasks->capacity = 0;
 							$tasks->rest_capacity = 0;
@@ -195,7 +215,7 @@
 					}
 
 					# check wether work is already performed on the current day
-					if($_POST['action']=="editTask" && ($tasks->getPerformedCapacity($tasks->id) == 0 || $tasks->getPerformedCapacity($tasks->id) == '') && str_replace(',','.',$_POST['performed_capacity_today']) == '' && $_POST['status'] == 4 && $_POST['oldstatus'] < 4 && !isset($_POST['resolved']) && $tasks->developer > 0){
+					if($_POST['action']=="editTask" && ($tasks->getPerformedCapacity($tasks->id) == 0 || $tasks->getPerformedCapacity($tasks->id) == '') && str_replace(',','.',$_POST['performed_capacity_today']) == '' && $_POST['status'] == 4 && $_POST['oldstatus'] < 4 && !isset($_POST['resolved']) && $tasks->developer > 0 && $tasks->rest_capacity > 0 && $tasks->planned_capacity > 0){
 						$system = plugin_lang_get( 'edit_task_error_127900' );
 					} elseif($_POST['status'] == 4 && $_POST['oldstatus'] < 4) {
 						$tasks->status = 4;
@@ -590,7 +610,7 @@
 			Status
 		</td>
 		<td>
-			<?
+			<?php
 				# status
 				if($task['status'] == 0){$oldStatus = plugin_lang_get( 'status_new' );}
 				if($task['status'] == 1){$oldStatus = plugin_lang_get( 'status_new' );}

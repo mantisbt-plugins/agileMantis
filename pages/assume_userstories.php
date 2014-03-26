@@ -100,7 +100,7 @@
 <input type="hidden" name="fromDailyScrum" value="<?php echo $_POST['fromDailyScrum']?>">
 <table align="center" class="width100" cellspacing="1">
 	<tr>
-		<td colspan="9">
+		<td colspan="10">
 			<div style="float:left"><b><?php echo plugin_lang_get( 'assume_userstories_title' )?></b></div>
 			<div style="float:right"><span id="selectedUserStories"><b>0</b> User Stories</span>, <b><span id="chosenStoryPoints">0</span></b> <?php echo plugin_lang_get( 'assume_userstories_chosen_sp' )?></div>
 		</td>
@@ -129,6 +129,7 @@
 		<td class="category" width="50">
 			<a href="<?php echo plugin_page("assume_userstories.php")?>&sort_by=id&product_backlog=<?php echo urlencode($product_backlog)?>&sprintName=<?php echo urlencode($sprintName)?>&fromPage=<?php echo urlencode($fromPage)?>&direction=<?php echo $direction?>">ID</a>
 		</td>
+		<td class="category" width="20"></td>
 		<td class="category">
 			<a href="<?php echo plugin_page("assume_userstories.php")?>&sort_by=summary&product_backlog=<?php echo urlencode($product_backlog)?>&sprintName=<?php echo urlencode($sprintName)?>&fromPage=<?php echo urlencode($fromPage)?>&direction=<?php echo $direction?>"><?php echo plugin_lang_get( 'assume_userstories_summary' )?></a>
 		</td>
@@ -180,6 +181,19 @@
 			<td>
 				<?php echo $row['id']?>
 			</td>
+			<td width="20">
+				<?php if(!plugin_is_loaded('agileMantisExpert')){?>
+				<img src="<?php echo PLUGIN_URL?>images/info-icon.png" alt="<?php echo plugin_lang_get( 'product_backlog_show_info' );?>" onclick="loadWarning(<?php echo $row['id']?>);" height="16" width="16">
+				<div id="dialog_<?php echo $row['id']?>" title="<?php echo plugin_lang_get( 'screenshot_dialog_title' );?>" style="display:none;">
+				  <p><?php echo plugin_lang_get( 'screenshot_dialog_text' );?><a href="http://www.gadiv.de">http://gadiv.de</a></p>
+				</div>
+				<?php } else { ?>
+				<img src="<?php echo PLUGIN_URL?>images/info-icon.png" alt="<?php echo plugin_lang_get( 'product_backlog_show_info' );?>" onclick="loadUserstory(<?php echo $row['id']?>);" height="16" width="16">
+				<div id="userstory_<?php echo $row['id']?>" title="User Story #<?php echo $row['id']?>" style="display:none;" class="SpecialUserStoryView">
+					<?php event_signal( 'EVENT_LOAD_USERSTORY', array( $row['id'] ) );?>
+				</div>
+				<?php } ?>
+			</td>
 			<td>
 				<?php echo $row['summary']?>
 			</td>
@@ -196,11 +210,12 @@
 		<td style="background-color:#B1DDFF"></td>
 		<?php }?>
 		<td style="background-color:#B1DDFF"></td>
-		<td style="background-color:#B1DDFF;"></td>
 		<?php if(plugin_config_get('gadiv_tracker_planned_costs')=='1'){?>
 		<td style="background-color:#B1DDFF"></td>
 		<?php }?>
 		<td style="background-color:#B1DDFF;font-weight:bold;"><span id="calculated_storypoints">0</span></td>
+		<td style="background-color:#B1DDFF"></td>
+		<td style="background-color:#B1DDFF"></td>
 		<td style="background-color:#B1DDFF"></td>
 		<td style="background-color:#B1DDFF"></td>
 		<td style="background-color:#B1DDFF"></td>
@@ -215,5 +230,24 @@
 		</td>
 	</tr>
 </table>
+<script type="text/javascript">
+	function loadWarning(id){
+		$( "#dialog_"+id ).dialog({
+			height: 140,
+			resizable: false,
+			width: auto
+		});
+	}
+	function loadUserstory(id){
+		$( "#userstory_"+id ).dialog({
+			height: 720,
+			resizable: false,
+			width: 760
+		});
+		
+	}
+</script>
+<script src="<?php echo PLUGIN_URL ?>js/jquery-1.9.1.js"></script>
+<script src="<?php echo PLUGIN_URL ?>js/jquery-ui.js"></script>
 <?php include(PLUGIN_URI.'pages/agileMantisActions.js.php');?>
 <?php html_page_bottom() ?>

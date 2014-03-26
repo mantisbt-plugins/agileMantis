@@ -31,6 +31,7 @@
 	}
 	
 	html_page_top(plugin_lang_get( 'sprint_backlog_chose_sprint' ));
+	print_recently_visited();
 
 ?>
 <br>

@@ -24,7 +24,7 @@
 		<br>
 		<?php echo date('d.m.Y',$version_info['date_order'])?>
 		<br><br>
-		<b>Tracker</b>
+		<b><?php echo plugin_lang_get( 'version_issue' )?></b>
 		<br>
 		<?php echo plugin_lang_get( 'product_backlog_amount' )?>: <?php echo $version->getVersionTracker($row['project_id'],$row['target_version'], '80,90') + $version->getVersionTracker($row['project_id'],$row['target_version'], '10,20,30,40,50,60,70') ?>
 		<br>

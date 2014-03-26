@@ -60,7 +60,6 @@
 	</tr>
 	<?php }}?>
 </table>
-<br>
 <?php } else { ?>
 <br>
 	<center><span style="color:red; font-size:16px; font-weight:bold;"></span></center>

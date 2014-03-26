@@ -16,6 +16,7 @@
 	# along with agileMantis. If not, see <http://www.gnu.org/licenses/>.	
 	
 	html_page_top(plugin_lang_get( 'product_backlog_chose' ));
+	print_recently_visited();
 ?>
 <br>
 <table align="center" class="width100" cellspacing="1">

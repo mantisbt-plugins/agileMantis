@@ -22,24 +22,28 @@
 	} else {
 		include(PLUGIN_URI.'pages/sprint_backlog_header.php');
 	if($no_sprints == false){
-		
-		$images = array();
-		
-		$images[] = PLUGIN_URL.'images/taskboard_before_sprint_starts.png';
-		$images[] = PLUGIN_URL.'images/taskboard_beginning_of_the_sprint.png';
-		$images[] = PLUGIN_URL.'images/taskboard_during_of_the_sprint.png';
-		$images[] = PLUGIN_URL.'images/taskboard_end_of_the_sprint.png';
-		$images[] = PLUGIN_URL.'images/taskboard_end_resolved_userstories_of_the_sprint.png';
-		$images[] = PLUGIN_URL.'images/taskboard_end_closed_userstories_of_the_sprint.png';
-	
 	?>
 	<br>
 	<?php include(PLUGIN_URI.'pages/sprint_backlog_actions.php');?>
 	<br>
 	<center>
+	<?php 
+		if(plugin_is_loaded('agileMantisExpert')){
+			event_signal( 'EVENT_LOAD_TASKBOARD', array( auth_get_current_user_id(), $s['name'], 0 ) );
+		}  else {
+			$images = array();
+			
+			$images[] = PLUGIN_URL.'images/taskboard_before_sprint_starts.png';
+			$images[] = PLUGIN_URL.'images/taskboard_beginning_of_the_sprint.png';
+			$images[] = PLUGIN_URL.'images/taskboard_during_of_the_sprint.png';
+			$images[] = PLUGIN_URL.'images/taskboard_end_of_the_sprint.png';
+			$images[] = PLUGIN_URL.'images/taskboard_end_resolved_userstories_of_the_sprint.png';
+			$images[] = PLUGIN_URL.'images/taskboard_end_closed_userstories_of_the_sprint.png';
+		
+	?>
 		<h2><?php echo plugin_lang_get( 'screenshot_title' );?></h2>
 		<div style="height:830px;">
-		<img src="<?php echo $images[rand(0,count($images)-1)]?>" alt="Screenshot Statistiken" id="highScreenshot" style="height: auto;max-width: 100%;" onmousedown="loadDescription();">
+		<img src="<?php echo $images[rand(0,count($images)-1)]?>" alt="Screenshot Taskboard" id="highScreenshot" style="height: auto;max-width: 100%;" onmousedown="loadDescription();">
 		</div>
 		<h2><?php echo plugin_lang_get( 'screenshot_title_more' );?></h2>
 		<div style="margin-bottom: 15px;" align="center">
@@ -52,9 +56,6 @@
 			?>
 		</div>
 		<div style="clear:both;"></div>
-	</center>
-	<br>
-	<?php html_status_legend();?>
 	<script type="text/javascript">
 		function changeScreenshot(screenshot){
 			document.getElementById("highScreenshot").src = screenshot;
@@ -81,6 +82,10 @@
 			width				: 250px;
 		}
 	</style>
+	<?php }?>
+	</center>
+	<br>
+	<?php html_status_legend();?>
 	<?php html_page_bottom() ?>
 	<?php include(PLUGIN_URI.'pages/agileMantisActions.js.php');?>
 	<?php } else {?>
