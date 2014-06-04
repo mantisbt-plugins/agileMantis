@@ -42,6 +42,14 @@
 		
 	?>
 		<h2><?php echo plugin_lang_get( 'screenshot_title' );?></h2>
+		<center>
+			<a href="http://www.gadiv.de/de/opensource/agilemantis/agilemantisen.html"><?php echo plugin_lang_get( 'license_download' )?></a>
+			<br><br>
+			<form method="post" action="http://www.gadiv.de/de/opensource/agilemantis/agilemantisen.html">
+				<input type="hidden" name="action" value="buyLicense">
+				<input type="submit" name="buyLicense" value="<?php echo plugin_lang_get( 'license_buy' )?>">
+			</form>
+		</center>
 		<div style="height:830px;">
 		<img src="<?php echo $images[rand(0,count($images)-1)]?>" alt="Screenshot Taskboard" id="highScreenshot" style="height: auto;max-width: 100%;" onmousedown="loadDescription();">
 		</div>

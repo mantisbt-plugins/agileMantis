@@ -130,7 +130,10 @@
 .version_tooltip {
 	color				: #000;
 	position			: relative;
-	text-decoration		: underline;
+	text-decoration 	: none;
+	border-bottom		: 2px dotted #000;
+	padding-bottom		: 2px;
+	cursor				: default;
 }
 .version_tooltip span {
 	background-color	: #FFF;

@@ -22,12 +22,24 @@
 		
 		# Rewrite Mantis-Config file
 		$string = '<?php'."\r\n";
-		$string.= 'define("SUBFOLDER","'.dirname($_SERVER['PHP_SELF']).'/");'."\r\n";
-		$string.= 'define("PLUGIN_URL","http://".$_SERVER[\'HTTP_HOST\']. SUBFOLDER . "plugins/agileMantis/");'."\r\n";
-		$string.= 'define("BASE_URL","http://".$_SERVER[\'HTTP_HOST\']."".SUBFOLDER."/");'."\r\n";
+		$string.= 'define("VERSIONAGMAN","Version 1.3");'."\r\n";
+		$string.= 'if(isset($_SERVER[\'HTTPS\']))'."\r\n";
+		$string.= '{'."\r\n";
+		$string.= '$protocol = \'https://\';'."\r\n";
+		$string.= '}'."\r\n";
+		$string.= 'else'."\r\n";
+		$string.= '{'."\r\n";
+		$string.= '$protocol = \'http://\';'."\r\n";
+		$string.= '}'."\r\n";
+		$string.= 'define("SUBFOLDER", dirname($_SERVER[\'PHP_SELF\']) . "/");'."\r\n";
+		$string.= 'define("PLUGIN_URL", $protocol.$_SERVER[\'HTTP_HOST\']. SUBFOLDER . "plugins/agileMantis/");'."\r\n";
+		$string.= 'define("BASE_URL", $protocol.$_SERVER[\'HTTP_HOST\']."".SUBFOLDER );'."\r\n";
 		$string.= 'define("BASE_URI", dirname( __FILE__ ) . DIRECTORY_SEPARATOR);'."\r\n";
 		$string.= 'define("PLUGIN_URI",BASE_URI."plugins" . DIRECTORY_SEPARATOR . "agileMantis" . DIRECTORY_SEPARATOR . "");'."\r\n";
 		$string.= 'define("PLUGIN_CLASS_URI",PLUGIN_URI.\'libs\' . DIRECTORY_SEPARATOR);'."\r\n";
+		$string.= 'define("LICENSE_PATH", BASE_URI.\'plugins\'. DIRECTORY_SEPARATOR . \'agileMantisExpert\' . DIRECTORY_SEPARATOR . ';
+		$string.= '\'license\'. DIRECTORY_SEPARATOR .\'license.txt\');'."\r\n";
+		$string.= 'define("SCHNITTSTELLEN_URL","plugins/agileMantis/core/schnittstelle.php");'."\r\n";
 		$string.= "\r\n";
 
 		$string.= 'include_once(PLUGIN_CLASS_URI.\'class_commonlib.php\');'."\r\n";
@@ -304,6 +316,7 @@
 		  `developer` int(1) NOT NULL DEFAULT b'0',
 		  `participant` int(1) NOT NULL,
 		  `administrator` int(1) NOT NULL,
+		  `session_id` varchar(255) NOT NULL,
 		  PRIMARY KEY (`user_id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 	";

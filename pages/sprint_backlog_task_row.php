@@ -21,6 +21,19 @@
 	<td>
 		<a href="view.php?id=<?php echo $row['id']?>">#<?php echo $row['id']?></a>
 	</td>
+	<td width="20">
+		<?php if(!plugin_is_loaded('agileMantisExpert')){?>
+			<img src="<?php echo PLUGIN_URL?>images/info-icon.png" alt="<?php echo plugin_lang_get( 'product_backlog_show_info' );?>" onclick="loadUserstory(<?php echo $row['id']?>);" height="16" width="16">
+			<div id="userstory_<?php echo $row['id']?>" title="User Story #<?php echo $row['id']?>" style="display:none;" class="SpecialUserStoryView">
+				<img src="<?php echo PLUGIN_URL?>images/show_userstory_information.png" alt="Expert Screenshot">
+			</div>
+		<?php } else { ?>
+			<img src="<?php echo PLUGIN_URL?>images/info-icon.png" alt="<?php echo plugin_lang_get( 'product_backlog_show_info' );?>" onclick="loadUserstory(<?php echo $row['id']?>);" height="16" width="16">
+			<div id="userstory_<?php echo $row['id']?>" title="User Story #<?php echo $row['id']?>" style="display:none;" class="SpecialUserStoryView">
+				<?php event_signal( 'EVENT_LOAD_USERSTORY', array( $row['id'] ) );?>
+			</div>
+		<?php } ?>
+	</td>
 	<td colspan="6">
 		<div style="float:left;">
 			<?php echo $row['summary']?>
@@ -75,6 +88,7 @@ if(!empty($t)){
 		$bgcolor = $status['color'];
 		?>
 		<tr style="<?php echo $style?>">
+			<td style="background-color:<?php echo $uscolor;?>;"></td>
 			<td style="background-color:<?php echo $uscolor;?>;"></td>
 			<td style="background-color:<?php echo $uscolor;?>;"></td>
 			<td style="background-color:<?php echo $bgcolor;?>;"><?php echo $value['name']?></td>
@@ -180,6 +194,25 @@ if(!empty($t)){
 	}
 }
 ?>
+<script type="text/javascript">
+	function loadWarning(id){
+		$( "#dialog_"+id ).dialog({
+			height: 140,
+			resizable: false,
+			width: auto
+		});
+	}
+	function loadUserstory(id){
+		$( "#userstory_"+id ).dialog({
+			height: 720,
+			resizable: false,
+			width: 760
+		});
+
+	}
+</script>
+<script src="<?php echo PLUGIN_URL ?>js/jquery-1.9.1.js"></script>
+<script src="<?php echo PLUGIN_URL ?>js/jquery-ui.js"></script>
 <tr>
 	<td colspan="9"></td>
 </tr>

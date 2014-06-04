@@ -154,12 +154,16 @@
 	if($page_name == 'sprint_backlog'){$header_title = 'Sprint Backlog';}
 	if($page_name == 'taskboard'){$header_title = 'Taskboard';}
 	if($page_name == 'daily_scrum_meeting'){$header_title = 'Daily Scrum Board';}
+	if($page_name == 'statistics'){$header_title = plugin_lang_get( 'statistics_title' );}
 ?>
 <style type="text/css">
 .version_tooltip {
 	color				: #000;
 	position			: relative;
-	text-decoration		: underline;
+	text-decoration 	: none;
+	border-bottom		: 2px dotted #000;
+	padding-bottom		: 2px;
+	cursor				: default;
 }
 .version_tooltip span {
 	background-color	: #FFF;

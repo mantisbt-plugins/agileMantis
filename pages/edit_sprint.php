@@ -254,6 +254,7 @@
 <input type="hidden" name="fromSprintBacklog" value="<?php echo (int) $_POST['fromSprintBacklog']?>">
 <input type="hidden" name="fromTaskboard" value="<?php echo (int) $_POST['fromTaskboard']?>">
 <input type="hidden" name="fromDailyScrum" value="<?php echo (int) $_POST['fromDailyScrum']?>">
+<input type="hidden" name="fromStatistics" value="<?php echo (int) $_POST['fromStatistics']?>">
 <input type="hidden" name="sprintName" value="<?php echo $_POST['sprintName']?>">
 <?php $sprint->sprint_id = $s['id'];?>
 <table align="center" class="width75" cellspacing="1">

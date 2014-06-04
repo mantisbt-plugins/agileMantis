@@ -26,40 +26,44 @@
 		# save / update agileMantis additional user rights
 		if($_POST['action'] == 'save'){
 			$highestUserId = $au->getHighestUserId();
-			for($i = 1; $i <= $highestUserId; $i++){
+			if($_POST['expert'] == ""){
+				for($i = 1; $i <= $highestUserId; $i++){
 
-				if($_POST['participant'][$i] == 1 || $_POST['developer'][$i] == 1){
-					$particpant = 1;
-				} else {
-					$particpant = 0;
+					if($_POST['participant'][$i] == 1 || $_POST['developer'][$i] == 1){
+						$particpant = 1;
+					} else {
+						$particpant = 0;
+					}
+
+					if($_POST['developer'][$i] == 1){
+						$developer = 1;
+					} else {
+						$developer = 0;
+						$team->deleteScrumDeveloperFromTeams($i);
+					}
+
+					if($_POST['administrator'][$i] == 1){
+						$administrator = 1;
+					} else {
+						$administrator = 0;
+					}
+
+					$au->setAgileMantisUserRights($i, $particpant, $developer, $administrator);
 				}
-
-				if($_POST['developer'][$i] == 1){
-					$developer = 1;
-				} else {
-					$developer = 0;
-					$team->deleteScrumDeveloperFromTeams($i);
-				}
-
-				if($_POST['administrator'][$i] == 1){
-					$administrator = 1;
-				} else {
-					$administrator = 0;
-				}
-
-				$au->setAgileMantisUserRights($i, $particpant, $developer, $administrator);
+			} else {
+				$userArray = array_keys($_POST['expert']);
+				$au->setExpert($userArray[0],0);
 			}
-
 			echo '<center><span style="color:green; font-size:16px; font-weight:bold;">'.plugin_lang_get( 'manage_user_successful_saved' ).'</span></center><br>';
-
 		}
 
 		$user = $au->getAllUser();
 		# create a filtered table view with all necassary information
-		function createTableView($id, $username, $realname, $email, $participant, $developer, $administrator){
+		function createTableView($id, $username, $realname, $email, $participant, $developer, $administrator, $expert){
 			if($participant == 1){$participant_check = 'checked';} else {$participant_check = '';}
 			if($developer == 1){$developer_check = 'checked';} else {$developer_check = '';}
 			if($administrator == 1){$administrator_check = 'checked';} else {$administrator_check = '';}
+			if($expert == 1){$expert_check = '';} else {$expert_check = 'disabled';}
 			if($developer == 1 || stristr($username,'Team-User-')){
 				$participant_disable = 'disabled';
 				$additional = '<input type="hidden" name="participant['.$id.']" value="1">';
@@ -77,6 +81,7 @@
 					'.$additional.'
 					<td class="center"><input type="checkbox" name="developer['.$id.']" value="1" '.$developer_check.'></td>
 					<td class="center"><input type="checkbox" name="administrator['.$id.']" value="1" '.$administrator_check.'></td>
+					<td class="center"><input type="submit" name="expert['.$id.']" value="'.plugin_lang_get( 'manage_user_remove_from_license' ).'" '.$expert_check.'></td>
 				</tr>';
 		}?>
 		<table align="center" class="width75" cellspacing="1">
@@ -116,7 +121,7 @@
 		<br>
 		<table align="center" class="width100" cellspacing="1">
 			<tr>
-				<td colspan="5">
+				<td colspan="<?php if(plugin_is_loaded('agileMantisExpert')){ echo '6'; } else { echo '5'; };?>">
 					<b><?php echo plugin_lang_get( 'manage_user_title' )?></b>
 					<?php if(user_get_name(auth_get_current_user_id()) == 'administrator'){?>
 					<form action="<?php echo plugin_page("add_user.php")?>" method="post">
@@ -132,6 +137,13 @@
 				<td class="category"><center><b><?php echo plugin_lang_get( 'manage_user_participant' )?></b></center></td>
 				<td class="category"><center><b><?php echo plugin_lang_get( 'manage_user_developer' )?></center></b></td>
 				<td class="category"><center><b><?php echo plugin_lang_get( 'manage_user_administrator' )?></center></b></td>
+				<?php 
+					if(plugin_is_loaded('agileMantisExpert')){
+				?>
+				<td class="category"><center><b><?php echo plugin_lang_get( 'manage_user_expert' )?></center></b></td>
+				<?php
+					} 
+				?>
 			</tr>
 			<form action="" method="post">
 			<input type="hidden" name="action" value="save">
@@ -141,23 +153,23 @@
 						$mantis_role = $au->getAdditionalUserFields($row['id']);
 			?>
 			<?php if($_POST['agileMantisParticipant'] && $mantis_role[0]['participant'] == 1){?>
-				<?php echo createTableView($row['id'], $row['username'], $row['realname'], $row['email'], $mantis_role[0]['participant'], $mantis_role[0]['developer'], $mantis_role[0]['administrator'])?>
+				<?php echo createTableView($row['id'], $row['username'], $row['realname'], $row['email'], $mantis_role[0]['participant'], $mantis_role[0]['developer'], $mantis_role[0]['administrator'], $mantis_role[0]['expert'])?>
 			<?php }?>
 			<?php if($_POST['agileMantisAdmin'] && $mantis_role[0]['administrator'] == 1){?>
-				<?php echo createTableView($row['id'], $row['username'], $row['realname'], $row['email'], $mantis_role[0]['participant'], $mantis_role[0]['developer'], $mantis_role[0]['administrator'])?>
+				<?php echo createTableView($row['id'], $row['username'], $row['realname'], $row['email'], $mantis_role[0]['participant'], $mantis_role[0]['developer'], $mantis_role[0]['administrator'], $mantis_role[0]['expert'])?>
 			<?php }?>
 			<?php if($_POST['agileMantisDeveloper'] && $mantis_role[0]['developer'] == 1){?>
-				<?php echo createTableView($row['id'], $row['username'], $row['realname'], $row['email'], $mantis_role[0]['participant'], $mantis_role[0]['developer'], $mantis_role[0]['administrator'])?>
+				<?php echo createTableView($row['id'], $row['username'], $row['realname'], $row['email'], $mantis_role[0]['participant'], $mantis_role[0]['developer'], $mantis_role[0]['administrator'], $mantis_role[0]['expert'])?>
 			<?php }?>
-			<? if($_POST['agileMantisAdmin'] == "" && $_POST['agileMantisParticipant'] == "" && $_POST['agileMantisDeveloper'] == ""){?>
-				<?php echo createTableView($row['id'], $row['username'], $row['realname'], $row['email'], $mantis_role[0]['participant'], $mantis_role[0]['developer'], $mantis_role[0]['administrator'])?>
+			<?php if($_POST['agileMantisAdmin'] == "" && $_POST['agileMantisParticipant'] == "" && $_POST['agileMantisDeveloper'] == ""){?>
+				<?php echo createTableView($row['id'], $row['username'], $row['realname'], $row['email'], $mantis_role[0]['participant'], $mantis_role[0]['developer'], $mantis_role[0]['administrator'], $mantis_role[0]['expert'])?>
 			<?php }?>
 			<?php
 					}
 				}
 			?>
 			<tr>
-				<td colspan="5"><center><input type="submit" name="edit" value="<?php echo plugin_lang_get( 'button_save' )?>"></center></td>
+				<td colspan="<?php if(plugin_is_loaded('agileMantisExpert')){ echo '6'; } else { echo '5'; };?>"><center><input type="submit" name="edit" value="<?php echo plugin_lang_get( 'button_save' )?>"></center></td>
 			</tr>
 			</form>
 		</table>

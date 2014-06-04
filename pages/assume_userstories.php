@@ -1,4 +1,4 @@
-<? 
+<?
 	# agileMantis - makes Mantis ready for Scrum
 
 	# agileMantis is free software: you can redistribute it and/or modify
@@ -13,20 +13,20 @@
 	#
 	# You should have received a copy of the GNU General Public License
 	# along with agileMantis. If not, see <http://www.gnu.org/licenses/>.
-	
+
 	html_page_top(plugin_lang_get( 'assume_userstories_title' ));
 
-	# merge global $_GET / $_POST array 
+	# merge global $_GET / $_POST array
 	$request = array_merge($_POST, $_GET);
-	
+
 	# get information about product backlog, sprint backlog and latest page
 	$product_backlog = $request['product_backlog'];
 	$sprintName = $request['sprintName'];
 	$fromPage = $request['fromPage'];
-	
+
 	# get further sprint information
-	$sprint->sprint_id = $request['sprintName'];	
-	$sprintinfo = $sprint->getSprintById();	
+	$sprint->sprint_id = $request['sprintName'];
+	$sprintinfo = $sprint->getSprintById();
 
 	# check if different units existing
 	$different_units = false;
@@ -57,7 +57,7 @@
 			echo '<br><center><span style="color:red; font-size:16px; font-weight:bold;">'.plugin_lang_get( 'assume_userstories_error_120C00' ).'</span></center>';
 		}
 	}
-	
+
 	# set different filters for assume new user stories
 	if(!config_is_set('current_user_assume_userstories_filter',auth_get_current_user_id())){
 		config_set('current_user_assume_userstories_filter', '', auth_get_current_user_id());
@@ -72,13 +72,13 @@
 	} else {
 		$direction = 'ASC';
 	}
-	
-	# check if available 
+
+	# check if available
 	if(plugin_config_get('gadiv_ranking_order') == 0 && config_get('current_user_assume_userstories_filter',null,auth_get_current_user_id()) == 'rankingOrder'){
 		config_set('current_user_assume_userstories_filter', '', auth_get_current_user_id());
 		config_set('current_user_assume_userstories_filter_direction', 'ASC', auth_get_current_user_id());
 	}
-	
+
 	if(plugin_config_get('gadiv_tracker_planned_costs') == 0 && config_get('current_user_assume_userstories_filter',null,auth_get_current_user_id()) == 'plannedWork'){
 		config_set('current_user_assume_userstories_filter', '', auth_get_current_user_id());
 		config_set('current_user_assume_userstories_filter_direction', 'ASC', auth_get_current_user_id());
@@ -86,7 +86,7 @@
 
 	# get all unresolved user stories
 	$undone = $pb->getAllUndoneUserStories($product_backlog);
-	
+
 	if(empty($undone)){
 		echo '<br><center><span style="color:red; font-size:16px; font-weight:bold;">'.plugin_lang_get( 'assume_userstories_error_120C01' ).'</span></center>';
 	}
@@ -98,6 +98,7 @@
 <input type="hidden" name="sprintName" value="<?php echo $sprintName?>">
 <input type="hidden" name="fromPage" value="<?php echo $fromPage?>">
 <input type="hidden" name="fromDailyScrum" value="<?php echo $_POST['fromDailyScrum']?>">
+<input type="hidden" name="fromStatistics" value="<?php echo $_POST['fromStatistics']?>">
 <table align="center" class="width100" cellspacing="1">
 	<tr>
 		<td colspan="10">
@@ -135,7 +136,7 @@
 		</td>
 	</tr>
 	<?php
-	
+
 	# change background color according to user story status
 	if(!empty($undone)){
 		foreach($undone AS $num => $row){
@@ -183,9 +184,9 @@
 			</td>
 			<td width="20">
 				<?php if(!plugin_is_loaded('agileMantisExpert')){?>
-				<img src="<?php echo PLUGIN_URL?>images/info-icon.png" alt="<?php echo plugin_lang_get( 'product_backlog_show_info' );?>" onclick="loadWarning(<?php echo $row['id']?>);" height="16" width="16">
-				<div id="dialog_<?php echo $row['id']?>" title="<?php echo plugin_lang_get( 'screenshot_dialog_title' );?>" style="display:none;">
-				  <p><?php echo plugin_lang_get( 'screenshot_dialog_text' );?><a href="http://www.gadiv.de">http://gadiv.de</a></p>
+				<img src="<?php echo PLUGIN_URL?>images/info-icon.png" alt="<?php echo plugin_lang_get( 'product_backlog_show_info' );?>" onclick="loadUserstory(<?php echo $row['id']?>);" height="16" width="16">
+				<div id="userstory_<?php echo $row['id']?>" title="User Story #<?php echo $row['id']?>" style="display:none;" class="SpecialUserStoryView">
+				  <img src="<?php echo PLUGIN_URL?>images/show_userstory_information.png" alt="Expert Screenshot">
 				</div>
 				<?php } else { ?>
 				<img src="<?php echo PLUGIN_URL?>images/info-icon.png" alt="<?php echo plugin_lang_get( 'product_backlog_show_info' );?>" onclick="loadUserstory(<?php echo $row['id']?>);" height="16" width="16">
@@ -198,7 +199,7 @@
 				<?php echo $row['summary']?>
 			</td>
 		</tr>
-	<?php 
+	<?php
 		}
 	}
 	$additional_fields = 7;
@@ -244,7 +245,7 @@
 			resizable: false,
 			width: 760
 		});
-		
+
 	}
 </script>
 <script src="<?php echo PLUGIN_URL ?>js/jquery-1.9.1.js"></script>

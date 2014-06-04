@@ -15,7 +15,7 @@
 	# along with agileMantis. If not, see <http://www.gnu.org/licenses/>.
 ?>
 <td>
-<a class="version_tooltip" href="javascript: void(0)">
+	<a class="version_tooltip" href="javascript: void(0)">
 	<?php echo $row['project_name']?> <?php echo $row['target_version']?>
 	<span>
 		<b><?php echo $row['project_name']?> <?php echo $row['target_version']?></b>

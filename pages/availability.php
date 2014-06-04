@@ -272,6 +272,7 @@ if(!empty($userData)){
 	<input type="hidden" name="month" value="<?php echo $_POST['month']?>">
 	<input type="hidden" name="fromProductBacklog" value="<?php echo $_POST['fromProductBacklog']?>">
 	<input type="hidden" name="productBacklogName" value="<?php echo $_POST['productBacklogName']?>">
+	<input type="hidden" name="fromStatistics" value="<?php echo $_POST['fromStatistics']?>">
 	<input type="hidden" name="sprintName" value="<?php echo $_POST['sprintName']?>">
 	<input type="hidden" name="team_id" value="<?php echo $_POST['team_id']?>">
 	<input type="hidden" name="fromSprintBacklog" value="<?php echo $_POST['fromSprintBacklog']?>">

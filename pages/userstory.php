@@ -4,9 +4,9 @@
 		event_signal( 'EVENT_LOAD_USERSTORY', array( auth_get_current_user_id(), (int) $_GET['userstory_id'] ) );
 	} else {
 ?>
-<a href="http://www.gadiv.de/de/opensource/agilemantis/agilemantisde.html">Expert-Komponenten downloaden</a>
+<a href="http://www.gadiv.de/de/opensource/agilemantis/agilemantisen.html">Expert-Komponenten downloaden</a>
 <br><br>
-<form method="post" action="http://jansnasserver.dyndns.org/paypal/lizenzen/">
+<form method="post" action="http://www.gadiv.de/de/opensource/agilemantis/agilemantisen.html">
 	<input type="hidden" name="action" value="buyLicense">
 	<input type="submit" name="buyLicense" value="Expert-Lizenz erwerben">
 </form>

@@ -18,7 +18,7 @@
 	
 	#	This class will hold functions for agileMantis user management
 	class gadiv_agileuser extends gadiv_commonlib {
-
+	
 		# get all agileMantis users with filter options
 		function getAgileUser($only_developer = false){
 			if($_GET['filter']){
@@ -104,6 +104,11 @@
 			} else {
 				$sql = "INSERT INTO gadiv_additional_user_fields SET user_id = '".$user_id."', participant = '".$participant."', developer = '".$developer."', administrator = '".$administrator."'";
 			}
+			mysql_query($sql);
+		}
+		
+		function setExpert($user_id, $expert){
+			$sql = "UPDATE gadiv_additional_user_fields SET expert = ".$expert." WHERE user_id = '".$user_id."'";
 			mysql_query($sql);
 		}
 	}

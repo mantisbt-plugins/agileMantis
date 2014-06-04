@@ -17,23 +17,23 @@
 # agileMantis plugin class
 class agileMantisPlugin extends MantisPlugin {
 
-	# agileMantis plugin register information 
+	# agileMantis plugin register information
 	function register() {
 		$this->name = "agileMantis";
-		$this->description = "Enables the Scrum Framework to your Mantis-Installation"; 
+		$this->description = "Enables the Scrum Framework to your Mantis-Installation";
 		$this->page = "info";
-		$this->version = "1.2.5"; 
+		$this->version = "1.3.0";
 		$this->requires = array("MantisCore" => "1.2.5");
 		$this->author = "gadiv GmbH";
 		$this->contact = "agileMantis@gadiv.de";
 		$this->url = "http://www.gadiv.de";
 	}
 
-	# agileMantis init method 
+	# agileMantis init method
 	function init() {
 	}
 
-	# agileMantis config method 
+	# agileMantis config method
 	function config() {
 		return array(
 		);
@@ -44,7 +44,7 @@ class agileMantisPlugin extends MantisPlugin {
 		# fetch config file
 		$t_path = config_get_global('plugin_path'). plugin_get_current() . DIRECTORY_SEPARATOR;
 		$filename = BASE_PATH . DIRECTORY_SEPARATOR . "config_inc.php";
-		
+
 		#load installation file
 		include_once($t_path .'install.php');
 	}
@@ -65,11 +65,12 @@ class agileMantisPlugin extends MantisPlugin {
 			'EVENT_LOAD_THIRDPARTY' => EVENT_TYPE_EXECUTE
 		);
 	}
-	
+
 	# add hooks to agileMantis plugin
 	function hooks() {
 		return array(
 			'EVENT_MENU_MAIN' 					=> 	"addStructure",				// CHAIN
+			'EVENT_CORE_READY' 					=> 	"event_core_ready",				// CHAIN
 			'EVENT_LAYOUT_CONTENT_BEGIN' 		=> 	"addPageAction",			// EXECUTE
 			"EVENT_REPORT_BUG_FORM" 			=> 	"event_report_bug_form",	// EXECUTE
 			"EVENT_UPDATE_BUG_FORM" 			=> 	"event_update_bug_form",	// EXECUTE
@@ -82,7 +83,7 @@ class agileMantisPlugin extends MantisPlugin {
 			"EVENT_FILTER_FIELDS"				=>	"event_filter_fields"
 		);
 	}
-	
+
 	# add agileMantis plugin functions to bug report page
 	# - adding agileMantis custom Fields
 	# - adding save functions
@@ -198,7 +199,7 @@ class agileMantisPlugin extends MantisPlugin {
 
 	# add agileMantis plugin functions to update issue page
 	# - adding agileMantis custom Fields
-	# - including agileMantisCustomFields.php 
+	# - including agileMantisCustomFields.php
 	function event_update_bug_form($p_event, $project_id) {
 		if($_SESSION['ISMANTISADMIN'] == 1 || $_SESSION['ISMANTISUSER'] == 1){
 			include_once(PLUGIN_CLASS_URI.'class_product_backlog.php');
@@ -282,7 +283,7 @@ class agileMantisPlugin extends MantisPlugin {
 			}
 		}
 	}
-	
+
 	# add agileMantis plugin functions after sending bug data to database when a bug is reported
 	# - adding custom field values to mantis and agilemantis tables
 	function event_report_bug( $p_bug_event, $p_bug_data){
@@ -290,14 +291,14 @@ class agileMantisPlugin extends MantisPlugin {
 			include_once(PLUGIN_CLASS_URI.'/class_product_backlog.php');
 			$cpb = new gadiv_product_backlog();
 			$bug_id = $p_bug_data->id;
-			
+
 			# set new user story unit
 			if(plugin_config_get('gadiv_userstory_unit_mode') == 'keine'){
 				$cpb->setUserStoryUnit($bug_id,'');
 			} else {
 				$cpb->setUserStoryUnit($bug_id,plugin_config_get('gadiv_userstory_unit_mode'));
 			}
-			
+
 			# save custom field values in agileMantis tables
 			$cpb->setCustomFieldValues($bug_id);
 
@@ -346,19 +347,13 @@ class agileMantisPlugin extends MantisPlugin {
 	* gesetzt und es wird überprüft, ob ein Mantis-Benutzer auch erweiterte Rechte
 	* für agileMantis hat.
 	*/
-	
+
 	# add additonal agileMantis page action
 	# - checks which rights does the current user have
 	function addPageAction($p_event) {
 		unset($_SESSION['bug']);
 		unset($_SESSION['custom_field']);
 		unset($_SESSION['custom_field_id']);
-
-		# determine different path settings
-		define("SUBFOLDER", dirname($_SERVER['PHP_SELF']));
-		define("PLUGIN_URL","http://".$_SERVER['HTTP_HOST']."".SUBFOLDER."plugins" . DIRECTORY_SEPARATOR . "agileMantis" . DIRECTORY_SEPARATOR);
-		define("PLUGIN_URI",$_SERVER['DOCUMENT_ROOT'].SUBFOLDER."plugins" . DIRECTORY_SEPARATOR . "agileMantis" . DIRECTORY_SEPARATOR);
-		define("PLUGIN_CLASS_URI",PLUGIN_URI.'libs' . DIRECTORY_SEPARATOR);
 
 		include_once(PLUGIN_CLASS_URI.'class_commonlib.php');
 		$commonlib = new gadiv_commonlib();
@@ -375,7 +370,7 @@ class agileMantisPlugin extends MantisPlugin {
 			define("ISMANTISADMIN",true);
 			$_SESSION['ISMANTISADMIN'] = 1;
 		}
-		
+
 		# set developer rights for current user
 		if($user[0]['developer'] == 1) {
 			define("ISMANTISUSER",true);
@@ -455,14 +450,14 @@ class agileMantisPlugin extends MantisPlugin {
 			$current_sprint = $commonlib->getCustomFieldSprint($row);
 			$storypoints 	= $product_backlog->getStoryPoints($row);
 
-			# restore story points value 
+			# restore story points value
 			if($_SESSION['custom_field_id'] == $commonlib->sp){
 				if($current_sprint['status'] > 0 || $pb_id == 0){
 					$commonlib->restoreCustomFieldValue($row,$_SESSION['custom_field_id'],$_SESSION['custom_field'][$row]);
 				}
 			}
 
-			# restore product backlog value 
+			# restore product backlog value
 			if($_SESSION['custom_field_id'] == $commonlib->pb){
 				$pbl = $commonlib->getProjectProductBacklogs(helper_get_current_project());
 				$do_not_reset = false;
@@ -494,7 +489,7 @@ class agileMantisPlugin extends MantisPlugin {
 					$commonlib->restoreCustomFieldValue($row,$_SESSION['custom_field_id'],$_SESSION['custom_field'][$row]);
 				}
 
-				# old sprint information 
+				# old sprint information
 				$commonlib->sprint_id = $_SESSION['custom_field'][$row];
 				$sprintInfo = $commonlib->getSprintById();
 
@@ -507,7 +502,7 @@ class agileMantisPlugin extends MantisPlugin {
 				}
 			}
 
-			# update bug date  
+			# update bug date
 			bug_update_date($bug_id);
 
 		}
@@ -515,6 +510,7 @@ class agileMantisPlugin extends MantisPlugin {
 
 	# add menu items to mantis main menu between "Summary" and "Manage"
 	function addStructure() {
+		include_once(PLUGIN_CLASS_URI.'class_commonlib.php');
 		$commonlib = new gadiv_commonlib();
 		$user = $commonlib->getAdditionalUserFields(auth_get_current_user_id());
 		$menu = array();
@@ -532,7 +528,7 @@ class agileMantisPlugin extends MantisPlugin {
 				$menu[0] =  '<a href="' . plugin_page("taskboard.php") . '" style="font-weight:bold;text-decoration:underline">Sprint Backlog</a>';
 			}
 		}
-		
+
 		# add daily scrum board
 		if(($user[0]['participant'] == 1 || $user[0]['developer'] == 1 || $user[0]['administrator'] == 1) && plugin_config_get('gadiv_daily_scrum') == 1){
 			$menu[1] =  '<a href="' . plugin_page("daily_scrum_meeting.php") . '" style="font-weight:bold;text-decoration:underline">Daily Scrum Meeting</a>';
@@ -548,21 +544,21 @@ class agileMantisPlugin extends MantisPlugin {
 
 	# adds a separate footer at the end of each agileMantis page
 	function event_layout_content_end() {
-		if(stristr($_GET['page'],'agileMantis') || stristr($_GET['page'],'sprint_backlog')){
+		if(stristr($_GET['page'],'agileMantis') || stristr($_GET['page'],'sprint_backlog') || stristr($_GET['page'],'taskboard') || stristr($_GET['page'],'daily_scrum_meeting') || stristr($_GET['page'],'statistics')){
 			echo '<div style="clear:both;"></div>';
 			echo '<br>';
-			echo '<div align="center"><a href="https://sourceforge.net/p/agilemantis/wiki/Home/" target="_blank">agileMantis-Wiki</a> |	<a href="https://sourceforge.net/p/agilemantis/" target="_blank">agileMantis-Download</a></div>';
+			echo '<div align="center"><a href="https://sourceforge.net/p/agilemantis/wiki/Home/" target="_blank">agileMantis-Wiki</a></div>';
 			echo '<table border="0" width="100%" cellspacing="0" cellpadding="0"><tr valign="top"><td>';
-			echo '<a href="https://sourceforge.net/projects/agilemantis/files/">agileMantis '.$this->version.'</a><br>';
-			echo '<a href="'. plugin_page('info.php') .'">Copyright © 2012-'.date('Y').' gadiv GmbH</a> - <a href="http://gadiv.de">www.gadiv.de</a><br>';
+			echo '<a href="http://www.gadiv.de/de/opensource/agilemantis/agilemantisen.html" target="_blank">agileMantis '.$this->version.'</a><br>';
+			echo '<a href="'. plugin_page('info.php') .'" target="_blank">Copyright © 2012-'.date('Y').' gadiv GmbH</a> - <a href="http://gadiv.de" target="_blank">www.gadiv.de</a><br>';
 			echo '<a href="mailto:agileMantis@gadiv.de">agileMantis@gadiv.de</a>';
 			echo '</td><td valign="middle">', "\n\t", '<div align="right">';
-			echo '<a href="http://www.gadiv.de/de/opensource/agilemantis/agilemantis_en_.html" title="agileMantis auf gadiv-Webseite"><img src="'.PLUGIN_URL.'images/agilemantis_logo.gif" width="32" height="32" alt="gadiv GmbH Logo" border="0"/></a>';
+			echo '<a href="http://www.gadiv.de/de/opensource/agilemantis/agilemantisen.html" title="agileMantis auf gadiv-Webseite" target="_blank"><img src="'.PLUGIN_URL.'images/agilemantis_logo.gif" width="32" height="32" alt="gadiv GmbH Logo" border="0"/></a>';
 			echo '', "\n", '</div></td></tr></table>', "\n";
 			echo "\t", '<hr size="1" />', "\n";
 		}
 	}
-	
+
 	function event_layout_resources() {
 		echo '<link rel="stylesheet" href="'.PLUGIN_URL.'/css/jquery-ui.css">';
 	}

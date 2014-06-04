@@ -238,6 +238,7 @@
 <input type="hidden" name="fromSprintBacklog" value="<?php echo $_POST['fromSprintBacklog']?>">
 <input type="hidden" name="fromTaskboard" value="<?php echo $_POST['fromTaskboard']?>">
 <input type="hidden" name="fromDailyScrum" value="<?php echo $_POST['fromDailyScrum']?>">
+<input type="hidden" name="fromStatistics" value="<?php echo $_POST['fromStatistics']?>">
 <input type="hidden" name="fromProductBacklog" value="<?php echo $_POST['fromProductBacklog']?>">
 <table align="center" class="width75" cellspacing="1">
 	<tr>
@@ -314,6 +315,7 @@ $system = "";
 <input type="hidden" name="productBacklogName" value="<?php echo $_POST['productBacklogName']?>">
 <input type="hidden" name="fromProductBacklog" value="<?php echo $_POST['fromProductBacklog']?>">
 <input type="hidden" name="fromDailyScrum" value="<?php echo $_POST['fromDailyScrum']?>">
+<input type="hidden" name="fromStatistics" value="<?php echo $_POST['fromStatistics']?>">
 <input type="hidden" name="sprintName" value="<?php echo $_POST['sprintName']?>">
 <table align="center" class="width100" cellspacing="1">
 <tr>

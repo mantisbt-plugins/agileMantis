@@ -84,6 +84,8 @@
 	$s_plugin_agileMantis_manage_user_participant					= 	'agileMantis-Teilnehmer';
 	$s_plugin_agileMantis_manage_user_developer						= 	'agileMantis-Entwickler';
 	$s_plugin_agileMantis_manage_user_administrator					= 	'agileMantis-Administrator';
+	$s_plugin_agileMantis_manage_user_expert						= 	'Expert-Benutzer';
+	$s_plugin_agileMantis_manage_user_remove_from_license			= 	'Lizenz freigeben';
 	$s_plugin_agileMantis_manage_user_error_921A00					= 	'[<span style="font-size:14px;">912A00</span>] Sie haben nicht die notwendigen Rechte, um die agileMantis-Benutzer zu verwalten.';
 	
 	# Product Backlogs verwalten
@@ -235,6 +237,7 @@
 	$s_plugin_agileMantis_manage_settings_show_storypoints			=	'Story Points anzeigen';
 	$s_plugin_agileMantis_manage_settings_show_rankingorder			=	'Rangfolge anzeigen';
 	$s_plugin_agileMantis_manage_settings_sprint_view				=	'Darstellung aktueller Sprint';
+    $s_plugin_agileMantis_manage_settings_daily_scrum_mode          =   'Daily Scrum Meeting mit Taskboard';
 	$s_plugin_agileMantis_manage_settings_storypoints_mode			=	'Eingabe Story Points als';
 	$s_plugin_agileMantis_manage_settings_free_mode					=	'freie Eingabe';
 	$s_plugin_agileMantis_manage_settings_fibonnaci					=	'Fibonacci-Zahlen';
@@ -425,6 +428,7 @@
 	
 	# Statistiken
 	$s_plugin_agileMantis_statistics_title							=	'Statistiken';
+	$s_plugin_agileMantis_statistics_edit							=	'Statistiken bearbeiten';
 	
 	# Taskboard
 	$s_plugin_agileMantis_taskboard_title							=	'Taskboard bearbeiten';
@@ -448,5 +452,6 @@
 	
 	#Lizenzen
 	$s_plugin_agileMantis_license_download							=	'Expert-Komponenten herunterladen';
+    $s_plugin_agileMantis_license_download_link                     =   'http://www.gadiv.de/de/opensource/agilemantis/agilemantisde.html';
 	$s_plugin_agileMantis_license_buy								=	'Expert-Lizenz erwerben';
 ?>

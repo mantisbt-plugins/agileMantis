@@ -22,6 +22,7 @@
 	if($page_name == 'sprint_backlog'){$header_title = plugin_lang_get( 'sprint_backlog_title' );$switch_button_text = 'Taskboard'; $switch_button_tag = 'taskboard';$switch_form_link = 'taskboard.php';}
 	if($page_name == 'taskboard'){$header_title = plugin_lang_get( 'taskboard_title' );$switch_button_text = 'Sprint Backlog'; $switch_button_tag = 'sprint_backlog';$switch_form_link = 'sprint_backlog.php';}
 	if($page_name == 'daily_scrum_meeting'){$header_title = 'Daily Scrum Taskboard';$switch_button_text = 'Taskboard'; $switch_button_tag = 'taskboard';$switch_form_link = 'sprint_backlog.php';}
+	if($page_name == 'statistics'){$header_title = plugin_lang_get( 'statistics_edit' );}
 ?>
 <table align="center" class="width100" cellspacing="1">
 	<tr>
@@ -39,6 +40,9 @@
 				<?php } ?>
 				<?if($page_name == 'daily_scrum_meeting'){?>
 					<input type="hidden" name="fromDailyScrum" value="1">
+				<?php } ?>
+				<?if($page_name == 'statistics'){?>
+					<input type="hidden" name="fromStatistics" value="1">
 				<?php } ?>
 				<?php
 					# get all team developer
@@ -66,6 +70,9 @@
 				<?if($page_name == 'daily_scrum_meeting'){?>
 					<input type="hidden" name="fromDailyScrum" value="1">
 				<?php } ?>
+				<?if($page_name == 'statistics'){?>
+					<input type="hidden" name="fromStatistics" value="1">
+				<?php } ?>
 				<input type="hidden" name="sprintName" value="<?php echo $s['name']?>">
 				<input type="hidden" name="start" value="<?php echo date('d.m.Y',$s['start'])?>">
 				<input type="hidden" name="end" value="<?php echo date('d.m.Y',$s['end'])?>">
@@ -73,6 +80,7 @@
 				<input type="hidden" name="submit_button" value="Zu den Entwicklungskapazitäten">
 				<input type="submit" name="manage_developer_capacities" value="<?php echo plugin_lang_get( 'sprint_backlog_capacity' )?>" <?php echo $disable_button?>>
 			</form>
+			<?php if($page_name != 'statistics'){?>
 			<form action="<?php echo plugin_page("assume_userstories.php")?>" method="post">
 				<input type="hidden" name="product_backlog" value="<?php echo $sprint->getProductBacklogByTeam($s['team_id']);?>">
 				<input type="hidden" name="sprintName" value="<?php echo $s['name']?>">
@@ -89,10 +97,17 @@
 				<input type="hidden" name="sprintName" value="<?php echo $s['name']?>">
 				<input type="submit" name="<?php echo $switch_button_tag?>" value="<?php echo $switch_button_text?>" <?php if($page_name == 'daily_scrum_meeting'){?>disabled<?php }?>>
 			</form>
-			<form action="<?php echo plugin_page("statistics.php")?>" method="post" target="_blank">
-				<input type="hidden" name="sprintName" value="<?php echo $s['name']?>">
-				<input type="submit" name="statistics" value="<?php echo plugin_lang_get( 'statistics_title' )?>">
+			<a style="margin-left:10px;" href="<?php echo plugin_page("statistics.php")?>&sprintName=<?php echo $s['name']?>"><?php echo plugin_lang_get( 'statistics_title' )?></a>
+			<?php } else { ?>
+			<form action="<?php echo plugin_page("taskboard.php")?>" method="post">
+				<input type="hidden" name="sprintName" value="<?php echo $request['sprintName']?>">
+				<input type="submit" name="taskboard" value="Taskboard">
 			</form>
+			<form action="<?php echo plugin_page("sprint_backlog.php")?>" method="post">
+				<input type="hidden" name="sprintName" value="<?php echo $request['sprintName']?>">
+				<input type="submit" name="submit" value="Sprint Backlog">
+			</form>
+			<?php } ?>
 		</td>
 	</tr>
 </table>
@@ -113,8 +128,12 @@
 				<?if($page_name == 'daily_scrum_meeting'){?>
 					<input type="hidden" name="fromDailyScrum" value="1">
 				<?php } ?>
+				<?if($page_name == 'statistics'){?>
+					<input type="hidden" name="fromStatistics" value="1">
+				<?php } ?>
 				<input type="submit" name="edit_sprint" value="<?php echo plugin_lang_get( 'sprint_backlog_edit_sprint' )?>" <?php echo $disable_button?>>
 			</form>
+			<?php if($page_name != 'statistics'){?>
 			<?php 
 				if($s['status']!=1 && $s['start'] - 86400 <= time() && (time() <= $s['end'] || $s['start'] + 86400 > $s['end']) && $sprint->previousSprintIsClosed($s['team_id'], $sprint->sprint_id) == true){
 					$disabled = '';
@@ -154,6 +173,7 @@
 				<input type="hidden" name="sprintName" value="<?php echo $s['name']?>">
 				<input type="submit" name="close_sprint" value="<?php echo plugin_lang_get( 'sprint_backlog_close_sprint_button' )?>" onClick="confirmCloseUserstories();" <?php echo $disable_close?> <?php echo $disable?> <?php echo $disable_button?>>
 			</form>
+			
 			<form action="<?php echo plugin_page('divide_userstories.php')?>" method="post">
 				<input type="hidden" name="sprint_id" value="<?php echo $s['id']?>">
 				<input type="hidden" name="name" value="<?php echo $s['name']?>">
@@ -168,6 +188,7 @@
 				<input type="hidden" name="team_id" value="<?php echo $s['team_id']?>">
 				<input type="submit" name="copy_userstories" value="<?php echo plugin_lang_get( 'sprint_backlog_divide_userstories' )?>" <?php echo $disable_copy?> <?php echo $disable?> <?php echo $disable_button?>>
 			</form>
+			<?php } ?>
 			<form action="<?php echo plugin_page($_GET['page'])?>" method="post">
 				<input type="submit" name="chose_sprint" value="<?php echo plugin_lang_get( 'sprint_backlog_chose_sprint' )?>">
 			</form>

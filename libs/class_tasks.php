@@ -204,10 +204,10 @@
 		}
 		
 		function getSession($user_id){
-			$sql = "SELECT session_id FROM gadiv_additional_user_fields WHERE user_id = '".$user_id."'";
+			$sql = "SELECT expert FROM gadiv_additional_user_fields WHERE user_id = '".$user_id."'";
 			$result = mysql_query($sql);
 			$session = mysql_fetch_assoc($result);
-			return $session['session_id'];
+			return $session['expert'];
 		}
 	}
 ?>

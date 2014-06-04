@@ -114,12 +114,12 @@
 			config_set('burndown_tasks_trend', 1, auth_get_current_user_id());
 		}
 
-		if(!config_is_set('utilization_distribution',auth_get_current_user_id())){
-			config_set('utilization_distribution', 1, auth_get_current_user_id());
+		if(!config_is_set('utilization_distribution_planned',auth_get_current_user_id())){
+			config_set('utilization_distribution_planned', 1, auth_get_current_user_id());
 		}
-
-		if(!config_is_set('utilization_utilization',auth_get_current_user_id())){
-			config_set('utilization_utilization', 1, auth_get_current_user_id());
+		
+		if(!config_is_set('utilization_distribution_remains',auth_get_current_user_id())){
+			config_set('utilization_distribution_remains', 1, auth_get_current_user_id());
 		}
 
 		if(!config_is_set('utilization_utilizationdetailed',auth_get_current_user_id())){
@@ -133,11 +133,11 @@
 		if(!config_is_set('statistic_velocity_referenced_sprint',auth_get_current_user_id())){
 			config_set('statistic_velocity_referenced_sprint', "", auth_get_current_user_id());
 		}
+		
+		include(PLUGIN_URI.'pages/sprint_backlog_header.php');
 ?>
-<?php 
-	html_page_top(plugin_lang_get( 'statistics_title' ));
-	print_recently_visited();	
-?>
+<br>
+	<?php include(PLUGIN_URI.'pages/sprint_backlog_actions.php');?>
 <br>
 <center>
 <?php 
@@ -154,6 +154,12 @@
 		$images[] = PLUGIN_URL.'images/statistics_end_closed_userstories_of_the_sprint.png';
 ?>
 	<h2><?php echo plugin_lang_get( 'screenshot_title' );?></h2>
+	<a href="http://www.gadiv.de/de/opensource/agilemantis/agilemantisen.html"><?php echo plugin_lang_get( 'license_download' )?></a>
+	<br><br>
+	<form method="post" action="http://www.gadiv.de/de/opensource/agilemantis/agilemantisen.html">
+		<input type="hidden" name="action" value="buyLicense">
+		<input type="submit" name="buyLicense" value="<?php echo plugin_lang_get( 'license_buy' )?>">
+	</form>
 	<img src="<?php echo $images[rand(0,count($images)-1)]?>" alt="Screenshot Statistiken" id="highScreenshot" style="height: auto;max-width: 100%;" onmousedown="loadDescription();">
 	<div style="margin-bottom: 15px;" align="center">
 		<h2><?php echo plugin_lang_get( 'screenshot_title_more' );?></h2>
@@ -192,16 +198,6 @@
 <?php } ?>
 </center>
 <br>
-<center>
-	<form action="<?php echo plugin_page("taskboard.php")?>" method="post">
-		<input type="hidden" name="sprintName" value="<?php echo $request['sprintName']?>">
-		<input type="submit" name="taskboard" value="Taskboard">
-	</form>
-	<form action="<?php echo plugin_page("sprint_backlog.php")?>" method="post">
-		<input type="hidden" name="sprintName" value="<?php echo $request['sprintName']?>">
-		<input type="submit" name="submit" value="Sprint Backlog">
-	</form>
-</center>
 <div id="dialog" title="<?php echo plugin_lang_get( 'screenshot_dialog_title' );?>" style="display:none;">
   <p><?php echo plugin_lang_get( 'screenshot_dialog_text' );?><a href="http://www.gadiv.de">http://gadiv.de</a></p>
 </div>

@@ -39,7 +39,7 @@ if($au->authUser() == 2 || $au->authUser() == 3 || current_user_is_administrator
 			<?php if($_GET['klickStatus']==1){?>
 				<input type="hidden" name="disable_click" value="1">
 			<?php } ?>
-			<input type="checkbox" name="show_all_sprints" <?php if($_POST['show_all_sprints']=='1' || ($_GET['klickStatus']==1 && $_POST['disable_click']!=1)){$klick=1;?>checked<?} else {$klick = 0;}?> value="1" onClick="this.form.submit();">
+			<input type="checkbox" name="show_all_sprints" <?php if($_POST['show_all_sprints']=='1' || ($_GET['klickStatus']==1 && $_POST['disable_click']!=1)){$klick=1;?>checked<?php } else {$klick = 0;}?> value="1" onClick="this.form.submit();">
 			<?php echo plugin_lang_get( 'manage_sprints_show_closed' )?>
 			</form>
 		</td>

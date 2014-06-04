@@ -17,6 +17,8 @@
 
 	class gadiv_commonlib {
 
+		var $agileMantisVersion = '1.3.0';
+	
 		var $id;
 		var $pbid;
 		var $us_id;
@@ -69,7 +71,7 @@
 		
 		# count current user sessions
 		function countSessions(){
-			$sql = "SELECT count(session_id) AS sessions FROm gadiv_additional_user_fields WHERE session_id != ''";
+			$sql = "SELECT count(expert) AS sessions FROM gadiv_additional_user_fields WHERE expert = 1";
 			$result = mysql_query($sql);
 			$amountOf = mysql_fetch_assoc($result);
 			return $amountOf['sessions'];
@@ -89,21 +91,25 @@
 				if($_POST['fromTaskboard'] == 1) {
 					$header = "Location: ".plugin_page('taskboard.php')."&sprintName=".urlencode($_POST['sprintName']);
 				}
+				
+				if($_POST['fromStatistics'] == 1) {
+					$header = "Location: ".plugin_page('statistics.php')."&sprintName=".urlencode($_POST['sprintName']);
+				}
+
 
 				if($_POST['fromProductBacklog'] == 1) {
 					$header = "Location: ".plugin_page('product_backlog.php')."&productBacklogName=".$_POST['productBacklogName'];
 				}
 
-				if($_POST['fromSprintBacklog'] == 0 && $_POST['fromTaskboard'] == 0 && $_POST['fromProductBacklog'] == 0){
+				if($_POST['fromSprintBacklog'] == 0 && $_POST['fromTaskboard'] == 0 && $_POST['fromProductBacklog'] == 0 && $_POST['fromStatistics'] == 0){
 					$header = "Location: ".plugin_page($page_name);
 				}
 
 				if($_POST['fromSprintBacklog'] == 1 && $_POST['fromTaskPage'] == 1){
 					$header = "Location: ".plugin_page($page_name);
 				}
-
 			}
-
+			
 			return $header;
 		}
 

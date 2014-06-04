@@ -13,7 +13,7 @@
 	#
 	# You should have received a copy of the GNU General Public License
 	# along with agileMantis. If not, see <http://www.gnu.org/licenses/>.
-	
+
 	# get all user stories from a selected product backlog
 	$userstories = $pb->getUserStoriesByProductBacklogName($product_backlog);
 	if(config_get('current_user_product_backlog_filter_direction',null,auth_get_current_user_id()) == 'ASC'){
@@ -112,7 +112,7 @@
 			</td>
 			<td><a href="view.php?id=<?php echo $row['id']?>"><?php echo $row['id']?></a></td>
 			<td><?php echo $row['category_name']?></td>
-			<?php 
+			<?php
 			if(config_get('show_project_target_version',null,auth_get_current_user_id()) == 1){
 				# get user story version information
 				$version_info = $version->getVersionInformation($row['project_id'],$row['target_version']);
@@ -157,8 +157,8 @@
 			<td style="background-color:#B1DDFF"></td>
 			<td style="background-color:#B1DDFF"></td>
 			<td style="background-color:#B1DDFF"></td>
-			<?php if(config_get('show_project_target_version',null,auth_get_current_user_id()) == 1){?>
 			<td style="background-color:#B1DDFF"></td>
+			<?php if(config_get('show_project_target_version',null,auth_get_current_user_id()) == 1){?>
 			<td style="background-color:#B1DDFF"></td>
 			<?php }?>
 		<?php }?>

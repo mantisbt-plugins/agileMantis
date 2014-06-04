@@ -13,7 +13,7 @@
 	#
 	# You should have received a copy of the GNU General Public License
 	# along with agileMantis. If not, see <http://www.gnu.org/licenses/>.
-	
+
 	# include additional sprint functionality
 	include(PLUGIN_URI.'pages/sprint_backlog_functions.php');
 
@@ -60,14 +60,14 @@
 			$tasks->rest_capacity = 0;
 			$tasks->capacity = 0;
 		}
-		
+
 		# check wether developer has enough capacity or not
 		if($tasks->developer > 0 && $tasks->status < 4 && !$_POST['copy_tasks'] && ($_POST['currentUnit'] == "h" || $_POST['currentUnit'] == 'T')){
 			if(!$tasks->getDeveloperSprintCapacity($_POST['currentUnit'])){
 				$hinweis = plugin_lang_get( 'sprint_backlog_error_108701' );
 			}
 		}
-		
+
 		if($tasks->performed_capacity + str_replace(',','.',$_POST['performed']) < 0 && $_POST['performed'] != 0 && $system == ""){
 			$tasks->capacity = 0;
 			$tasks->capacity -= $tasks->performed_capacity;
@@ -75,7 +75,7 @@
 			$system = plugin_lang_get( 'sprint_backlog_error_980700' );
 			$tasks->rest_capacity = sprintf("%.2f",str_replace(',','.',$_POST['rest_capacity']));
 		}
-		
+
 		if($tasks->rest_capacity <= 0 && $system == ""){
 			$tasks->status = 4;
 			$hinweis = plugin_lang_get( 'sprint_backlog_error_107701' );
@@ -83,15 +83,15 @@
 			$tasks->rest_capacity = 0;
 			$tasks->updateTaskLog($tasks->id , $user_id, "resolved", $date);
 			$tasks->addStatusNote($tasks->us_id,$tasks->id,$user_id);
-		} 
-			
+		}
+
 		if($system == "") {
 			$tasks->saveDailyPerformance(0);
 			$tasks->setDailyScrum($tasks->id, 1);
 			$tasks->editTask();
 
 			$tasks->setConfirmationStatus($tasks->us_id);
-			
+
 			if($tasks->hasTasksLeft($tasks->us_id) !=""){
 				$tasks->closeUserStory($tasks->us_id,80,$user_id);
 				email_resolved( $tasks->us_id );
@@ -100,7 +100,7 @@
 		}
 	}
 	# show chose sprint page or open chosen sprint directly
-	
+
 	if($show_all_sprints == true){
 		include(PLUGIN_URI.'pages/chose_sprint.php');
 	} else {
@@ -117,7 +117,7 @@
 	} else {
 		$direction = 'ASC';
 	}
-	
+
 	# calculate amount of table columns
 	$tableColums = 10;
 	$tableColums += plugin_config_get('gadiv_show_rankingorder');
@@ -142,6 +142,7 @@
 		<tr>
 			<td class="category" width="20"></td>
 			<td class="category"><a href="<?php echo plugin_page("sprint_backlog.php")?>&sprintName=<?php echo urlencode($s['name'])?>&sort_by=id&direction=<?php echo $direction?>">ID</a></td>
+			<td class="category" width="20"></td>
 			<td class="category"><a href="<?php echo plugin_page("sprint_backlog.php")?>&sprintName=<?php echo urlencode($s['name'])?>&sort_by=summary&direction=<?php echo $direction?>"><?php echo plugin_lang_get( 'sprint_backlog_summary' )?></a></td>
 			<td class="category"><?php echo plugin_lang_get( 'sprint_backlog_developer' )?></td>
 			<td class="category"><?php echo plugin_lang_get( 'sprint_backlog_planned' )?> <?php echo $unit?></td>
@@ -165,10 +166,10 @@
 				foreach($us AS $num => $row){
 					$t_buglist .= $row['id'].',';
 					if(config_get('show_only_own_userstories',null,auth_get_current_user_id()) == 1){$user_id = auth_get_current_user_id();} else {$user_id = 0;}
-					
+
 					# get all tasks of a user story
 					$t = $sprint->getSprintTasks($row['id'],0);
-					
+
 					# change background color of a user story row
 					switch ($row['status']){
 						case '40':
@@ -192,7 +193,7 @@
 				}
 			}
 		?>
-		<?php 
+		<?php
 			# set new bug list cookie
 			gpc_set_cookie( config_get( 'bug_list_cookie' ), substr($t_buglist,0,-1) );
 		?>

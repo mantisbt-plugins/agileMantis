@@ -543,16 +543,29 @@
 			mysql_query($sql);
 		}
 		
-		function getLatestSprints($team_id, $amountOfSprints="", $sprintName=""){
+		function getLatestSprints($team_id, $amountOfSprints="", $sprintName="", $previous=""){
 			if($amountOfSprints != ""){
 				$addSql = " ORDER BY id DESC LIMIT 0, ".(int) $amountOfSprints;
+			}
+			
+			if($previous == true){
+				$addSql = " ORDER BY id DESC LIMIT 1, ".(int) $amountOfSprints;
 			}
 
 			if($sprintName != ""){
 				$addSql = " AND name = '".$sprintName."'";
 			}
 
-			$this->sql = "SELECT * FROM gadiv_sprints LEFT JOIN gadiv_rel_sprint_closed_information ON sprint_id = id WHERE team_id = '".$team_id."' AND status = 2".$addSql;
+			$this->sql = "SELECT * FROM gadiv_sprints LEFT JOIN gadiv_rel_sprint_closed_information ON sprint_id = id WHERE team_id = '".$team_id."' ".$addSql;
+			return $this->executeQuery();
+		}
+		
+		function getPreviousSprint($sprint_id, $team_id){
+			$sql = "SELECT end FROM gadiv_sprints WHERE id = '".$sprint_id."'";
+			$result = mysql_query($sql);
+			$sprint = mysql_fetch_assoc($result);
+			
+			$this->sql = "SELECT * FROM gadiv_sprints LEFT JOIN gadiv_rel_sprint_closed_information ON sprint_id = id WHERE end < '".$sprint['end']."' AND team_id = '".$team_id."' ORDER BY id DESC LIMIT 0, 1";
 			return $this->executeQuery();
 		}
 		
@@ -561,6 +574,50 @@
 			$result = mysql_query($sql);
 			$team = mysql_fetch_assoc($result);
 			return $team['total_cap'];
+		}
+		
+		function getVelocityDataFromSprint($userstories){
+			if(!empty($userstories)){
+			
+				$reststorypoints = 0;
+				$storypoints = 0;
+				$workmoved = 0;
+				$storypointsmoved = 0;
+				$performed = 0;
+			
+				foreach($userstories AS $num => $row){
+				
+					// Prüfe, ob Status erledigt oder geschlossen und ermittle Anzahl Story Points
+					$userstory = $this->checkForUserStory($row['bug_id']);
+					if($row['status'] >= 80){
+						$reststorypoints += $userstory['storypoints'];
+					}
+				
+					$storypoints = $storypoints + (int) $userstory['storypoints'];
+					// Story Points in aufgesplitteten User Stories ermitteln
+					$splittedStory = $this->getSplittedStory($row['id']);
+					
+					if(!empty($splittedStory)){
+						$workmoved += $userstory['storypoints'];
+						$storypointsmoved += $splittedStory['storypoints_moved'];
+					}
+
+					$tasked = $this->getSprintTasks($row['id'],0);
+					if(!empty($tasked)){
+						foreach($tasked AS $key => $value){
+							$performed += $value['performed_capacity'];
+						}
+					}
+				}
+				
+				$sprint['reststorypoints'] = $reststorypoints;
+				$sprint['storypoints'] = $storypoints;
+				$sprint['workmoved'] = $workmoved;
+				$sprint['storypointsmoved'] = $storypointsmoved;
+				$sprint['performed'] = $performed;
+	
+				return $sprint;
+			}
 		}
 
 	}

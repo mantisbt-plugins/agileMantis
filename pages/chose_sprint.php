@@ -1,5 +1,5 @@
 <?php
-	
+
 	# agileMantis - makes Mantis ready for Scrum
 
 	# agileMantis is free software: you can redistribute it and/or modify
@@ -14,11 +14,11 @@
 	#
 	# You should have received a copy of the GNU General Public License
 	# along with agileMantis. If not, see <http://www.gnu.org/licenses/>.
-	
+
 	# agileMantis page information
 	$_GET['page'] = str_replace('agileMantis/','',$_GET['page']);
 	$page_name = str_replace('.php','',$_GET['page']);
-	
+
 	# call taskboard or sprint backlog page
 	switch ($_GET['page']){
 		case 'taskboard.php':
@@ -29,7 +29,7 @@
 			$name = 'Sprint Backlog';
 		break;
 	}
-	
+
 	html_page_top(plugin_lang_get( 'sprint_backlog_chose_sprint' ));
 	print_recently_visited();
 
@@ -59,7 +59,7 @@
 		<td class="category"><?php echo plugin_lang_get( 'common_actions' )?></td>
 	</tr>
 	<?php
-		
+
 		# get all sprints and team information
 		$userTeams = $team->allTeamsByUser($user_id);
 		$sprints = $sprint->getSprints();

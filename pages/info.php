@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 	# agileMantis - makes Mantis ready for Scrum
 
@@ -14,26 +14,55 @@
 	#
 	# You should have received a copy of the GNU General Public License
 	# along with agileMantis. If not, see <http://www.gnu.org/licenses/>.
-	
+
 	html_page_top(plugin_lang_get( 'info_title' ));
+
+	$current_version = $au->agileMantisVersion;
+
+	if(!config_is_set('plugin_agileMantis_gadiv_agilemantis_version')){
+		config_set('plugin_agileMantis_gadiv_agilemantis_version', 0);
+	}
+
+	if($_POST['action'] == 'upgrade'){
+		$sql = "ALTER TABLE gadiv_additional_user_fields ADD COLUMN expert int (1) NOT NULL AFTER administrator";
+		mysql_query($sql);
+		plugin_config_set('gadiv_agilemantis_version', $current_version);
+		$system = '<br><center><span style="color:green; font-size:16px; font-weight:bold;">'.plugin_lang_get( 'manage_settings_successfully_saved' ).'</span></center><br>';
+	}
 ?>
 
 <?php if ( current_user_is_administrator() || $au->authUser() == 2 || $au->authUser() == 3 ) {?>
 <br>
 <?php include(PLUGIN_URI.'/pages/footer_menu.php')?>
-<?php echo form_security_field('plugin_format_config_edit') ?>
 <br>
+<?php
+	echo $system;
+?>
 <table align="center" class="width75" cellspacing="1">
 <tr>
 	<td colspan="2"><b><?php echo plugin_lang_get( 'info_title' )?></b></td>
 </tr>
 <tr <?php echo helper_alternate_class() ?>>
 	<td class="category">Version</td>
-	<td>1.2.5</td>
+	<td>
+		<?php echo $current_version?>
+	</td>
 </tr>
+<?php if(plugin_config_get('gadiv_agilemantis_version') != $current_version){ ?>
+<tr <?php echo helper_alternate_class() ?>>
+	<td class="category">Upgrade</td>
+	<td>
+		<form action="" method="post">
+			<input type="hidden" name="action" value="upgrade">
+			<input type="hidden" name="version" value="<?php echo plugin_config_get('gadiv_agilemantis_version')?>">
+			<input type="submit" name="upgrade" value="Upgrade">
+		</form>
+	</td>
+</tr>
+<?php } ?>
 <tr <?php echo helper_alternate_class() ?>>
 	<td class="category"><?php echo plugin_lang_get( 'info_company' )?></td>
-	<td>gadiv GmbH, Boevingen 148, D-53804 Much, Germany</td>
+	<td>gadiv GmbH, Boevingen 148, 53804 Much, Germany</td>
 </tr>
 <tr <?php echo helper_alternate_class() ?>>
 	<td class="category"><?php echo plugin_lang_get( 'info_website' )?></td>
@@ -45,10 +74,10 @@
 </tr>
 </table>
 <br>
-<?php 
+<?php
 if(plugin_is_loaded('agileMantisExpert')){
-	event_signal( 'EVENT_LOAD_THIRDPARTY');	
-} 
+	event_signal( 'EVENT_LOAD_THIRDPARTY');
+}
 ?>
 <?php } else {echo '<br><center><span style="color:red;font-size:16px;font-weight:bold;">'.plugin_lang_get( 'info_error_921000' ).'</span></center>';}?>
 <?php html_page_bottom() ?>

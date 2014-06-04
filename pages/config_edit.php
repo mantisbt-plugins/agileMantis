@@ -94,6 +94,7 @@
 								$throw_error_3 = true;
 							}
 						} else {
+							plugin_config_set('gadiv_taskboard', 0);
 							$throw_error_2 = true;
 						}
 					} else {
@@ -186,7 +187,7 @@
 		$throw_error_7 = true;
 	}
 
-	if(plugin_is_loaded('agileMantisExpert')){
+	if(plugin_is_loaded('agileMantisExpert') && $_FILES['license']['tmp_name'] != ""){
 		if($_FILES['license']['name'] == 'license.txt'){
 			$uploadfile = config_get_global('plugin_path' ). 'agileMantisExpert' . DIRECTORY_SEPARATOR . 'license' . DIRECTORY_SEPARATOR . basename($_FILES['license']['name']);
 			if (!move_uploaded_file($_FILES['license']['tmp_name'], $uploadfile)) {

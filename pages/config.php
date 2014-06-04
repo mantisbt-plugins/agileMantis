@@ -1,5 +1,5 @@
-<?php 
-	
+<?php
+
 	# agileMantis - makes Mantis ready for Scrum
 
 	# agileMantis is free software: you can redistribute it and/or modify
@@ -14,20 +14,20 @@
 	#
 	# You should have received a copy of the GNU General Public License
 	# along with agileMantis. If not, see <http://www.gnu.org/licenses/>.
-	
+
 	# initial plugin config settings
 	if(!config_is_set('plugin_agileMantis_gadiv_show_storypoints')){
 		config_set('plugin_agileMantis_gadiv_show_storypoints', 0);
 	}
-	
+
 	if(!config_is_set('plugin_agileMantis_gadiv_show_rankingorder')){
 		config_set('plugin_agileMantis_gadiv_show_rankingorder', 0);
 	}
-	
-	html_page_top(plugin_lang_get( 'manage_settings_title' )); 
-	
+
+	html_page_top(plugin_lang_get( 'manage_settings_title' ));
+
 	# checks if the current user is administrator oder agileMantis administrator
-	if ( current_user_is_administrator() || $_SESSION['ISMANTISADMIN'] == 1 ) { 
+	if ( current_user_is_administrator() || $_SESSION['ISMANTISADMIN'] == 1 ) {
 ?>
 <br>
 <?php
@@ -38,7 +38,7 @@
 	if($_GET['error'] == 'sprint_length_error'){
 		$system = plugin_lang_get( 'manage_settings_error_984101' );
 	}
-	
+
 	if($_GET['error'] == 'no_license_error'){
 		$system = plugin_lang_get( 'manage_settings_error_984102' );
 	}
@@ -46,11 +46,11 @@
 	if($_GET['error'] == 'could_not_find_error'){
 		$system = plugin_lang_get( 'manage_settings_error_984103' );
 	}
-	
+
 	if($_GET['error'] == 'empty_license_error'){
 		$system = plugin_lang_get( 'manage_settings_error_984104' );
 	}
-	
+
 	if($_GET['error'] == 'file_upload_error'){
 		$system = plugin_lang_get( 'manage_settings_error_984105' );
 	}
@@ -60,7 +60,7 @@
 	if($_GET['save'] == 'success'){
 		echo '<br><center><span style="color:green; font-size:16px; font-weight:bold;">'.plugin_lang_get( 'manage_settings_successfully_saved' ).'</span></center>';
 	}
-	
+
 ?>
 <?php if($system){?>
 	<br>
@@ -75,18 +75,20 @@
 	<td class="category"><b><?php echo plugin_lang_get( 'manage_settings_options' )?></b></td>
 	<td class="category"><b><?php echo plugin_lang_get( 'common_actions' )?></b></td>
 </tr>
-<?php if(plugin_is_loaded('agileMantisExpert')){?>
 <tr <?php echo helper_alternate_class() ?>>
 	<td><?php echo plugin_lang_get( 'manage_settings_license_info' )?></td>
 	<td class="left">
 		<?php
 			if(plugin_is_loaded('agileMantisExpert')){
 				event_signal( 'EVENT_LOAD_SETTINGS', array( auth_get_current_user_id()) );
+			} else {
+		?>
+		<a href="<?php echo plugin_lang_get( 'license_download_link' )?>"><?php echo plugin_lang_get( 'license_download' )?></a>
+		<?php
 			}
 		?>
 	</td>
 </tr>
-<?php } ?>
 <form action="<?php echo plugin_page('config_edit.php') ?>" method="post" id="config_form" enctype="multipart/form-data">
 <input type="hidden" id="deleteField" name="deleteField" value="">
 <input type="hidden" id="changeUnit" name="changeUnit" value="">
@@ -121,7 +123,7 @@
 	</td>
 </tr>
 <tr <?php echo helper_alternate_class() ?>>
-	<td>Daily Scrum Meeting mit Taskboard</td>
+	<td><?php echo plugin_lang_get( 'manage_settings_daily_scrum_mode' )?></td>
 	<td><input type="checkbox" name="gadiv_daily_scrum" <?if(plugin_config_get('gadiv_daily_scrum')=='1'){echo 'checked';}?> value="1"></td>
 </tr>
 <tr <?php echo helper_alternate_class() ?>>

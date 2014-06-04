@@ -84,6 +84,8 @@
 	$s_plugin_agileMantis_manage_user_participant					= 	'agileMantis Participant';
 	$s_plugin_agileMantis_manage_user_developer						= 	'agileMantis Developer';
 	$s_plugin_agileMantis_manage_user_administrator					= 	'agileMantis Administrator';
+	$s_plugin_agileMantis_manage_user_expert						= 	'Expert-User';
+	$s_plugin_agileMantis_manage_user_remove_from_license			= 	'Unlock license';
 	$s_plugin_agileMantis_manage_user_error_921A00					= 	'[<span style="font-size:14px;">912A00</span>] You have not got the right to display the agileMantis users.';
 	
 	# Manage Product Backlogs
@@ -234,6 +236,7 @@
 	$s_plugin_agileMantis_manage_settings_show_storypoints			=	'Display Story Points';
 	$s_plugin_agileMantis_manage_settings_show_rankingorder			=	'Display Ranking Order';
 	$s_plugin_agileMantis_manage_settings_sprint_view				=	'Presentation of current Sprint';
+	$s_plugin_agileMantis_manage_settings_daily_scrum_mode          =   'Daily Scrum Meeting with Taskboard';
 	$s_plugin_agileMantis_manage_settings_storypoints_mode			=	'Enter Story Points as ..';
 	$s_plugin_agileMantis_manage_settings_fibonnaci_numbers			=	'Count of Fibonacci numbers';
 	$s_plugin_agileMantis_manage_settings_free_mode					=	'Free Mode';
@@ -423,6 +426,7 @@
 	
 	# Statistics
 	$s_plugin_agileMantis_statistics_title							=	'Statistics';
+	$s_plugin_agileMantis_statistics_edit							=	'Edit Statistics';
 	
 	# Taskboard
 	$s_plugin_agileMantis_taskboard_title							=	'Edit Taskboard';
@@ -446,5 +450,6 @@
 	
 	#Lizenzen
 	$s_plugin_agileMantis_license_download							=	'Download Expert Components';
+	$s_plugin_agileMantis_license_download_link                     =   'http://www.gadiv.de/de/opensource/agilemantis/agilemantisen.html';
 	$s_plugin_agileMantis_license_buy								=	'Buy Expert license';
 ?>
