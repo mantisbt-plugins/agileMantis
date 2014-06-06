@@ -124,7 +124,7 @@
 </tr>
 <tr <?php echo helper_alternate_class() ?>>
 	<td><?php echo plugin_lang_get( 'manage_settings_daily_scrum_mode' )?></td>
-	<td><input type="checkbox" name="gadiv_daily_scrum" <?if(plugin_config_get('gadiv_daily_scrum')=='1'){echo 'checked';}?> value="1"></td>
+	<td><input type="checkbox" name="gadiv_daily_scrum" <?php if(plugin_config_get('gadiv_daily_scrum')=='1'){echo 'checked';}?> value="1"></td>
 </tr>
 <tr <?php echo helper_alternate_class() ?>>
 	<td><?php echo plugin_lang_get( 'manage_settings_storypoints_mode' )?></td>
@@ -210,27 +210,27 @@
 	<td class="category"><center><b><?php echo plugin_lang_get( 'button_remove' )?></b></center></td>
 </tr>
 <tr <?php echo helper_alternate_class() ?>>
-	<td><?php echo lang_get( 'RankingOrder' ) ?></td>
+	<td><?php echo plugin_lang_get( 'RankingOrder' ) ?></td>
 	<td class="left"><center><input type="checkbox" id="gadiv_ranking_order" name="gadiv_ranking_order" <?php if(plugin_config_get('gadiv_ranking_order')=='1'){echo 'checked';}?> value="1" onClick="enableButton('gadiv_ranking_order');"></center></td>
 	<td><center><input type="submit" id="gadiv_ranking_order_button" name="remove_custom_field[RankingOrder]" class="button" value="<?php echo plugin_lang_get( 'manage_settings_remove_from_project' )?>" <?php if(plugin_config_get('gadiv_ranking_order')=='1'){echo 'disabled';}?> onclick="deleteProjectField('Rangfolge','RankingOrder'); return false;"></center></td>
 </tr>
 <tr <?php echo helper_alternate_class() ?>>
-	<td><?php echo lang_get( 'Presentable' ) ?></td>
+	<td><?php echo plugin_lang_get( 'Presentable' ) ?></td>
 	<td class="left"><center><input type="checkbox" id="gadiv_presentable" name="gadiv_presentable" <?php if(plugin_config_get('gadiv_presentable')=='1'){echo 'checked';}?> value="1" onChange="enableButton('gadiv_presentable');"></center></td>
 	<td><center><input type="submit" id="gadiv_presentable_button" name="remove_custom_field[Presentable]" class="button" value="<?php echo plugin_lang_get( 'manage_settings_remove_from_project' )?>" <?php if(plugin_config_get('gadiv_presentable')=='1'){echo 'disabled';}?> onclick="deleteProjectField('Präsentabel','Presentable'); return false;"></center></td>
 </tr>
 <tr <?php echo helper_alternate_class() ?>>
-	<td><?php echo lang_get( 'Technical' ) ?></td>
+	<td><?php echo plugin_lang_get( 'Technical' ) ?></td>
 	<td class="left"><center><input type="checkbox" id="gadiv_technical" name="gadiv_technical" <?php if(plugin_config_get('gadiv_technical')=='1'){echo 'checked';}?> value="1" onChange="enableButton('gadiv_technical');"></center></td>
 	<td><center><input type="submit" id="gadiv_technical_button" name="remove_custom_field[Technical]" class="button" value="<?php echo plugin_lang_get( 'manage_settings_remove_from_project' )?>" <?php if(plugin_config_get('gadiv_technical')=='1'){echo 'disabled';}?> onclick="deleteProjectField('Technisch','Technical'); return false;"></center></td>
 </tr>
 <tr <?php echo helper_alternate_class() ?>>
-	<td><?php echo lang_get( 'InReleaseDocu' ) ?></td>
+	<td><?php echo plugin_lang_get( 'InReleaseDocu' ) ?></td>
 	<td class="left"><center><input type="checkbox" id="gadiv_release_documentation"  name="gadiv_release_documentation" <?php if(plugin_config_get('gadiv_release_documentation')=='1'){echo 'checked';}?> value="1" onChange="enableButton('gadiv_release_documentation');"></center></td>
 	<td><center><input type="submit" id="gadiv_release_documentation_button" name="remove_custom_field[inReleaseDocu]" class="button" value="<?php echo plugin_lang_get( 'manage_settings_remove_from_project' )?>" <?php if(plugin_config_get('gadiv_release_documentation')=='1'){echo 'disabled';}?> onclick="deleteProjectField('In Freigabedoku','inReleaseDocu'); return false;"></center></td>
 </tr>
 <tr <?php echo helper_alternate_class() ?>>
-	<td><?php echo lang_get( 'PlannedWork' ) ?></td>
+	<td><?php echo plugin_lang_get( 'PlannedWork' ) ?></td>
 	<td class="left"><center><input type="checkbox" id="gadiv_tracker_planned_costs" name="gadiv_tracker_planned_costs" <?php if(plugin_config_get('gadiv_tracker_planned_costs')=='1'){echo 'checked';}?> value="1" onChange="enableButton('gadiv_tracker_planned_costs');"></center></td>
 	<td><center><input type="submit" id="gadiv_tracker_planned_costs_button" name="remove_custom_field[PlannedWork]" class="button" value="<?php echo plugin_lang_get( 'manage_settings_remove_from_project' )?>" <?php if(plugin_config_get('gadiv_tracker_planned_costs')=='1'){echo 'disabled';}?> onclick="deleteProjectField('Planaufwand','PlannedWork'); return false;"></center></td>
 </tr>

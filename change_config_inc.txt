@@ -1,11 +1,6 @@
 <?php
-	!!! ATTENTION !!!
-	
 	This first part in config_inc.php refers to your mantis installation.
 	In the second part are the agileMantis adjustments that need to be exchanged. 
-
-	!!! ATTENTION !!!
-
 ?>
 <?php
 define("VERSIONAGMAN","Version 1.3");
@@ -18,7 +13,7 @@ else
 	$protocol = 'http://';
 }
 
-define("SUBFOLDER",dirname($_SERVER['PHP_SELF']) . "/");
+define("SUBFOLDER",dirname($_SERVER['PHP_SELF']));
 define("PLUGIN_URL",$protocol.$_SERVER['HTTP_HOST']. SUBFOLDER . "plugins/agileMantis/");
 define("BASE_URL",$protocol.$_SERVER['HTTP_HOST']."".SUBFOLDER);
 define("BASE_URI", dirname( __FILE__ ) . DIRECTORY_SEPARATOR);

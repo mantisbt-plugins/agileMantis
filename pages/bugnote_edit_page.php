@@ -85,7 +85,7 @@
 <div align="center">
 <form method="post" action="<?php echo plugin_page("bugnote_update.php")?>">
 <?php echo form_security_field( 'bugnote_update' ) ?>
-<input type="hidden" name="tid" value="<?=$_GET['tid']?>">
+<input type="hidden" name="tid" value="<?php echo $_GET['tid']?>">
 <table class="width75" cellspacing="1">
 <tr>
 	<td class="form-title">

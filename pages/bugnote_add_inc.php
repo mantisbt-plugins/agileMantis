@@ -30,7 +30,7 @@
 <?php
 	collapse_open( 'bugnote_add' );
 ?>
-<?
+<?php
 	if(stristr($_GET['page'],'edit_task')){
 		$table_size = 'width75';
 	} else {
@@ -41,7 +41,7 @@
 <?php echo form_security_field( 'bugnote_add' ) ?>
 <input type="hidden" name="bug_id" value="<?php echo $f_bug_id ?>" />
 <input type="hidden" name="task_id" value="<?php echo $_GET['tid'] ?>" />
-<table class="<?=$table_size?>" cellspacing="1" align="center">
+<table class="<?php echo $table_size?>" cellspacing="1" align="center">
 <tr>
 	<td class="form-title" colspan="2">
 <?php

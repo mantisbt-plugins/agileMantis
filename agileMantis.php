@@ -151,10 +151,10 @@ class agileMantisPlugin extends MantisPlugin {
 						<td colspan="5">
 							<select name="backlog" style="width:660px;" '.$disabled.'>';?>
 								<option value=""><?php echo plugin_lang_get( 'view_issue_chose_product_backlog' )?></option>
-								<?foreach($pbl AS $num => $row){?>
+								<?php foreach($pbl AS $num => $row){?>
 									<option value="<?php echo $row['name']?>" <?php if($row['name']==$story['name']){echo 'selected';}?>><?php echo $row['name']?></option>
-								<?}?>
-								<? echo '
+								<?php }?>
+								<?php echo '
 							</select>
 						</td>
 					</tr>

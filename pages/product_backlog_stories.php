@@ -123,8 +123,8 @@
 			?>
 			<td width="20">
 				<?php if(!plugin_is_loaded('agileMantisExpert')){?>
-				<img src="<?php echo PLUGIN_URL?>images/info-icon.png" alt="<?php echo plugin_lang_get( 'product_backlog_show_info' );?>" onclick="loadUserstory(<?php echo $row['id']?>);" height="16" width="16">
-				<div id="userstory_<?php echo $row['id']?>" title="User Story #<?php echo $row['id']?>" style="display:none;" class="SpecialUserStoryView">
+				<img src="<?php echo PLUGIN_URL?>images/info-icon.png" alt="<?php echo plugin_lang_get( 'product_backlog_show_info' );?>" onclick="loadUserstory(<?php echo 0?>);" height="16" width="16">
+				<div id="userstory_<?php echo 0?>" title="User Story #<?php echo 0?>" style="display:none;" class="SpecialUserStoryView">
 				  <img src="<?php echo PLUGIN_URL?>images/show_userstory_information.png" alt="Expert Screenshot">
 				</div>
 				<?php } else { ?>

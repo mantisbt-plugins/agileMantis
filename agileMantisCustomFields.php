@@ -100,7 +100,7 @@ echo '		<td '.$colspan.'>
 
 if($story['sprint'] != ""){
 		$pbro = 'disabled';?>
-		<input type="hidden" name="backlog" value="<?=$story['name']?>">
+		<input type="hidden" name="backlog" value="<?php echo $story['name']?>">
 <?php
 	}
 echo '
@@ -113,8 +113,8 @@ echo '
 				<option value=""><?php echo plugin_lang_get( 'custom_chose_product_backlog' )?></option>
 				<?php foreach($pbl AS $num => $row){?>
 					<option value="<?php echo $row['name']?>" <?php if($row['name'] == $story['name']){echo 'selected';}?>><?php echo $row['name']?></option>
-				<?}?>
-				<? echo '
+				<?php }?>
+				<?php echo '
 			</select>
 		</td>
 	';

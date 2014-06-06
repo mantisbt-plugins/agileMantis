@@ -282,7 +282,7 @@
 			<?php }?>
 			<select name="team" <?php if($_POST['fromProductBacklog']){?>disabled<?php }?>>
 				<option value="0"><?php echo plugin_lang_get( 'common_chose' )?></option>
-				<?
+				<?php
 					$teamData = $team->getTeams();
 					foreach($teamData AS $num => $row){
 				?>
@@ -319,7 +319,7 @@ $system = "";
 <input type="hidden" name="sprintName" value="<?php echo $_POST['sprintName']?>">
 <table align="center" class="width100" cellspacing="1">
 <tr>
-	<td class="left"><b><?php echo plugin_lang_get( 'manage_capacity_planning_for' )?></b> <span style="font-weight:bold;color:grey;"><?$team->id = $_POST['team'];$currentTeam = $team->getSelectedTeam();echo $currentTeam[0]['name'];?></span></td>
+	<td class="left"><b><?php echo plugin_lang_get( 'manage_capacity_planning_for' )?></b> <span style="font-weight:bold;color:grey;"><?php $team->id = $_POST['team'];$currentTeam = $team->getSelectedTeam();echo $currentTeam[0]['name'];?></span></td>
 	<td class="right">
 		<input type="submit" name="addavailability" value="<?php echo plugin_lang_get( 'manage_capacity_add_availability' )?>">
 		<input type="submit" name="submit" value="<?php echo plugin_lang_get( 'button_save' )?>">
