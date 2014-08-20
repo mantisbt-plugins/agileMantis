@@ -122,7 +122,7 @@
 				echo '<task_id>'.$row['id'].'</task_id>';
 				echo '<task_name>'.htmlspecialchars($row['name']).'</task_name>';
 				echo '<task_description>'.htmlspecialchars($row['description']).'</task_description>';
-				echo '<task_daily_scrum>'.$row['daily_scrum'].'</task_daily_scrum>';
+				echo '<task_daily_scrum>'.(isset($row['daily_scrum']) ? '1' : '0').'</task_daily_scrum>';
 				if($row['developer_id'] > 0){
 				echo '<developer>';
 					echo '<dev_id>'.$row['developer_id'].'</dev_id>';

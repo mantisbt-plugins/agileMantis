@@ -17,24 +17,33 @@
 	
 	error_reporting(NULL);
 	$path = realpath(dirname(__FILE__));
-	$path = str_replace('plugins' . DIRECTORY_SEPARATOR . 'agileMantis' . DIRECTORY_SEPARATOR . 'core', '', $path);
-
+	
+	// Lade die agileMantis spezifischen Pfade / Variabeln
+	include_once($configPath . 'config_api.php');
+	
 	// Lade die Konfigurationsdatei und stelle die Datenbankverbindung her
 	// Zugriff auf die agileMantis Funktionen
+	$path = str_replace('plugins' . DIRECTORY_SEPARATOR . 'agileMantis' . DIRECTORY_SEPARATOR . 'core', '', $path);
 	include_once($path . 'config_inc.php');
+	
+	
 	
 	// Load language stuff
 	if($_POST['language'] == 'german'){
-		include_once( BASE_URI . '/lang/strings_german.txt' );
-		include_once( BASE_URI . '/plugins/agileMantis/lang/strings_german.txt' );
+		include_once( $path . 'lang' . DIRECTORY_SEPARATOR . 'strings_german.txt' );
+		include_once( $path . 'plugins' . DIRECTORY_SEPARATOR . 'agileMantis' . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . 'strings_german.txt' );
 	} else {
-		include_once( BASE_URI . '/lang/strings_english.txt' );
-		include_once( BASE_URI . '/plugins/agileMantis/lang/strings_english.txt' );
+		include_once( $path . 'lang' . DIRECTORY_SEPARATOR . 'strings_english.txt' );
+		include_once( $path . 'plugins' . DIRECTORY_SEPARATOR . 'agileMantis' . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . 'strings_english.txt' );
 	}
 
 	$link = mysql_connect($g_hostname, $g_db_username, $g_db_password);
 	mysql_select_db($g_database_name);
 
+	if($_POST['timezone']) {
+		date_default_timezone_set($_POST['timezone']);
+	}
+	
 	if($_POST['user']){
 		$sitekey = $tasks->getConfigValue('plugin_agileMantis_gadiv_sitekey');
 		$heute = mktime(0,0,0,date('m'),date('d'),date('y'));

@@ -17,7 +17,7 @@
 
 	class gadiv_commonlib {
 
-		var $agileMantisVersion = '1.3.0';
+		var $agileMantisVersion = '1.3.3';
 	
 		var $id;
 		var $pbid;
@@ -53,6 +53,23 @@
 		var $bug_arr;
 		var $unit;
 		var $custom_field_arr;
+		
+		# Für die DEMO-Version soll hier ein Hinweis ausgegeben werden,
+		# dass die Expert-Komponenten nicht Teil des OpenSource Teils sind.
+		function pointOutDemoVersionIfNeeded($component_name) {
+			if($_SERVER["SERVER_NAME"] == 'agilemantis.sourceforge.net') {
+				?>
+					<center>
+						<span style="background:yellow; color:black; font-size:16px; font-weight:bold;">
+							Please note:<br />
+							This is the Expert component's <?php echo $component_name?>.<br />
+							It is not part of the Open Source package.
+						</span>
+					</center>
+				<?php
+			}
+		}
+		
 
 		# execute query function which returns a multi-dimensional array as result
 		function executeQuery(){

@@ -63,32 +63,35 @@
 	$sql = "DELETE FROM mantis_config_table WHERE config_id = 'plugin_agileMantis_gadiv_workday_in_hours'";
 	mysql_query($sql);
 
-	$sql = "DROP TABLE `gadiv_additional_user_fields`, `gadiv_daily_task_performance`, `gadiv_productbacklogs`, `gadiv_rel_productbacklog_projects`, `gadiv_rel_team_user`, `gadiv_rel_user_availbility`, `gadiv_rel_user_availbility_week`, `gadiv_rel_user_team_capacity`, `gadiv_sprints`, `gadiv_tasks`, `gadiv_task_log`, `gadiv_teams`";
+	$sql = "DROP TABLE ";
+	$sql .= "`gadiv_additional_user_fields`, ";
+	$sql .= "`gadiv_daily_task_performance`, ";
+	$sql .= "`gadiv_productbacklogs`, ";
+	$sql .= "`gadiv_rel_productbacklog_projects`, "; 
+	$sql .= "`gadiv_rel_sprint_closed_information`, ";
+	$sql .= "`gadiv_rel_team_user`, ";
+	$sql .= "`gadiv_rel_userstory_splitting_table`, ";
+	$sql .= "`gadiv_rel_user_availability`, "; 
+	$sql .= "`gadiv_rel_user_availability_week`, ";
+	$sql .= "`gadiv_rel_user_team_capacity`, ";
+	$sql .= "`gadiv_sprints`, ";
+	$sql .= "`gadiv_tasks`, ";
+	$sql .= "`gadiv_task_log`, ";
+	$sql .= "`gadiv_teams`";
+	
 	mysql_query($sql);
 
-	include($_SERVER['DOCUMENT_ROOT'].$subdir.'config_inc.php');
+	$mantisPath = realpath(dirname(__FILE__));
+	$mantisPath = str_replace('plugins' . DIRECTORY_SEPARATOR . 'agileMantis', '', $mantisPath);
+	include_once($mantisPath . 'config_inc.php');
+	$configPath = $mantisPath . 'plugins' . DIRECTORY_SEPARATOR . 'agileMantis' . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR;
+	include_once($configPath . 'config_api.php');
 	
-	# set subfolder if necassary
-	$filename = $_SERVER['DOCUMENT_ROOT'].$subdir."config_inc.php";
-
-	# rewrite Mantis-Config file
-	$string = '<?php'."\r\n";
-	$string.= '$g_hostname = \''.$g_hostname.'\';'."\r\n";
-	$string.= '$g_db_type = \''.$g_db_type.'\';'."\r\n";
-	$string.= '$g_database_name = \''.$g_database_name.'\';'."\r\n";
-	$string.= '$g_db_username = \''.$g_db_username.'\';'."\r\n";
-	$string.= '$g_db_password = \''.$g_db_password.'\';'."\r\n";
-	$string.= '?>';
-
-	$fp = fopen($filename, 'w+');
-	fwrite($fp, $string);
-	fclose($fp);
-
 	# delete custom_strings_inc.php
-	@unlink($_SERVER['DOCUMENT_ROOT'].$subdir."custom_strings_inc.php");
+	@unlink($mantisPath . "custom_strings_inc.php");
 
 	# restore custom_strings_inc.php backup
-	$filename_custom = $_SERVER['DOCUMENT_ROOT'].$subdir."custom_strings_inc.php.bak";
+	$filename_custom = $mantisPath . "custom_strings_inc.php.bak";
 	if(is_file($filename_custom)){
 		@copy($filename_custom,substr(0,-4,$filename_custom));
 	}

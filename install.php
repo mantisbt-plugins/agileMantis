@@ -15,90 +15,13 @@
 	# You should have received a copy of the GNU General Public License
 	# along with agileMantis. If not, see <http://www.gnu.org/licenses/>.
 	
-	$file_content = file_get_contents($filename);
-	if(!stristr($file_content,"gadiv")){
-		# backup Mantis-Config file
-		@copy($filename,$filename.'.bak');
-		
-		# Rewrite Mantis-Config file
-		$string = '<?php'."\r\n";
-		$string.= 'define("SUBFOLDER","'.dirname($_SERVER['PHP_SELF']).'/");'."\r\n";
-		$string.= 'define("PLUGIN_URL","http://".$_SERVER[\'HTTP_HOST\']. SUBFOLDER . "plugins/agileMantis/");'."\r\n";
-		$string.= 'define("BASE_URL","http://".$_SERVER[\'HTTP_HOST\']."".SUBFOLDER."/");'."\r\n";
-		$string.= 'define("BASE_URI", dirname( __FILE__ ) . DIRECTORY_SEPARATOR);'."\r\n";
-		$string.= 'define("PLUGIN_URI",BASE_URI."plugins" . DIRECTORY_SEPARATOR . "agileMantis" . DIRECTORY_SEPARATOR . "");'."\r\n";
-		$string.= 'define("PLUGIN_CLASS_URI",PLUGIN_URI.\'libs\' . DIRECTORY_SEPARATOR);'."\r\n";
-		$string.= "\r\n";
-
-		$string.= 'include_once(PLUGIN_CLASS_URI.\'class_commonlib.php\');'."\r\n";
-		$string.= "\r\n";
-
-		$string.= '// Load agileMantis User Functions'."\r\n";
-		$string.= 'include_once(PLUGIN_CLASS_URI.\'class_agileuser.php\');'."\r\n";
-		$string.= '$au = new gadiv_agileuser();'."\r\n"."\r\n";
-		$string.= "\r\n";
-
-		$string.= '// Load agileMantis Team Functions'."\r\n";
-		$string.= 'include_once(PLUGIN_CLASS_URI.\'class_team.php\');'."\r\n";
-		$string.= '$team = new gadiv_team();'."\r\n";
-		$string.= "\r\n";
-
-		$string.= '// Load agileMantis Styling functions'."\r\n";
-		$string.= 'include_once(PLUGIN_CLASS_URI.\'class_agileMantisStyle.php\');'."\r\n";
-		$string.= '$agm = new gadiv_agileMantisStyle();'."\r\n";
-		$string.= "\r\n";
-
-		$string.= '// Load agileMantis Availability Functions'."\r\n";
-		$string.= 'include_once(PLUGIN_CLASS_URI.\'class_availability.php\');'."\r\n";
-		$string.= '$av = new gadiv_availability();'."\r\n";
-		$string.= "\r\n";
-
-		$string.= '// Load agileMantis Calendar Functions'."\r\n";
-		$string.= 'include_once(PLUGIN_CLASS_URI.\'class_calendar.php\');'."\r\n";
-		$string.= '$cal = new gadiv_calendar();'."\r\n";
-		$string.= "\r\n";
-
-		$string.= '// Load agileMantis Userstory functions'."\r\n";
-		$string.= 'include_once(PLUGIN_CLASS_URI.\'class_userstory.php\');'."\r\n";
-		$string.= '$userstory = new gadiv_userstory();'."\r\n";
-		$string.= "\r\n";
-
-		$string.= '// Load agileMantis Product Backlog Functions'."\r\n";
-		$string.= 'include_once(PLUGIN_CLASS_URI.\'class_product_backlog.php\');'."\r\n";
-		$string.= '$pb = new gadiv_product_backlog();'."\r\n";
-		$string.= "\r\n";
-
-		$string.= '// Load agileMantis Task Functions'."\r\n";
-		$string.= 'include_once(PLUGIN_CLASS_URI.\'class_tasks.php\');'."\r\n";
-		$string.= '$tasks = new gadiv_tasks();'."\r\n";
-		$string.= "\r\n";
-
-		$string.= '// Load agileMantis Project Functions'."\r\n";
-		$string.= 'include_once(PLUGIN_CLASS_URI.\'class_projects.php\');'."\r\n";
-		$string.= '$project = new gadiv_projects();'."\r\n";
-		$string.= "\r\n";
-
-		$string.= '// Load agileMantis Sprint Functions'."\r\n";
-		$string.= 'include_once(PLUGIN_CLASS_URI.\'class_sprint.php\');'."\r\n";
-		$string.= '$sprint = new gadiv_sprint();'."\r\n";
-		$string.= "\r\n";
-		
-		$string.= '// Load agileMantis Sprint Functions'."\r\n";
-		$string.= 'include_once(PLUGIN_CLASS_URI.\'class_version.php\');'."\r\n";
-		$string.= '$version = new gadiv_product_version();'."\r\n";
-		$string.= '?>'."\r\n";
-
-		$fp = fopen($filename, 'a+');
-		fwrite($fp, $string);
-		fclose($fp);
-	}
-
 	# set subfolder if necassary
 	$file_content = file_get_contents($filename_custom);
 
 	if(!stristr($file_content,"gadiv")){
-		$filename_custom = $_SERVER['DOCUMENT_ROOT'].dirname($_SERVER['PHP_SELF'])."/custom_strings_inc.php";
-
+		//$filename_custom = $_SERVER['DOCUMENT_ROOT'].dirname($_SERVER['PHP_SELF'])."/custom_strings_inc.php";
+		$filename_custom = config_get('absolute_path')."/custom_strings_inc.php";
+		
 		# backup custom_strings_inc.php if necessary
 		if(is_file($filename_custom)){
 			@copy($filename_custom,$filename_custom.'.bak');

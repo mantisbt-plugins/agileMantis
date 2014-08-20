@@ -84,8 +84,8 @@
 				# make taskboard / sprint backlog checks
 				if($f_gadiv_taskboard == 1){
 					if(plugin_is_loaded('agileMantisExpert')){
-						if(is_file(BASE_URI.'plugins/agileMantisExpert/license/license.txt')){
-							$filecontent = file_get_contents(BASE_URI.'plugins/agileMantisExpert/license/license.txt',FILE_USE_INCLUDE_PATH);
+						if(is_file(LICENSE_PATH)){
+							$filecontent = file_get_contents(LICENSE_PATH,FILE_USE_INCLUDE_PATH);
 							if($filecontent != ""){
 								if (plugin_config_get('gadiv_taskboard') != $f_gadiv_taskboard) {
 									plugin_config_set('gadiv_taskboard', $f_gadiv_taskboard);

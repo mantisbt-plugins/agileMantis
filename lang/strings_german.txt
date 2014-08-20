@@ -46,7 +46,7 @@
 	$s_plugin_agileMantis_button_edit								= 	'Bearbeiten';
 	$s_plugin_agileMantis_button_delete								= 	'Löschen';
 	$s_plugin_agileMantis_button_remove								= 	'Entfernen';
-	$s_plugin_agileMantis_button_open_calendar						= 	'Öffne Kalendar';
+	$s_plugin_agileMantis_button_open_calendar						= 	'Öffne Kalender';
 	$s_plugin_agileMantis_button_save								= 	'Speichern';
 	$s_plugin_agileMantis_button_back								= 	'Zurück';
 	$s_plugin_agileMantis_button_add								= 	'Hinzufügen';
@@ -437,8 +437,8 @@
 	$s_plugin_agileMantis_version_issue 							=	'Einträge';
 	
 	# Screenshots 
-	$s_plugin_agileMantis_screenshot_title							=	'Screenshot der Expert-Version (in Entwicklung)';
-	$s_plugin_agileMantis_screenshot_title_more						=	'Weitere Screenshots der Export-Version (in Entwicklung)';
+	$s_plugin_agileMantis_screenshot_title							=	'Screenshot der Expert-Version';
+	$s_plugin_agileMantis_screenshot_title_more						=	'Weitere Screenshots der Export-Version';
 	$s_plugin_agileMantis_screenshot_dialog_title					=	'Screenshot der Expert-Komponente';
 	$s_plugin_agileMantis_screenshot_dialog_text					=	'Diese Aktion ist zurzeit nicht möglich, da es sich um einen Screenshot für die Expert-Version handelt.<br><br>Für weitere Informationen besuchen Sie bitte ';
 	
@@ -452,6 +452,7 @@
 	
 	#Lizenzen
 	$s_plugin_agileMantis_license_download							=	'Expert-Komponenten herunterladen';
-    $s_plugin_agileMantis_license_download_link                     =   'http://www.gadiv.de/de/opensource/agilemantis/agilemantisde.html';
-	$s_plugin_agileMantis_license_buy								=	'Expert-Lizenz erwerben';
+    $s_plugin_agileMantis_license_download_link                     =   'http://www.gadiv.de/media/content/produkte/open_source/agilemantis/agileMantisExpert.zip';
+    $s_plugin_agileMantis_license_buy_link                     		=   'http://wp12122798.server-he.de';
+	$s_plugin_agileMantis_license_buy								=	'Freie Testlizenz erwerben';
 ?>

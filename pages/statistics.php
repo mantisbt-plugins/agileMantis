@@ -154,12 +154,9 @@
 		$images[] = PLUGIN_URL.'images/statistics_end_closed_userstories_of_the_sprint.png';
 ?>
 	<h2><?php echo plugin_lang_get( 'screenshot_title' );?></h2>
-	<a href="http://www.gadiv.de/de/opensource/agilemantis/agilemantisen.html"><?php echo plugin_lang_get( 'license_download' )?></a>
+	<a href="<?php echo plugin_lang_get( 'license_download_link' )?>"><?php echo plugin_lang_get( 'license_download' )?></a>
 	<br><br>
-	<form method="post" action="http://www.gadiv.de/de/opensource/agilemantis/agilemantisen.html">
-		<input type="hidden" name="action" value="buyLicense">
-		<input type="submit" name="buyLicense" value="<?php echo plugin_lang_get( 'license_buy' )?>">
-	</form>
+	<a href="<?php echo plugin_lang_get( 'license_buy_link' )?>"><?php echo plugin_lang_get( 'license_buy' )?></a>
 	<img src="<?php echo $images[rand(0,count($images)-1)]?>" alt="Screenshot Statistiken" id="highScreenshot" style="height: auto;max-width: 100%;" onmousedown="loadDescription();">
 	<div style="margin-bottom: 15px;" align="center">
 		<h2><?php echo plugin_lang_get( 'screenshot_title_more' );?></h2>

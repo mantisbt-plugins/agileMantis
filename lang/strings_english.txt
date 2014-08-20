@@ -435,8 +435,8 @@
 	$s_plugin_agileMantis_version_issue 							=	'Issues';
 	
 	# Screenshots 
-	$s_plugin_agileMantis_screenshot_title							=	'Expert Component Screenshot (in development)';
-	$s_plugin_agileMantis_screenshot_title_more						=	'More Expert Component Screenshots (in development)';
+	$s_plugin_agileMantis_screenshot_title							=	'Expert Component Screenshot';
+	$s_plugin_agileMantis_screenshot_title_more						=	'More Expert Component Screenshots';
 	$s_plugin_agileMantis_screenshot_dialog_title					=	'Expert Component Screenshot';
 	$s_plugin_agileMantis_screenshot_dialog_text					=	'This action is currently not allowed, because this is only a screenshot of an expert component.<br><br>For further information please visit ';
 
@@ -450,6 +450,7 @@
 	
 	#Lizenzen
 	$s_plugin_agileMantis_license_download							=	'Download Expert Components';
-	$s_plugin_agileMantis_license_download_link                     =   'http://www.gadiv.de/de/opensource/agilemantis/agilemantisen.html';
-	$s_plugin_agileMantis_license_buy								=	'Buy Expert license';
+	$s_plugin_agileMantis_license_download_link                     =   'http://www.gadiv.de/media/content/produkte/open_source/agilemantis/agileMantisExpert.zip';
+	$s_plugin_agileMantis_license_buy_link   						=	'http://wp12122798.server-he.de';
+	$s_plugin_agileMantis_license_buy								=	'Get a free trial license';
 ?>

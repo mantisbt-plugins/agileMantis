@@ -219,7 +219,7 @@ $num_notes = count( $t_bugnotes );
 	collapse_closed( 'bugnotes' );
 ?>
 
-<table class="<?=$table_size?>" cellspacing="1" align="center">
+<table class="<?php echo $table_size?>" cellspacing="1" align="center">
 <tr>
 	<td class="form-title" colspan="2">
 		<?php collapse_icon( 'bugnotes' ); ?>

@@ -22,7 +22,7 @@ class agileMantisPlugin extends MantisPlugin {
 		$this->name = "agileMantis";
 		$this->description = "Enables the Scrum Framework to your Mantis-Installation";
 		$this->page = "info";
-		$this->version = "1.3.0";
+		$this->version = "1.3.3";
 		$this->requires = array("MantisCore" => "1.2.5");
 		$this->author = "gadiv GmbH";
 		$this->contact = "agileMantis@gadiv.de";
@@ -35,8 +35,15 @@ class agileMantisPlugin extends MantisPlugin {
 
 	# agileMantis config method
 	function config() {
+		$this->includeConfigFile();
+		
 		return array(
 		);
+	}
+	
+	function includeConfigFile() {
+		$t_path = config_get_global('plugin_path'). plugin_get_current() . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR;
+		include_once($t_path . 'config_api.php');
 	}
 
 	# agileMantis installation

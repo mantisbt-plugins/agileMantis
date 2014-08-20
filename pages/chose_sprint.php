@@ -181,3 +181,6 @@
 	<?php }?>
 </table>
 <br>
+<?php
+	html_page_bottom();
+?>
