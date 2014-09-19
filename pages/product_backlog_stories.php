@@ -1,22 +1,36 @@
 <?php
-	# agileMantis - makes Mantis ready for Scrum
+# This file is part of agileMantis.
+#
+# Developed by: 
+# gadiv GmbH
+# Bövingen 148
+# 53804 Much
+# Germany
+#
+# Email: agilemantis@gadiv.de
+#
+# Copyright (C) 2012-2014 gadiv GmbH 
+#
+# agileMantis is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with agileMantis. If not, see <http://www.gnu.org/licenses/>.
 
-	# agileMantis is free software: you can redistribute it and/or modify
-	# it under the terms of the GNU General Public License as published by
-	# the Free Software Foundation, either version 2 of the License, or
-	# (at your option) any later version.
-	#
-	# agileMantis is distributed in the hope that it will be useful,
-	# but WITHOUT ANY WARRANTY; without even the implied warranty of
-	# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	# GNU General Public License for more details.
-	#
-	# You should have received a copy of the GNU General Public License
-	# along with agileMantis. If not, see <http://www.gnu.org/licenses/>.
+
 
 	# get all user stories from a selected product backlog
-	$userstories = $pb->getUserStoriesByProductBacklogName($product_backlog);
-	if(config_get('current_user_product_backlog_filter_direction',null,auth_get_current_user_id()) == 'ASC'){
+	$userstories = $agilemantis_pb->getUserStoriesByProductBacklogName( $product_backlog );
+	if( config_get( 'current_user_product_backlog_filter_direction',
+						null,auth_get_current_user_id()) == 'ASC' ) {
+		
 		$direction = 'DESC';
 	} else {
 		$direction = 'ASC';
@@ -29,22 +43,66 @@
 ?>
 <br>
 <?php echo $system?>
+<div class="table-container">
 <table align="center" class="width100" cellspacing="1">
 	<tr>
 		<td colspan="4">
 			<b>User Stories</b>
-			<input type="button" name="submit" value="<?php echo plugin_lang_get( 'button_save' )?>" onclick="document.getElementById('fileform').submit();">
+			<input type="button" name="submit" 
+				value="<?php echo plugin_lang_get( 'button_save' )?>" 
+				onclick="document.getElementById('fileform').submit();">
 		</td>
 		<td colspan="<?php echo $columns?>">
 			<form action="" method="post" name="filterform" style="float:right;">
-				<input type="hidden" name="action" value="save_product_backlog_filter">
-				<input type="hidden" name="productBacklogName" value="<?php echo $product_backlog?>">
-				<input type="checkbox" name="show_only_us_without_storypoints" <?php if(config_get('show_only_us_without_storypoints',null,auth_get_current_user_id()) == 1){?>checked<?php }?> value="1" onClick="this.form.submit();"> <?php echo plugin_lang_get( 'product_backlog_without_sp' )?>&nbsp;
-				<input type="checkbox" name="show_resolved_userstories" value="1" <?php if(config_get('show_resolved_userstories',null,auth_get_current_user_id()) == 1){?>checked<?php }?> onClick="this.form.submit();"> <?php echo plugin_lang_get( 'product_backlog_show_resolved' )?>&nbsp;
-				<input type="checkbox" name="show_closed_userstories" value="1" <?php if(config_get('show_closed_userstories',null,auth_get_current_user_id()) == 1){?>checked<?php }?> onClick="this.form.submit();"> <?php echo plugin_lang_get( 'product_backlog_show_closed' )?>&nbsp;
-				<input type="checkbox" name="show_only_userstories_without_sprint" <?php if(config_get('show_only_userstories_without_sprint',null,auth_get_current_user_id()) == 1){?>checked<?php }?> value="1" onClick="this.form.submit();"> <?php echo plugin_lang_get( 'product_backlog_without_sprint' )?>&nbsp;
-				<input type="checkbox" name="show_only_project_userstories" value="1" <?php if(config_get('show_only_project_userstories',null,auth_get_current_user_id()) == 1){?>checked<?php }?> onClick="this.form.submit();"> <?php echo plugin_lang_get( 'product_backlog_current_project' )?>&nbsp;
-				<input type="checkbox" name="show_project_target_version" value="1" <?php if(config_get('show_project_target_version',null,auth_get_current_user_id()) == 1){?>checked<?php }?> onClick="this.form.submit();"> <?php echo plugin_lang_get( 'product_backlog_show_project_version' )?>&nbsp;
+				<input type="hidden" 
+					name="action" 
+					value="save_product_backlog_filter">
+				<input type="hidden" 
+					name="productBacklogName" 
+					value="<?php echo $product_backlog?>">
+				<input type="checkbox" 
+					name="show_only_us_without_storypoints" 
+					<?php if( config_get('show_only_us_without_storypoints',
+							0,auth_get_current_user_id()) == 1 ) { ?>checked<?php 
+						}?> 
+					value="1" 
+					onClick="this.form.submit();"> <?php 
+						echo plugin_lang_get( 'product_backlog_without_sp' )?>&nbsp;
+				<input type="checkbox" 
+					name="show_resolved_userstories" 
+					value="1" 
+					<?php if( config_get('show_resolved_userstories',
+							null,auth_get_current_user_id()) == 1 ) { ?>checked<?php }?> 
+					onClick="this.form.submit();"> <?php 
+						echo plugin_lang_get( 'product_backlog_show_resolved' )?>&nbsp;
+				<input type="checkbox" 
+					name="show_closed_userstories" 
+					value="1" 
+					<?php if(config_get('show_closed_userstories',
+							null,auth_get_current_user_id() ) == 1 ) {?>checked<?php }?> 
+					onClick="this.form.submit();"> <?php 
+						echo plugin_lang_get( 'product_backlog_show_closed' )?>&nbsp;
+				<input type="checkbox" 
+					name="show_only_userstories_without_sprint" 
+					<?php if(config_get('show_only_userstories_without_sprint',
+							null,auth_get_current_user_id()) == 1){?>checked<?php }?> 
+					value="1" 
+					onClick="this.form.submit();"> <?php 
+						echo plugin_lang_get( 'product_backlog_without_sprint' )?>&nbsp;
+				<input type="checkbox" 
+					name="show_only_project_userstories" 
+					value="1" 
+					<?php if( config_get( 'show_only_project_userstories',
+							null, auth_get_current_user_id() ) == 1 ) { ?>checked<?php }?> 
+					onClick="this.form.submit();"> <?php 
+						echo plugin_lang_get( 'product_backlog_current_project' )?>&nbsp;
+				<input type="checkbox" 
+					name="show_project_target_version" 
+					value="1" 
+					<?php if( config_get('show_project_target_version',
+							null, auth_get_current_user_id() ) == 1 ) { ?>checked<?php }?> 
+							onClick="this.form.submit();"> <?php 
+						echo plugin_lang_get( 'product_backlog_show_project_version' )?>&nbsp;
 			</form>
 		</td>
 	</tr>
@@ -53,19 +111,44 @@
 		<input type="hidden" name="action" value="save_values">
 		<input type="hidden" name="productBacklogName" value="<?php echo $product_backlog?>">
 		<?php if(plugin_config_get('gadiv_ranking_order')=='1'){?>
-		<td class="category" width="60"><a href="<?php echo plugin_page("product_backlog.php")?>&productBacklogName=<?php echo $product_backlog?>&sort_by=rankingOrder&direction=<?php echo $direction?>"><?php echo plugin_lang_get( 'product_backlog_rankingorder' )?></a></td>
+		<td class="category" width="60">
+		<a href="<?php echo plugin_page("product_backlog.php")?>&productBacklogName=<?php echo $product_backlog?>&sort_by=rankingOrder&direction=<?php echo $direction?>"><?php echo plugin_lang_get( 'product_backlog_rankingorder' )?></a></td>
 		<?php }?>
-		<td class="category" width="60"><a href="<?php echo plugin_page("product_backlog.php")?>&productBacklogName=<?php echo $product_backlog?>&sort_by=businessValue&direction=<?php echo $direction?>">Business Value</a></td>
-		<td class="category" width="50"><a href="<?php echo plugin_page("product_backlog.php")?>&productBacklogName=<?php echo $product_backlog?>&sort_by=storyPoints&direction=<?php echo $direction?>">Story Points</a></td>
+		<td class="category" width="60"><a href="<?php 
+			echo plugin_page("product_backlog.php")?>&productBacklogName=<?php 
+			echo $product_backlog?>&sort_by=businessValue&direction=<?php 
+			echo $direction?>">Business Value</a></td>
+		<td class="category" width="50"><a href="<?php 
+			echo plugin_page("product_backlog.php")?>&productBacklogName=<?php 
+			echo $product_backlog?>&sort_by=storyPoints&direction=<?php 
+			echo $direction?>">Story Points</a></td>
 		<td class="category" width="20"></td>
-		<td class="category" width="50"><a href="<?php echo plugin_page("product_backlog.php")?>&productBacklogName=<?php echo $product_backlog?>&sort_by=id&direction=<?php echo $direction?>">ID</a></td>
-		<td class="category"><a href="<?php echo plugin_page("product_backlog.php")?>&productBacklogName=<?php echo $product_backlog?>&sort_by=category&direction=<?php echo $direction?>"><?php echo plugin_lang_get( 'product_backlog_category' )?></a></td>
+		<td class="category" width="50"><a href="<?php
+			echo plugin_page("product_backlog.php")?>&productBacklogName=<?php 
+			echo $product_backlog?>&sort_by=id&direction=<?php 
+			echo $direction?>">ID</a></td>
+		<td class="category"><a href="<?php 
+			echo plugin_page("product_backlog.php")?>&productBacklogName=<?php 
+			echo $product_backlog?>&sort_by=category&direction=<?php 
+			echo $direction?>"><?php 
+			echo plugin_lang_get( 'product_backlog_category' )?></a></td>
 		<?php if(config_get('show_project_target_version') == 1){?>
-		<td class="category"><a href="<?php echo plugin_page("product_backlog.php")?>&productBacklogName=<?php echo $product_backlog?>&sort_by=version&direction=<?php echo $direction?>"><?php echo plugin_lang_get( 'product_backlog_target_version' )?></a></td>
+		<td class="category"><a href="<?php 
+			echo plugin_page("product_backlog.php")?>&productBacklogName=<?php 
+			echo $product_backlog?>&sort_by=version&direction=<?php 
+			echo $direction?>"><?php 
+			echo plugin_lang_get( 'product_backlog_target_version' )?></a></td>
 		<?php }?>
 		<td class="category" width="20"></td>
-		<td class="category"><a href="<?php echo plugin_page("product_backlog.php")?>&productBacklogName=<?php echo $product_backlog?>&sort_by=summary&direction=<?php echo $direction?>"><?php echo plugin_lang_get( 'product_backlog_summary' )?></a></td>
-		<td class="category"><a href="<?php echo plugin_page("product_backlog.php")?>&productBacklogName=<?php echo $product_backlog?>&sort_by=sprint&direction=<?php echo $direction?>">Sprint</a></td>
+		<td class="category"><a href="<?php 
+			echo plugin_page("product_backlog.php")?>&productBacklogName=<?php 
+			echo $product_backlog?>&sort_by=summary&direction=<?php 
+			echo $direction?>"><?php 
+			echo plugin_lang_get( 'product_backlog_summary' )?></a></td>
+		<td class="category"><a href="<?php 
+			echo plugin_page("product_backlog.php")?>&productBacklogName=<?php 
+			echo $product_backlog?>&sort_by=sprint&direction=<?php 
+			echo $direction?>">Sprint</a></td>
 	</tr>
 	<?php
 	if(!empty($userstories)){
@@ -101,10 +184,12 @@
 			<?php if(plugin_config_get('gadiv_ranking_order')=='1'){?>
 			<td>
 				<input type="text" name="rankingOrder[<?php echo $row['id']?>]" value="<?php echo $row['rankingOrder']?>" <?php if($row['status'] >= 80){?>readonly<?php }?> style="width:50px;">
+				<input type="hidden" name="rankingOrderOld[<?php echo $row['id']?>]" value="<?php echo $row['rankingOrder']?>"/>
 			</td>
 			<?php }?>
 			<td>
 				<input type="text" name="businessValue[<?php echo $row['id']?>]" value="<?php echo $row['businessValue']?>" <?php if($row['status'] >= 80){?>readonly<?php }?> style="width:50px;">
+				<input type="hidden" name="businessValueOld[<?php echo $row['id']?>]" value="<?php echo $row['businessValue']?>"/>
 			</td>
 			<td><?php echo $row['storyPoints']?></td>
 			<td width="20">
@@ -115,27 +200,26 @@
 			<?php
 			if(config_get('show_project_target_version',null,auth_get_current_user_id()) == 1){
 				# get user story version information
-				$version_info = $version->getVersionInformation($row['project_id'],$row['target_version']);
+				$version_info = $agilemantis_version->getVersionInformation($row['project_id'],$row['target_version']);
 
 				# include version dialogue
-				include(PLUGIN_URI.'pages/product_backlog_version.php');
+				include(AGILEMANTIS_PLUGIN_URI.'pages/product_backlog_version.php');
 			}
 			?>
 			<td width="20">
-				<?php if(!plugin_is_loaded('agileMantisExpert')){?>
-				<img src="<?php echo PLUGIN_URL?>images/info-icon.png" alt="<?php echo plugin_lang_get( 'product_backlog_show_info' );?>" onclick="loadUserstory(<?php echo $row['id']?>);" height="16" width="16">
-				<div id="userstory_<?php echo $row['id']?>" title="User Story #<?php echo $row['id']?>" style="display:none;" class="SpecialUserStoryView">
-				  <img src="<?php echo PLUGIN_URL?>images/show_userstory_information.png" alt="Expert Screenshot">
-				</div>
-				<?php } else { ?>
-				<img src="<?php echo PLUGIN_URL?>images/info-icon.png" alt="<?php echo plugin_lang_get( 'product_backlog_show_info' );?>" onclick="loadUserstory(<?php echo $row['id']?>);" height="16" width="16">
-				<div id="userstory_<?php echo $row['id']?>" title="User Story #<?php echo $row['id']?>" style="display:none;" class="SpecialUserStoryView">
-					<?php event_signal( 'EVENT_LOAD_USERSTORY', array( $row['id'] ) );?>
-				</div>
-				<?php } ?>
+				<?php
+					$functionName = 'loadUserstoryNoExpert';
+					if(plugin_is_loaded('agileMantisExpert')) {
+						$functionName = 'loadUserstoryExpert';
+					}
+				?>
+				<img src="<?php echo AGILEMANTIS_PLUGIN_URL?>images/info-icon.png" alt="<?php 
+						echo plugin_lang_get( 'product_backlog_show_info' );?>" 
+						onclick="<?php echo $functionName?>(<?php echo $row['id']?>, '<?php 
+						echo AGILEMANTIS_PLUGIN_URL?>');" height="16" width="16">
 			</td>
 			<td><?php echo $row['summary']?></td>
-			<td><a href="<?php echo plugin_page("sprint_backlog.php")?>&sprintName=<?php echo urlencode($pb->getSprintValue($row['id']))?>"><?php echo $pb->getSprintValue($row['id']);?></a></td>
+			<td><a href="<?php echo plugin_page("sprint_backlog.php")?>&sprintName=<?php echo urlencode($row['sprint'])?>"><?php echo $row['sprint'];?></a></td>
 		</tr>
 		<?php
 			# add bug list cookie
@@ -163,6 +247,6 @@
 			<?php }?>
 		<?php }?>
 	</tr>
-</table>
+</table></div>
 <br>
 <center><input type="button" name="submit" value="<?php echo plugin_lang_get( 'button_save' )?>" onclick="document.getElementById('fileform').submit();"></center>

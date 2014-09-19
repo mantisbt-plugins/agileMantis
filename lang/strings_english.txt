@@ -41,6 +41,7 @@
 	$s_plugin_agileMantis_status_confirmed							=	'confirmed';
 	$s_plugin_agileMantis_status_resolved							=	'resolved';
 	$s_plugin_agileMantis_status_closed								=	'closed';
+	$s_plugin_agileMantis_status_reopened                           =   'was reopened';
 	
 	# Buttons
 	$s_plugin_agileMantis_button_edit								= 	'Edit';
@@ -88,6 +89,23 @@
 	$s_plugin_agileMantis_manage_user_remove_from_license			= 	'Unlock license';
 	$s_plugin_agileMantis_manage_user_error_921A00					= 	'[<span style="font-size:14px;">912A00</span>] You have not got the right to display the agileMantis users.';
 	
+	# Save agileMantis Users
+	$s_plugin_agileMantis_manage_user_su_no_save 					= 	'Save cannot be performed.';
+	$s_plugin_agileMantis_manage_user_su_is_owner_or_master 		= 	'At least one user is Owner or Master in a running sprint and loses his right to act this role.';
+	$s_plugin_agileMantis_manage_user_su_please_remove_member 		= 	'Please remove the following members from their teams before withdrawing their rights:';
+	$s_plugin_agileMantis_manage_user_su_is_developer_2 			= 	'At least one user is Developer in a running sprint, is processing Tasks there and loses his right to do this.';
+	$s_plugin_agileMantis_manage_user_su_please_remove_developer 	= 	'Please remove the following developers from their tasks before withdrawing their rights:';
+	$s_plugin_agileMantis_manage_user_su_is_developer_3 			= 	'At least one user is developer in a running sprint.';
+	$s_plugin_agileMantis_manage_user_su_developer_remove 			= 	'When withdrawing thir rights developers must be removed from the team.';
+	$s_plugin_agileMantis_manage_user_su_want_remove_developer 		= 	'Do you want to withdraw the rights and remove from their teams the following developers.';
+	$s_plugin_agileMantis_manage_user_su_is_stakeholder 			= 	'At least one user is stakeholder in a running sprint.';
+	$s_plugin_agileMantis_manage_user_su_stakeholder_remove 		= 	'When withdrawing their rights stakeholders must be removed from the team.';
+	$s_plugin_agileMantis_manage_user_su_want_remove_sakeholder 	= 	'Do you want to withdraw the rights and remove from their teams the following stakeholders?';
+	$s_plugin_agileMantis_manage_user_su_want_change_rights 		= 	'Do you really want to change the rights of the following users?';
+	$s_plugin_agileMantis_manage_user_su_no_change 					= 	'You have not changed any rights.';
+	$s_plugin_agileMantis_manage_user_su_yes						=	'Yes';
+	$s_plugin_agileMantis_manage_user_su_no							=	'No';
+	
 	# Manage Product Backlogs
 	$s_plugin_agileMantis_manage_product_backlogs_title				= 	'Manage Product Backlogs';
 	$s_plugin_agileMantis_manage_product_backlogs_add				= 	'Add Product Backlog';
@@ -108,7 +126,10 @@
 	$s_plugin_agileMantis_edit_product_backlog_error_922600			=	'[<span style="font-size:14px;">922600</span>] Please enter a name for the Product Backlog';
 	$s_plugin_agileMantis_edit_product_backlog_error_923600			=	'[<span style="font-size:14px;">923600</span>] Please enter a valid email address.';
 	$s_plugin_agileMantis_edit_product_backlog_error_982600			=	'[<span style="font-size:14px;">982600</span>] Please enter a unique name for Product Backlog.';
-	$s_plugin_agileMantis_edit_product_backlog_error_100601			=	'[<span style="font-size:14px;">100601</span>] The assignment of the project issues to this Product Backlog have been removed.';
+	$s_plugin_agileMantis_edit_product_backlog_error_982601			=	'[<span style="font-size:14px;">982601</span>] The product backlog name is invalid. names may only contain Latin letters, numbers, spaces, hyphens, dots, plus signs and underscores.';
+	$s_plugin_agileMantis_edit_product_backlog_error_100601			=	'[<span style="font-size:14px;">100601</span>] The assignment of the project issues to this Product Backlog has been removed.';
+	$s_plugin_agileMantis_edit_product_backlog_error_100602         =   '[<span style="font-size:14px;">100602</span>] Warning: The following team members have no access rights for the new project: [names]. Please assign rights.';
+	$s_plugin_agileMantis_edit_product_backlog_error_100603         =   '[<span style="font-size:14px;">100603</span>] Warning, The new team member has no access rights for the following projects: [names]. Please assign rights.';
 	$s_plugin_agileMantis_edit_product_backlog_user_email			=	'Email address of team user';
 	$s_plugin_agileMantis_edit_product_backlog_projects				=	'Projects';
 	$s_plugin_agileMantis_edit_product_backlog_add_project			=	'Add Project';
@@ -223,7 +244,7 @@
 	$s_plugin_agileMantis_edit_sprints_error_980501					=	'[<span style="font-size:14px;">980501</span>] End date cannot be in the past.';
 	$s_plugin_agileMantis_edit_sprints_error_980502					=	'[<span style="font-size:14px;">980502</span>] The end date is before the start date.';
 	$s_plugin_agileMantis_edit_sprints_error_923502					=	'[<span style="font-size:14px;">923502</span>] Please select a team for the sprint.';
-	$s_plugin_agileMantis_edit_sprints_error_980500					=	'[<span style="font-size:14px;">980500</span>] The sprint time overlaps with an earlier sprint.';
+	$s_plugin_agileMantis_edit_sprints_error_980500					=	'[<span style="font-size:14px;">980500</span>] The sprint time overlaps with another sprint.';
 	
 	# Delete Sprint
 	$s_plugin_agileMantis_delete_sprint_title						= 	'Delete Sprint';
@@ -265,6 +286,15 @@
 	$s_plugin_agileMantis_manage_settings_error_984103 				= 	'[<span style="font-size:14px;">984103</span>] You cannot choose the Taskboard, because there is not license file.';
 	$s_plugin_agileMantis_manage_settings_error_984104 				= 	'[<span style="font-size:14px;">984104</span>] You cannot choose the Taskboard, because the license file is without content.';
 	$s_plugin_agileMantis_manage_settings_error_984105 				= 	'[<span style="font-size:14px;">984105</span>] License file upload failed. You either have not enough permissions or you did not upload a license file.';
+	$s_plugin_agileMantis_manage_settings_really_remove_field		=   'Do you really want to remove the field %s?';
+	$s_plugin_agileMantis_manage_settings_custom_field_title 		=   'Localization of agileMantis custom fields';
+	$s_plugin_agileMantis_manage_settings_custom_field_instructions =   '<br>To make the localization of the agileMantis custom fields work, ' .
+																		'the source code below must be copied to the file <i>custom_strings_inc.php</i>';
+	$s_plugin_agileMantis_manage_settings_custom_field_instructions1=	'This file can be found in the MantisBT installation folder.';
+	$s_plugin_agileMantis_manage_settings_custom_field_instructions2=	'If not, please create a new one.';
+	$s_plugin_agileMantis_manage_settings_custom_field_instructions3=	'Please also ensure that the file has at least read access.';
+	$s_plugin_agileMantis_manage_settings_custom_field_instructions4=	'If the file already exists, then you have to add the sourcecode to the ' .
+																		'existing contents.<br><br>';
 	
 	# View Issue Page
 	$s_plugin_agileMantis_view_issue_save_infos						=	'Save information';
@@ -412,8 +442,8 @@
 	$s_plugin_agileMantis_sprint_backlog_backlog					=	'Backlog';
 	$s_plugin_agileMantis_sprint_backlog_begin						=	'Begin';
 	$s_plugin_agileMantis_sprint_backlog_close_sprint				=	'The sprint is closed. Would you like to close the associated user stories too?';
-	$s_plugin_agileMantis_sprint_backlog_really_close_sprint		=	'Do you really want to commit the sprint?';
-	$s_plugin_agileMantis_sprint_backlog_really_stories_left		=	'There still exist stories without tasks and/or tasks without work.\r\n Would you like to commit the sprit though?';
+	$s_plugin_agileMantis_sprint_backlog_commit_question			=	'Do you really want to commit the sprint?';
+	$s_plugin_agileMantis_sprint_backlog_commit_question2			=	'There still exist stories without tasks and/or tasks without work.\r\n Would you like to commit the sprint though?';
 	$s_plugin_agileMantis_sprint_backlog_error_100700				=	'[<span style="font-size:14px;">100700</span>] Other tasks with planned work already exist in this sprint.';
 	$s_plugin_agileMantis_sprint_backlog_error_108700				=	'[<span style="font-size:14px;">108700</span>] The developer has not got any more capacity for the planned work of this task.';
 	$s_plugin_agileMantis_sprint_backlog_error_108701				=	'[<span style="font-size:14px;">108701</span>] The developer has not got any more capacity for the planned work of this task.';
@@ -450,7 +480,15 @@
 	
 	#Lizenzen
 	$s_plugin_agileMantis_license_download							=	'Download Expert Components';
-	$s_plugin_agileMantis_license_download_link                     =   'http://www.gadiv.de/media/content/produkte/open_source/agilemantis/agileMantisExpert.zip';
-	$s_plugin_agileMantis_license_buy_link   						=	'http://wp12122798.server-he.de';
 	$s_plugin_agileMantis_license_buy								=	'Get a free trial license';
+	
+	#Mailing
+	$s_plugin_agileMantis_mail_subject                              =   'Your agileMantis Rights';
+	$s_plugin_agileMantis_mail_body_1                               =   'Your agileMantis Rights were changed.';
+	$s_plugin_agileMantis_mail_body_2                               =   'Date: ';
+	$s_plugin_agileMantis_mail_body_3                               =   'From: ';
+	$s_plugin_agileMantis_mail_body_4                               =   'Rights:';
+	$s_plugin_agileMantis_mail_yes                                  =   'yes';
+	$s_plugin_agileMantis_mail_no                                   =   'no';
+	
 ?>

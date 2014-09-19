@@ -1,0 +1,200 @@
+
+/* swin: Bugfix for javascript popups
+----------------------------------*/
+html, body {
+	position: 		relative;
+	overflow-y: 	visible;
+}
+
+.agile_menu {
+	font-weight:	bold;
+	text-decoration:underline;
+}
+
+.custom_field_form_width {
+	width:			655px;
+}
+
+.message_ok {
+	color:			green; 
+	font-size:		12px; 
+	font-weight:	bold;
+}
+
+.message_warn {
+	color:			red; 
+	font-size:		16px; 
+	font-weight:	bold;
+}
+
+.message_error {
+	color:			red;
+	font-size:		16px;
+	font-weight:	bold;
+}
+
+
+.custom_field_form {
+	background-color:#B3B3CC;
+	font-weight:	bold;
+	color:			#000;
+}
+
+.dialog_border {
+	width:			500px;
+	border-top:		thin solid black;
+	border-bottom:	thin solid black;
+	border-left:	none;
+	border-right:	none;
+	padding:		15pt;		
+}
+
+.breaker {
+	clear: 			both;
+	margin: 		0;
+	padding: 		0;
+}
+	
+.calendar {
+	margin-bottom: 	10px;
+	width: 			385px;
+}
+
+.fullcalendar {
+	float: 			left;
+	margin-right: 	20px;
+	width: 			385px;
+}
+
+.height200 {
+	height: 		200px;
+}
+
+.height250 {
+	height: 		250px;
+}
+
+.height300 {
+	height: 		300px;
+}
+
+.height350 {
+	height: 		350px;
+}
+
+.height400 {
+	height: 		400px;
+}
+
+.height450 {
+	height:			450px;
+}
+
+.height500 {
+	height: 		500px;
+}
+
+.height550 {
+	height: 		550px;
+}
+
+.headline_month {
+	background-color: 	#427BD6;
+	color: 				#FFF;
+	font-family: 		Arial;
+	font-weight: 		bold;
+	font-size: 			14px;
+	margin-bottom: 		5px;
+	text-align: 		center;
+	padding: 			10px;
+	width: 				365px;
+}
+
+.headline_days {
+	background-color: 	#427BD6;
+	float: 				left;
+	color: 				#FFF;
+	font-family: 		Arial;
+	font-weight: 		bold;
+	font-size: 			14px;
+	text-align: 		center;
+	padding: 			10px;
+	width: 				35px;
+}
+
+.after_month,
+.before_month,
+.current_month,
+.current_day {
+	float: 				left;
+	color: 				#000;
+	font-family: 		Arial;
+	font-size: 			14px;
+	padding: 			10px;
+	height: 			30px;
+	text-align: 		center;
+	width: 				35px;
+}
+
+.current_day {
+	font-weight: 		bold;
+}
+
+.after_month,
+.before_month {
+	color:				silver;
+}
+
+.dateField_disabled,
+.dateField {
+	font-family: 		Arial;
+	font-size: 			10px;
+	height: 			20px;
+	width: 				35px;
+	background-color: 	#FFF;
+	margin-top: 		2px;
+	text-align: 		center;
+	border: 			1px solid #7F9DB9; 
+}
+
+.dateField_disabled {
+	background-color:	#EBEBE4;
+}
+
+.version_tooltip {
+	color: 				#000;
+	position: 			relative;
+	text-decoration: 	none;
+	border-bottom: 		2px dotted #000;
+	padding-bottom: 	2px;
+	cursor: 			default;
+}
+
+.version_tooltip span {
+	background-color: 	#FFF;
+	border: 			1px solid #000;
+	margin-left: 		-999em;
+	position: 			absolute;
+	text-decoration: 	none;
+	padding: 			0.8em 1em;
+}
+
+.version_tooltip:hover span {
+	display: 			block;
+	font-family: 		Arial;
+	left: 				10em;
+	margin-left: 		0;
+	position: 			absolute;
+	top: 				-5em;
+	width: 				250px;
+	z-index: 			99;
+}
+
+.previewImage {
+	border: 			1px solid #333;
+	float: 				left;
+	height:				100px;
+	margin-right: 		10px;
+	margin-bottom: 		10px;
+	width: 				250px;
+}

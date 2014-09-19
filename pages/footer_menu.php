@@ -1,27 +1,39 @@
 <?php
-	# agileMantis - makes Mantis ready for Scrum
+# This file is part of agileMantis.
+#
+# Developed by: 
+# gadiv GmbH
+# Bövingen 148
+# 53804 Much
+# Germany
+#
+# Email: agilemantis@gadiv.de
+#
+# Copyright (C) 2012-2014 gadiv GmbH 
+#
+# agileMantis is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with agileMantis. If not, see <http://www.gnu.org/licenses/>.
 
-	# agileMantis is free software: you can redistribute it and/or modify
-	# it under the terms of the GNU General Public License as published by
-	# the Free Software Foundation, either version 2 of the License, or
-	# (at your option) any later version.
-	#
-	# agileMantis is distributed in the hope that it will be useful,
-	# but WITHOUT ANY WARRANTY; without even the implied warranty of
-	# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	# GNU General Public License for more details.
-	#
-	# You should have received a copy of the GNU General Public License
-	# along with agileMantis. If not, see <http://www.gnu.org/licenses/>.
+
 	
 	$commonlib = new gadiv_commonlib();
-	$user = $commonlib->getAdditionalUserFields(auth_get_current_user_id());
-	$getPage = explode('/',$_SERVER['REQUEST_URI']);
-	$lai = count($getPage)-1;
+	$user = $commonlib->getAdditionalUserFields( auth_get_current_user_id() );
+	$getPage = explode( '/', $_SERVER['REQUEST_URI'] );
+	$lai = count( $getPage ) - 1;
 	
-	if($user[0]['administrator'] == 1 || current_user_is_administrator()){
+	if( $user[0]['administrator'] == 1 || current_user_is_administrator() ) {
 	# create hover / active effects by requested uri
-	switch($getPage[$lai]){
+	switch( $getPage[$lai] ) {
 		case 'config.php':
 			$style_config = 'style="font-weight:bold;"';
 		break;
@@ -84,16 +96,24 @@
 		break;
 		default:'';
 	}
-	if($_POST['sprintName'] == ""){
+	
+	if( $_POST['sprintName'] == "" ) {
 ?>
 	<center>
-		[ <a href="<?php echo plugin_page("agileuser.php")?>" <?php echo $style_user?>><?php echo plugin_lang_get( 'manage_user_title' )?></a> ]
-		[ <a href="<?php echo plugin_page("product_backlogs.php")?>" <?php echo $style_pbl?>><?php echo plugin_lang_get( 'manage_product_backlogs_title' )?></a> ]
-		[ <a href="<?php echo plugin_page("teams.php")?>" <?php echo $style_team?>><?php echo plugin_lang_get( 'manage_teams_title' )?></a> ]
-		[ <a href="<?php echo plugin_page("availability.php")?>" <?php echo $style_av?>><?php echo plugin_lang_get( 'manage_availability_title' )?></a> ]
-		[ <a href="<?php echo plugin_page("capacity.php")?>" <?php echo $style_cc?>><?php echo plugin_lang_get( 'manage_capacity_title' )?></a> ]
-		[ <a href="<?php echo plugin_page("sprints.php")?>" <?php echo $style_sprints?>><?php echo plugin_lang_get( 'manage_sprints_title' )?></a> ]
-		[ <a href="<?php echo plugin_page("config.php")?>" <?php echo $style_config?>><?php echo plugin_lang_get( 'manage_settings_title' )?></a> ]
+		[ <a href="<?php echo plugin_page("agileuser.php")?>" <?php 
+				echo $style_user?>><?php echo plugin_lang_get( 'manage_user_title' )?></a> ]
+		[ <a href="<?php echo plugin_page("product_backlogs.php")?>" <?php 
+				echo $style_pbl?>><?php echo plugin_lang_get( 'manage_product_backlogs_title' )?></a> ]
+		[ <a href="<?php echo plugin_page("teams.php")?>" <?php 
+				echo $style_team?>><?php echo plugin_lang_get( 'manage_teams_title' )?></a> ]
+		[ <a href="<?php echo plugin_page("availability.php")?>" <?php 
+				echo $style_av?>><?php echo plugin_lang_get( 'manage_availability_title' )?></a> ]
+		[ <a href="<?php echo plugin_page("capacity.php")?>" <?php 
+				echo $style_cc?>><?php echo plugin_lang_get( 'manage_capacity_title' )?></a> ]
+		[ <a href="<?php echo plugin_page("sprints.php")?>" <?php 
+				echo $style_sprints?>><?php echo plugin_lang_get( 'manage_sprints_title' )?></a> ]
+		[ <a href="<?php echo plugin_page("config.php")?>" <?php 
+				echo $style_config?>><?php echo plugin_lang_get( 'manage_settings_title' )?></a> ]
 	</center>
 <?php 
 		}

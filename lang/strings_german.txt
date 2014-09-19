@@ -41,6 +41,7 @@
 	$s_plugin_agileMantis_status_confirmed							=	'übernommen';
 	$s_plugin_agileMantis_status_resolved							=	'erledigt';
 	$s_plugin_agileMantis_status_closed								=	'geschlossen';
+	$s_plugin_agileMantis_status_reopened                           =   'wurde wiedereröffnet';
 	
 	# Buttons
 	$s_plugin_agileMantis_button_edit								= 	'Bearbeiten';
@@ -88,6 +89,23 @@
 	$s_plugin_agileMantis_manage_user_remove_from_license			= 	'Lizenz freigeben';
 	$s_plugin_agileMantis_manage_user_error_921A00					= 	'[<span style="font-size:14px;">912A00</span>] Sie haben nicht die notwendigen Rechte, um die agileMantis-Benutzer zu verwalten.';
 	
+	# Save agileMantis Users
+	$s_plugin_agileMantis_manage_user_su_no_save 					= 	'Speichern nicht zulässig.';
+	$s_plugin_agileMantis_manage_user_su_is_owner_or_master 		= 	'Mindestens ein Mitglied ist Owner oder Master in einem laufenden Sprint und verliert sein Recht zur Ausübung dieser Rolle.';
+	$s_plugin_agileMantis_manage_user_su_please_remove_member 		= 	'Bitte entfernen Sie die folgenden Owner/Master aus den betroffenen Teams bevor Sie deren Rechte zurücksetzen:';
+	$s_plugin_agileMantis_manage_user_su_is_developer_2 			= 	'Mindestens ein Mitglied ist Entwickler in einem laufenden Sprint, bearbeitet dort Tasks und verliert das Recht hierzu.';
+	$s_plugin_agileMantis_manage_user_su_please_remove_developer 	= 	'Bitte entfernen Sie die folgenden Entwickler aus den betroffenen Teams bevor Sie deren Rechte zurücksetzen:';
+	$s_plugin_agileMantis_manage_user_su_is_developer_3 			= 	'Mindestens ein Mitglied ist Entwickler in einem laufenden Sprint.';
+	$s_plugin_agileMantis_manage_user_su_developer_remove 			= 	'Vor Rücksetzung ihrer Rechte müssen sie aus den betroffenen Teams entfernt werden.';
+	$s_plugin_agileMantis_manage_user_su_want_remove_developer 		= 	'Wollen Sie wirklich die Rechte zurück setzen und die folgenden Entwickler aus diesen Teams entfernen?';
+	$s_plugin_agileMantis_manage_user_su_is_stakeholder 			= 	'Mindestens ein Mitglied ist Stakeholder in einem laufenden Sprint.';
+	$s_plugin_agileMantis_manage_user_su_stakeholder_remove 		= 	'Vor Rücksetzung ihrer Rechte müssen sie aus den betroffenen Teams entfernt werden.';
+	$s_plugin_agileMantis_manage_user_su_want_remove_sakeholder 	= 	'Wollen Sie wirklich die Rechte zurück setzen und die folgenden Stakeholder aus diesen Teams entfernen?';
+	$s_plugin_agileMantis_manage_user_su_want_change_rights 		= 	'Wollen Sie wirklich die Rechte der folgenden Benutzer ändern?';
+	$s_plugin_agileMantis_manage_user_su_no_change 					= 	'Sie haben keine Rechte geändert.';
+	$s_plugin_agileMantis_manage_user_su_yes						=	'Ja';
+	$s_plugin_agileMantis_manage_user_su_no							=	'Nein';
+	
 	# Product Backlogs verwalten
 	$s_plugin_agileMantis_manage_product_backlogs_title				= 	'Product Backlogs verwalten';
 	$s_plugin_agileMantis_manage_product_backlogs_add				= 	'Product Backlog hinzufügen';
@@ -108,7 +126,10 @@
 	$s_plugin_agileMantis_edit_product_backlog_error_922600			=	'[<span style="font-size:14px;">922600</span>] Bitte geben Sie einen Namen für das Product Backlog an.';
 	$s_plugin_agileMantis_edit_product_backlog_error_923600			=	'[<span style="font-size:14px;">923600</span>] Bitte geben Sie eine gültige Email-Adresse ein.';
 	$s_plugin_agileMantis_edit_product_backlog_error_982600			=	'[<span style="font-size:14px;">982600</span>] Bitte verwenden Sie einen eindeutigen Namen für das Product Backlog.';
-	$s_plugin_agileMantis_edit_product_backlog_error_100601			=	'[<span style="font-size:14px;">100601</span>] Die Zuordnung der Projekt-Eintrag zu diesem Product Backlog wurde aufgehoben.';
+	$s_plugin_agileMantis_edit_product_backlog_error_982601			=	'[<span style="font-size:14px;">982601</span>] Der Product Backlog Name ist ungültig. Erlaubt sind nur lateinische Buchstaben, Ziffern, Leerzeichen, Bindestriche, Punkte, Pluszeichen und Unterstriche.';
+	$s_plugin_agileMantis_edit_product_backlog_error_100601			=	'[<span style="font-size:14px;">100601</span>] Die Zuordnung der Projekt-Tracker zu diesem Product Backlog wurde aufgehoben.';
+	$s_plugin_agileMantis_edit_product_backlog_error_100602         =   '[<span style="font-size:14px;">100602</span>] Achtung: Folgende Teammitglieder besitzen keine Zugriffsrechte für das neue Projekt: [names]. Bitte Rechte vergeben.';
+	$s_plugin_agileMantis_edit_product_backlog_error_100603         =   '[<span style="font-size:14px;">100603</span>] Achtung, diesem neuen Teammitglied fehlen Zugriffsrechte auf folgende Projekte: [names]. Bitte Rechte vergeben.';
 	$s_plugin_agileMantis_edit_product_backlog_user_email			=	'Email-Adresse des Team-Users';
 	$s_plugin_agileMantis_edit_product_backlog_projects				=	'Projekte';
 	$s_plugin_agileMantis_edit_product_backlog_add_project			=	'Projekt hinzufügen';
@@ -224,7 +245,7 @@
 	$s_plugin_agileMantis_edit_sprints_error_980505					=	'[<span style="font-size:14px;">980505</span>] Das Enddatum kann nicht in der Vergangenheit liegen.';
 	$s_plugin_agileMantis_edit_sprints_error_980502					=	'[<span style="font-size:14px;">980502</span>] Das Enddatum liegt vor dem Startdatum.';
 	$s_plugin_agileMantis_edit_sprints_error_923502					=	'[<span style="font-size:14px;">923502</span>] Bitte wählen Sie ein Team aus das den Sprint bearbeiten soll.';
-	$s_plugin_agileMantis_edit_sprints_error_980500					=	'[<span style="font-size:14px;">980500</span>] Der eingetragene Sprint-Zeitraum überschneidet sich mit einem vorherigen Sprint.';
+	$s_plugin_agileMantis_edit_sprints_error_980500					=	'[<span style="font-size:14px;">980500</span>] Der eingetragene Sprint-Zeitraum überschneidet sich mit einem anderen Sprint.';
 	
 	# Sprint löschen
 	$s_plugin_agileMantis_delete_sprint_title						= 	'Sprint löschen';
@@ -266,7 +287,18 @@
 	$s_plugin_agileMantis_manage_settings_error_984103 				= 	'[<span style="font-size:14px;">984103</span>] Sie können das Taskboard nicht auswählen, weil die Lizenzdatei nicht gefunden wurde.';
 	$s_plugin_agileMantis_manage_settings_error_984104 				= 	'[<span style="font-size:14px;">984104</span>] Sie können das Taskboard nicht auswählen, weil die Lizenzdatei leer ist.';
 	$s_plugin_agileMantis_manage_settings_error_984105 				= 	'[<span style="font-size:14px;">984105</span>] Lizenzdatei konnte nicht hochgeladen werden. Sie haben entweder nicht genug Rechte oder keine Lizenzdatei hochgeladen.';
-	
+	$s_plugin_agileMantis_manage_settings_really_remove_field		=   'Möchten Sie das Feld %s wirklich löschen?';
+	$s_plugin_agileMantis_manage_settings_custom_field_title 		=   'Lokalisierung der agileMantis Zusatzfelder';
+	$s_plugin_agileMantis_manage_settings_custom_field_instructions =   'Damit in MantisBT die lokalisierten Bezeichnungen für die von agileMantis angelegten custom fields ' .
+																		'angezeigt werden, muss der unten angezeigte Sourcecode in die Datei ' .
+																		'<i>custom_strings_inc.php</i> ' . 
+																		'eingetragen werden (copy-and-paste).';
+	$s_plugin_agileMantis_manage_settings_custom_field_instructions1=	'Diese Datei befindet sich im MantisBT-Installationsverzeichnis. ';
+	$s_plugin_agileMantis_manage_settings_custom_field_instructions2=	'Wenn nicht, dann muss sie angelegt werden. ';
+	$s_plugin_agileMantis_manage_settings_custom_field_instructions3=	'Bitte achten Sie auf die korrekte Vergabe der Zugriffsrechte ' .
+																		'(wenigstens Lesezugriff).';
+	$s_plugin_agileMantis_manage_settings_custom_field_instructions4=	'Existiert die Datei schon, dann muss der Sourcecode an den ' .
+																		'möglicherweise bestehenden Inhalt angehängt werden.'; 
 	
 	# Einträge anzeigen
 	$s_plugin_agileMantis_view_issue_save_infos						=	'Infos speichern';
@@ -414,8 +446,8 @@
 	$s_plugin_agileMantis_sprint_backlog_backlog					=	'Backlog';
 	$s_plugin_agileMantis_sprint_backlog_begin						=	'Beginn';
 	$s_plugin_agileMantis_sprint_backlog_close_sprint				=	'Der Sprint ist geschlossen. Möchten Sie jetzt auch die dazugehörigen User Storys schließen?';
-	$s_plugin_agileMantis_sprint_backlog_really_close_sprint		=	'Soll der Sprint wirklich bestätigt werden?';
-	$s_plugin_agileMantis_sprint_backlog_really_stories_left		=	'Es sind noch User Storys ohne Tasks oder Task ohne geplanten Aufwand vorhanden .\r\nMöchten Sie den Sprint trotzdem bestätigen?';
+	$s_plugin_agileMantis_sprint_backlog_commit_question			=	'Soll der Sprint wirklich bestätigt werden?';
+	$s_plugin_agileMantis_sprint_backlog_commit_question2			=	'Es sind noch User Storys ohne Tasks oder Tasks ohne geplanten Aufwand vorhanden .\r\nMöchten Sie den Sprint trotzdem bestätigen?';
 	$s_plugin_agileMantis_sprint_backlog_error_100700				=	'[<span style="font-size:14px;">100700</span>] Für andere Tasks aus diesem Sprint existieren bereits geplante Aufwände.';
 	$s_plugin_agileMantis_sprint_backlog_error_108700				=	'[<span style="font-size:14px;">108700</span>] Der Entwickler hat keine weiteren Kapazitäten mehr für den geplanten Aufwand des Tasks.';
 	$s_plugin_agileMantis_sprint_backlog_error_108701				=	'[<span style="font-size:14px;">108701</span>] Der Entwickler hat keine weiteren Kapazitäten mehr für den geplanten Aufwand des Tasks.';
@@ -452,7 +484,14 @@
 	
 	#Lizenzen
 	$s_plugin_agileMantis_license_download							=	'Expert-Komponenten herunterladen';
-    $s_plugin_agileMantis_license_download_link                     =   'http://www.gadiv.de/media/content/produkte/open_source/agilemantis/agileMantisExpert.zip';
-    $s_plugin_agileMantis_license_buy_link                     		=   'http://wp12122798.server-he.de';
 	$s_plugin_agileMantis_license_buy								=	'Freie Testlizenz erwerben';
+	
+	#Mailing
+	$s_plugin_agileMantis_mail_subject                              =   'Ihre agileMantis Rechte';
+	$s_plugin_agileMantis_mail_body_1                               =   'Ihre agileMantis Rechte wurden geaendert.';
+	$s_plugin_agileMantis_mail_body_2                               =   'Datum: ';
+	$s_plugin_agileMantis_mail_body_3                               =   'Durch: ';
+	$s_plugin_agileMantis_mail_body_4                               =   'Rechte:';
+	$s_plugin_agileMantis_mail_yes                                  =   'ja';
+	$s_plugin_agileMantis_mail_no                                   =   'nein';
 ?>
