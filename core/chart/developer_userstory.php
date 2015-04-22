@@ -32,15 +32,17 @@ if( $_POST['taskUnit'] == 'T' ) {
 	$multiplier = 1;
 }
 echo '<UtilizationDistribution>';
-foreach( $developer as $teamdev => $developer ) {
-	if( $agilemantis_tasks->getUserName( $teamdev ) != "" ) {
-		$name = $agilemantis_tasks->getUserName( $teamdev );
-	} else {
-		$name = "NN";
+if( isset( $developer ) ){
+	foreach( $developer as $teamdev => $developer ) {
+		if( $agilemantis_tasks->getUserName( $teamdev ) != "" ) {
+			$name = $agilemantis_tasks->getUserName( $teamdev );
+		} else {
+			$name = "NN";
+		}
+		echo '<user name="' . $name . '" value1="' . $developer['planned_capacity'] * $multiplier .
+			 '" value2="' . $developer['rest_capacity'] * $multiplier . '" value3="' .
+			 $developer['performed_capacity'] * $multiplier . '"></user>';
 	}
-	echo '<user name="' . $name . '" value1="' . $developer['planned_capacity'] * $multiplier .
-		 '" value2="' . $developer['rest_capacity'] * $multiplier . '" value3="' .
-		 $developer['performed_capacity'] * $multiplier . '"></user>';
 }
 echo '</UtilizationDistribution>';
 ?>

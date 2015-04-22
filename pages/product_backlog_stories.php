@@ -212,14 +212,20 @@
 					if(plugin_is_loaded('agileMantisExpert')) {
 						$functionName = 'loadUserstoryExpert';
 					}
+					
+					if( plugin_config_get( 'gadiv_taskboard' ) == 0 ) {
+						$page_backlog = plugin_page( "sprint_backlog.php" );
+					} else {
+						$page_backlog = plugin_page( "taskboard.php" );
+					}
 				?>
 				<img src="<?php echo AGILEMANTIS_PLUGIN_URL?>images/info-icon.png" alt="<?php 
 						echo plugin_lang_get( 'product_backlog_show_info' );?>" 
 						onclick="<?php echo $functionName?>(<?php echo $row['id']?>, '<?php 
 						echo AGILEMANTIS_PLUGIN_URL?>');" height="16" width="16">
 			</td>
-			<td><?php echo $row['summary']?></td>
-			<td><a href="<?php echo plugin_page("sprint_backlog.php")?>&sprintName=<?php echo urlencode($row['sprint'])?>"><?php echo $row['sprint'];?></a></td>
+			<td><?php echo string_display_links($row['summary'])?></td>
+			<td><a href="<?php echo $page_backlog?>&sprintName=<?php echo urlencode($row['sprint'])?>"><?php echo string_display_links($row['sprint']);?></a></td>
 		</tr>
 		<?php
 			# add bug list cookie

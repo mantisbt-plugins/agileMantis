@@ -39,40 +39,43 @@ class gadiv_availability extends gadiv_commonlib {
 	# deletes already existing agileMantis participant 
 	# availbilites and insert new capacities for this agileMantis participant 
 	function setUserAvailability() {
+				
 		$t_sql = "DELETE FROM gadiv_rel_user_availability_week WHERE user_id=" . db_param( 0 );
 		$t_params = array( $this->user_id );
 		db_query_bound( $t_sql, $t_params );
-		
+				
 		$t_sql = "INSERT INTO gadiv_rel_user_availability_week 
-						SET user_id=" . db_param( 0 ) . ", 
-						monday=" . db_param( 1 ) . ", 
-						tuesday=" . db_param( 2 ) . ", 
-						wednesday=" . db_param( 3 ) . ", 
-						thursday=" . db_param( 4 ) . ", 
-						friday=" . db_param( 5 ) . ", 
-						saturday=" . db_param( 6 ) . ", 
-						sunday=" . db_param( 7 );
+ 		          (user_id,monday,tuesday,wednesday,thursday,friday,saturday,sunday) 
+						VALUES (" . db_param( 0 ) . "," . db_param( 1 ) . "," . db_param( 2 ) . "," . 
+						db_param( 3 ) . "," . db_param( 4 ) . "," . db_param( 5 ) . "," . db_param( 6 ) . "," . 
+		                db_param( 7 ) . ")";
 		$t_params = array( $this->user_id, $this->monday, $this->tuesday, $this->wednesday, 
 			$this->thursday, $this->friday, $this->saturday, $this->sunday );
+
 		db_query_bound( $t_sql, $t_params );
 	}
 	
 	# deletes availbilities of an agileMantis participant in a predefined period
 	function deleteUserCapacity( $p_user_id, $p_date ) {
+		
+		$db_date = $this->getNormalDateFormat($p_date);
+		
 		$t_sql = "DELETE FROM gadiv_rel_user_availability WHERE user_id=" . db_param( 0 ) .
 			 " AND date=" . db_param( 1 );
-		$t_params = array( $p_user_id, $p_date );
+		$t_params = array( $p_user_id, $db_date );
 		db_query_bound( $t_sql, $t_params );
 	}
 	
 	# adds availability for a selected user on the specific day
 	function setUserCapacity( $p_user_id, $p_date, $p_capacity ) {
+
+		$db_date = $this->getNormalDateFormat($p_date);
+				
 		$t_sql = "INSERT INTO gadiv_rel_user_availability 
-						SET user_id=" . db_param( 0 ) . ", 
-						date=" . db_param( 1 ) . ", 
-						capacity=" . db_param( 2 );
-		$t_params = array( $p_user_id, $p_date, $p_capacity );
+						VALUES ( " . db_param( 0 ) . "," . db_param( 1 ) . "," . db_param( 2 ) . ")";
+		$t_params = array( $p_user_id, $db_date, $p_capacity );
 		db_query_bound( $t_sql, $t_params );
+		
 	}
 	
 	# fetch all availbilies of an user  and create a 4D-Array for filling the calender.
@@ -82,7 +85,8 @@ class gadiv_availability extends gadiv_commonlib {
 		$t_user = $this->executeQuery( $t_sql, $t_params );
 		if( !empty( $t_user ) ) {
 			foreach( $t_user as $num => $row ) {
-				$uc[$row['user_id']][$row['date']] = $row['capacity'];
+				$convertedDate = substr($row['date'], 0, 10);
+				$uc[$row['user_id']][$convertedDate] = $row['capacity'];
 			}
 		}
 		return $uc;
@@ -90,43 +94,62 @@ class gadiv_availability extends gadiv_commonlib {
 	
 	# get the whole capacity values from a user in a predefined period
 	function getPredaysCapacity( $p_user_id, $p_start_date, $p_end_date ) {
+		
+		$db_start_date = $this->getNormalDateFormat($p_start_date);
+		$db_end_date   = $this->getNormalDateFormat($p_end_date  );
+		
 		$t_sql = "SELECT * FROM gadiv_rel_user_availability WHERE user_id=" . db_param( 0 ) .
 			 " AND date>=" . db_param( 1 ) . " AND date<=" . db_param( 2 );
-		$t_params = array( $p_user_id, $p_start_date, $p_end_date );
+		$t_params = array( $p_user_id, $db_start_date, $db_end_date );
 		return $this->executeQuery( $t_sql, $t_params );
 	}
 	
 	# get the whole team member capacity in a certain period of time
 	function getMemberCapacity( $p_user_id, $p_date_start, $p_date_end ) {
+		
+ 		$db_start_date = $this->getNormalDateFormat($p_date_start);
+ 		$db_end_date   = $this->getNormalDateFormat($p_date_end  );
+		
 		$t_sql = "SELECT sum( capacity ) AS total_cap 
 						FROM gadiv_rel_user_team_capacity 
 						WHERE user_id=" . db_param( 0 ) . " 
 						AND date>=" . db_param( 1 ) . " 
 						AND date<=" . db_param( 2 );
-		$t_params = array( $p_user_id, $p_date_start, $p_date_end );
+		$t_params = array( $p_user_id, $db_start_date, $db_end_date );
 		$t_result = $this->executeQuery( $t_sql, $t_params );
 		return $t_result[0]['total_cap'];
 	}
 	
 	# get the capacity which is planned in a team by a user
 	function getUserCapacityByTeam( $p_team_id, $p_user_id, $p_date_start, $p_date_end ) {
+		
+		$db_start_date = $this->getNormalDateFormat($p_date_start);
+		$db_end_date   = $this->getNormalDateFormat($p_date_end  );
+		
 		$t_sql = "SELECT * 
 						FROM gadiv_rel_user_team_capacity 
 						WHERE user_id=" . db_param( 0 ) . " 
 						AND team_id=" . db_param( 1 ) . " 
 						AND date>=" . db_param( 2 ) . " 
 						AND date<=" . db_param( 3 );
-		$t_params = array( $p_user_id, $p_team_id, $p_date_start, $p_date_end );
+		$t_params = array( $p_user_id, $p_team_id, $db_start_date, $db_end_date );
 		return $this->executeQuery( $t_sql, $t_params );
 	}
 	
 	# get the total capacity of one team in a defined period of time
-	function getTeamCapacity( $p_team_id, $p_date_start, $p_date_end ) {
+	function getTeamCapacity( $p_team_id, $p_date_start, $p_date_end, $p_withConvertDate = true ) {
+		
+		if ($p_withConvertDate) {
+			$p_date_start = $this->getNormalDateFormat($p_date_start);
+			$p_date_end   = $this->getNormalDateFormat($p_date_end  );		
+		}
+		
 		$t_sql = "SELECT sum( capacity ) AS total_cap 
 					FROM gadiv_rel_user_team_capacity 
 					WHERE team_id=" . db_param( 0 ) . " 
 					AND date>=" . db_param( 1 ) . " 
-					AND date<=" . db_param( 2 );
+					AND date<=" . db_param( 2 ); 
+					//GROUP BY team_id";
 		$t_params = array( $p_team_id, $p_date_start, $p_date_end );
 		$t_result = $this->executeQuery( $t_sql, $t_params );
 		return $t_result[0]['total_cap'];
@@ -134,6 +157,7 @@ class gadiv_availability extends gadiv_commonlib {
 	
 	# saves standard availability for one user
 	function saveMonthAvailability( $p_user_id, $p_year, $p_month ) {
+		
 		$t_count_over_capacity = 0;
 		$t_sql = "SELECT * 
 					FROM gadiv_rel_user_availability_week 
@@ -142,6 +166,7 @@ class gadiv_availability extends gadiv_commonlib {
 		$x = $this->executeQuery( $t_sql, $t_params );
 		$t_user = $x[0];
 		
+				
 		if( $p_month != date( 'n', time() ) ) {
 			$t_start_day = 1;
 		} else {
@@ -153,28 +178,31 @@ class gadiv_availability extends gadiv_commonlib {
 		$t_first_day = date( 'N', $t_month_start );
 		
 		$x = $t_first_day;
+		
 		for( $i = $t_start_day; $i <= $t_end_day; $i++ ) {
 			$t_day_string = $this->getDayStringForIndex( $x );
 			
 			$t_sql = "DELETE FROM gadiv_rel_user_availability 
 						WHERE user_id=" . db_param( 0 ) . " 
 						AND date=" . db_param( 1 );
-			$t_params = array( $p_user_id, ($p_year . '-' . $p_month . '-' . $i) );
+			
+			$t_params = array( $p_user_id, ($this->getDateFormat($p_year, $p_month,$i)) );
+			//$t_params = array( $p_user_id, ($p_year . '-' . $p_month . '-' . $i) );
 			db_query_bound( $t_sql, $t_params );
-			$t_sql = "INSERT INTO gadiv_rel_user_availability 
-						SET capacity=" . db_param( 0 ) . ", 
-						user_id=" . db_param( 1 ) . ", 
-						date=" . db_param( 2 );
+			
+			
+			$t_sql = "INSERT INTO gadiv_rel_user_availability
+						VALUES ( " . db_param( 0 ) . "," . db_param( 1 ) . "," . db_param( 2 ) . ")";
 			
 			if ( is_null( $t_user[$t_day_string] ) ) {
-				$t_user[$t_day_string] = 0;
+				$t_user[$t_day_string] = 0.00;
 			}
 			
-			$t_params = array( $t_user[$t_day_string], $p_user_id, 
-				($p_year . '-' . $p_month . '-' . $i) );
+			$t_params = array( $p_user_id, $this->getDateFormat($p_year,$p_month,$i),  $t_user[$t_day_string] );
 			db_query_bound( $t_sql, $t_params );
-			if( $this->getCapacityToSavedAvailability( $p_user_id, 
-				$p_year . '-' . $p_month . '-' . $i ) > $t_user[$t_day_string] ) {
+			//$t_params = array( $t_user[$t_day_string], $p_user_id, ($p_year . '-' . $p_month . '-' . $i) );
+					
+			if( $this->getCapacityToSavedAvailability( $p_user_id, $p_year . '-' . str_pad($p_month, 2 ,'0', STR_PAD_LEFT) . '-' . str_pad($i, 2 ,'0', STR_PAD_LEFT) ) > $t_user[$t_day_string] ) {
 				$t_count_over_capacity++;
 			}
 			$x++;

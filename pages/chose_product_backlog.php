@@ -95,9 +95,11 @@
 			$running_sprints = '';
 			if( !empty( $sprints ) ) {
 				foreach( $sprints as $key => $value ) {
-					$date_start = explode( '-', $value['start'] );
-					$date_end = explode( '-', $value['end'] );
-					$running_sprints .= '<b>' . $value['name'] . '</b>' .
+					$convertedDateStart = substr($value['start'], 0, 10);
+					$convertedDateEnd = substr($value['end'], 0, 10);
+					$date_start = explode( '-', $convertedDateStart );
+					$date_end = explode( '-', $convertedDateEnd );
+					$running_sprints .= '<b>' . string_display_links($value['name']) . '</b>' .
 						 plugin_lang_get( 'product_backlog_from' ) . $date_start[2] . '.' .
 						 $date_start[1] . '.' . $date_start[0] .
 						 plugin_lang_get( 'product_backlog_till' ) . $date_end[2] . '.' .
@@ -109,7 +111,7 @@
 			
 			if( !empty( $projects ) ) {
 				foreach( $projects as $key => $value ) {
-					$project_list .= $value['name'] . ', ';
+					$project_list .= string_display_links($value['name']) . ', ';
 				}
 			}
 			if( $show_all_teams === false ) {
@@ -120,10 +122,10 @@
 								<form action="<?php echo plugin_page("product_backlog")?>"
 			method="post">
 			<input type="hidden" name="productBacklogName"
-				value="<?php echo $row['name']?>">
+				value="<?php echo string_display_links($row['name'])?>">
 			<tr <?php echo helper_alternate_class() ?>>
-				<td><?php echo $row['name']?></td>
-				<td><?php echo nl2br($row['description'])?></td>
+				<td><?php echo string_display_links($row['name'])?></td>
+				<td><?php echo nl2br(string_display_links($row['description']))?></td>
 				<td><?php echo substr($running_sprints,0,-6)?></td>
 				<td><?php echo substr($project_list,0,-2)?></td>
 				<td><input type="submit" name="submit"
@@ -139,10 +141,10 @@
 					<form action="<?php echo plugin_page("product_backlog")?>"
 			method="post">
 			<input type="hidden" name="productBacklogName"
-				value="<?php echo $row['name']?>">
+				value="<?php echo string_display_links($row['name'])?>">
 			<tr <?php echo helper_alternate_class() ?>>
-				<td><?php echo $row['name']?></td>
-				<td><?php echo nl2br($row['description'])?></td>
+				<td><?php echo string_display_links($row['name'])?></td>
+				<td><?php echo nl2br(string_display_links($row['description']))?></td>
 				<td><?php echo substr($running_sprints,0,-6)?></td>
 				<td><?php echo substr($project_list,0,-2)?></td>
 				<td><input type="submit" name="submit"

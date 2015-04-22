@@ -57,7 +57,7 @@ class gadiv_agileuser extends gadiv_commonlib {
 		$t_mantis_user_table = db_get_table( 'mantis_user_table' );
 		
 		if( $_GET['filter'] != "" ) {
-			$t_username_filter = "AND username LIKE " . db_param( 0 ) . " ";
+			$t_username_filter = " WHERE username LIKE " . db_param( 0 ) . " ";
 			$t_params[] = $_GET['filter'] . '%';
 		}
 		if( $_GET['sort_by'] ) {
@@ -70,25 +70,25 @@ class gadiv_agileuser extends gadiv_commonlib {
 			}
 			switch( $_GET['sort_by'] ) {
 				case 'realname':
-					$t_orderby = "ORDER BY realname " . $direction;
+					$t_orderby = " ORDER BY realname " . $direction;
 					break;
 				case 'email':
-					$t_orderby = "ORDER BY email " . $direction;
+					$t_orderby = " ORDER BY email " . $direction;
 					break;
 				case 'username':
 				default:
-					$t_orderby = "ORDER BY username " . $direction;
+					$t_orderby = " ORDER BY username " . $direction;
 			}
 		}
 		
 		if( !$_GET['sort_by'] ) {
-			$t_orderby = "ORDER BY username ASC";
+			$t_orderby = " ORDER BY username ASC";
 			$_SESSION['order'] = 1;
 		}
 		
 		$t_sql = "SELECT id, username, realname, email 
-					FROM $t_mantis_user_table 
-					WHERE 1 " . $t_username_filter . $t_orderby;
+					FROM " . $t_mantis_user_table . $t_username_filter . $t_orderby;
+		
 		return $this->executeQuery( $t_sql, $t_params );
 	}
 
@@ -119,7 +119,7 @@ class gadiv_agileuser extends gadiv_commonlib {
 	# this function looks for the highest user id from  mantis_user_table and returns it
 	function getHighestUserId() {
 		$t_mantis_user_table = db_get_table( 'mantis_user_table' );
-		$t_max = $this->executeQuery( "SELECT max(id) AS mid FROM $t_mantis_user_table " );
+		$t_max = $this->executeQuery( "SELECT max(id) AS mid FROM $t_mantis_user_table GROUP BY enabled" );
 		return $t_max[0]['mid'];
 	}
 	
@@ -154,6 +154,15 @@ class gadiv_agileuser extends gadiv_commonlib {
 							developer=" . db_param( 2 ) . ", 
 							administrator=" . db_param( 3 ) . ", 
 							expert=0";
+			
+			if (db_is_mssql()) {
+				$t_sql = "INSERT INTO gadiv_additional_user_fields
+							VALUES (" . db_param( 0 ) . "," 
+							          . db_param( 1 ) . "," 
+							          . db_param( 2 ) . "," 
+							          . db_param( 3 ) . ",0)";
+			}
+			
 			$t_params = array( $p_user_id, $p_participant, $p_developer, $p_administrator );
 		}
 		db_query_bound( $t_sql, $t_params );
@@ -174,8 +183,22 @@ class gadiv_agileuser extends gadiv_commonlib {
 		$isMaster = FALSE;
 		$isDeveloper = FALSE;
 		$isStakeholder = FALSE;
-		
-		$rsSprints = $this->executeQuery( "SELECT * FROM gadiv_sprints WHERE status <= 1" );
+		$t_sql="SELECT id,
+				team_id,
+				pb_id,
+				name,
+				description,
+				status,
+				daily_scrum,
+				start,
+				dispose as " . AGILEMANTIS_COMMIT_FIELD . ",enddate as " . AGILEMANTIS_END_FIELD . ",
+				closed,
+				unit_storypoints,
+				unit_planned_work,
+				unit_planned_task,
+				workday_length
+ 	    FROM gadiv_sprints WHERE status <= 1";
+		$rsSprints = $this->executeQuery( $t_sql );
 		
 		if( !empty( $rsSprints ) ) {
 			foreach( $rsSprints as $num => $row1 ) {
@@ -265,7 +288,22 @@ class gadiv_agileuser extends gadiv_commonlib {
 	# check, if a user is assigned to any task in any non-closed sprint
 	function userHasRunningTasks( $p_user_id ) {
 		# open Sprints
-		$rsSprints = $this->executeQuery( "SELECT * FROM gadiv_sprints WHERE status <= 1" );
+		$rsSprints = $this->executeQuery( "SELECT id,
+											team_id,
+											pb_id,
+											name,
+											description,
+											status,
+											daily_scrum,
+											start,
+											dispose as " . AGILEMANTIS_COMMIT_FIELD . ",
+											enddate as " . AGILEMANTIS_END_FIELD . ",
+											closed,
+											unit_storypoints,
+											unit_planned_work,
+											unit_planned_task,
+											workday_length
+		 FROM gadiv_sprints WHERE status <= 1" );
 		global $agilemantis_sprint;
 		
 		if( !empty( $rsSprints ) ) {
@@ -278,7 +316,8 @@ class gadiv_agileuser extends gadiv_commonlib {
 						$t_sql = "SELECT COUNT(*) as cnt 
 										FROM gadiv_tasks 
 										WHERE us_id=" . db_param( 0 ) . " 
-										AND developer_id=" . db_param( 1 );
+										AND developer_id=" . db_param( 1 ) . "
+										GROUP BY us_id";
 						$t_params = array( $row2['id'], $p_user_id );
 						$rsTasks = $this->executeQuery( $t_sql, $t_params );
 						if( $rsTasks[0]['cnt'] > 0 )

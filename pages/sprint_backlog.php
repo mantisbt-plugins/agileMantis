@@ -147,6 +147,7 @@ if( $no_sprints == false ) {?>
 	$tableColums = 10;
 	$tableColums += plugin_config_get( 'gadiv_show_rankingorder' );
 	$tableColums += plugin_config_get( 'gadiv_show_storypoints' );
+	$tableColums += config_get( 'show_project_target_version' );
 	?>
 <div class="table-container">
 	<table align="center" class="width100" cellspacing="1">
@@ -158,7 +159,7 @@ if( $no_sprints == false ) {?>
 				<form action="<?php echo plugin_page("sprint_backlog.php")?>"
 					method="post" style="float: right; margin: 0; padding: 0;">
 					<input type="hidden" name="id" value="<?php echo $s['id']?>"> <input
-						type="hidden" name="sprintName" value="<?php echo $s['name']?>"> <input
+						type="hidden" name="sprintName" value="<?php echo string_display_links($s['name'])?>"> <input
 						type="hidden" name="action" value="save_sprint_options"> <input
 						type="checkbox" name="show_project_target_version"
 						<?php if( config_get( 'show_project_target_version',

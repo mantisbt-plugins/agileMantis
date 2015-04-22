@@ -71,9 +71,10 @@ class gadiv_userstory extends gadiv_commonlib {
 	function getWorkMovedFromSplittedStories( $bugList, $date ) {
 		$t_sql = "SELECT sum(work_moved) AS total_work_moved 
 					FROM gadiv_rel_userstory_splitting_table 
-					WHERE old_userstory_id IN ( " . db_param( 0 ) . " ) 
-					AND DATE LIKE " . db_param( 1 );
-		$t_params = array( $bugList, "%" . $date . "%" );
+					WHERE old_userstory_id IN ( " . $bugList . " ) 
+					AND DATE LIKE " . db_param( 0 ) ;
+					//TODO: . "	GROUP BY"-> function is unused!
+		$t_params = array( "%" . $this->getNormalDateFormat($date) . "%" );
 		$userstories = $this->executeQuery( $t_sql, $t_params );
 		return $userstories[0]['total_work_moved'];
 	}

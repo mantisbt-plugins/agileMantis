@@ -48,14 +48,11 @@ class gadiv_team extends gadiv_commonlib {
 	
 	# adds a new Team
 	function newTeam() {
-		$t_sql = "INSERT INTO gadiv_teams 
-					SET name=" . db_param( 0 ) . ", 
-					description=" . db_param( 1 ) . ", 
-					pb_id=" . db_param( 2 ) . ", 
-					daily_scrum=" . db_param( 3 );
+		$t_sql = "INSERT INTO gadiv_teams ( name, description, pb_id, daily_scrum )
+					VALUES ( " . db_param( 0 ) . "," . db_param( 1 ) . "," . db_param( 2 ) . "," . db_param( 3 ) . " )";
 		$t_params = array(htmlspecialchars( $this->name ),htmlspecialchars( $this->description ),$this->product_backlog,( int ) $this->daily_scrum );
 		db_query_bound( $t_sql, $t_params );
-		$this->id = db_insert_id();
+		$this->id = db_insert_id("gadiv_teams");
 		return $this->id;
 	}
 	
@@ -138,7 +135,8 @@ class gadiv_team extends gadiv_commonlib {
 		$t_sql = "SELECT count(*) AS tnz 
 				FROM gadiv_teams 
 				WHERE name LIKE " . db_param( 0 ) . " 
-				AND id!=" . db_param( 1 );
+				AND id!=" . db_param( 1 ) . "
+				GROUP BY name";
 		$t_params = array($this->name,$this->id );
 		$isTeam = $this->executeQuery( $t_sql, $t_params );
 		if( $isTeam[0]['tnz'] > 0 ) {
@@ -158,21 +156,24 @@ class gadiv_team extends gadiv_commonlib {
 			$t_sql = "SELECT count(role) AS product_owner 
 					FROM gadiv_rel_team_user 
 					WHERE team_id=" . db_param( 0 ) . " 
-					AND role LIKE '%1%'";
+					AND role LIKE '%1%'" . "
+					GROUP BY team_id";
 			$t_params = array($row['id'] );
 			$prowner = $this->executeQuery( $t_sql, $t_params );
 			
 			$t_sql = "SELECT count(role) AS scrum_master 
 					FROM gadiv_rel_team_user 
 					WHERE team_id=" . db_param( 0 ) . " 
-					AND role LIKE '%2%'";
+					AND role LIKE '%2%'" . "
+					GROUP BY team_id";
 			$t_params = array($row['id'] );
 			$scmaster = $this->executeQuery( $t_sql, $t_params );
 			
 			$t_sql = "SELECT count(role) AS developer 
 					FROM gadiv_rel_team_user 
 					WHERE team_id=" . db_param( 0 ) . " 
-					AND role LIKE '%3%'";
+					AND role LIKE '%3%'" . "
+					GROUP BY team_id";
 			$t_params = array($row['id'] );
 			$developer = $this->executeQuery( $t_sql, $t_params );
 			
@@ -309,8 +310,9 @@ class gadiv_team extends gadiv_commonlib {
 				FROM gadiv_rel_user_availability 
 				WHERE user_id=" . db_param( 0 ) . " 
 				AND date>=" . db_param( 1 ) . " 
-				AND date<=" . db_param( 2 );
-		$t_params = array($user_id,$date_start,$date_end );
+				AND date<=" . db_param( 2 ) . "
+				GROUP BY user_id";
+		$t_params = array($user_id,$this->getNormalDateFormat($date_start),$this->getNormalDateFormat($date_end));
 		$result = $this->executeQuery( $t_sql, $t_params );
 		if( $result[0]['total_cap'] != "" ) {
 			return $result;
@@ -345,11 +347,9 @@ class gadiv_team extends gadiv_commonlib {
 		$t_params = array($user_id,$team_id,$role_id );
 		$result = db_query_bound( $t_sql, $t_params );
 		if( db_num_rows( $result ) == 0 ) {
-			$t_sql = "INSERT INTO " . $table . " 
-					SET user_id=" . db_param( 0 ) . ", 
-					team_id=" . db_param( 1 ) . ", 
-					role=" . db_param( 2 );
-			$t_params = array($user_id,$team_id,$role_id );
+			$t_sql = "INSERT INTO " . $table . " (user_id, team_id, role) VALUES ( " 
+			         . db_param( 0 ) . "," . db_param( 1 ) . "," . db_param( 2 ) . " )";
+		    $t_params = array($user_id,$team_id,$role_id );
 			db_query_bound( $t_sql, $t_params );
 		}
 	}
@@ -367,7 +367,7 @@ class gadiv_team extends gadiv_commonlib {
 	# deletes a member from all teams where he is developer
 	function deleteScrumDeveloperFromTeams( $p_user_id ) {
 		# first delete the user' capacities, then remove from the teams
-		$date = date( "Y-m-d", time() );
+		$date = $this->getNormalDateFormat(date("Y-m-d"));
 		$this->deleteDeveloperCapacities( $p_user_id, $date );
 		
 		# remove from teams
@@ -404,21 +404,20 @@ class gadiv_team extends gadiv_commonlib {
 			db_query_bound( $t_sql, $t_params );
 		}
 	}
-	
 	# inserts capacity values for users of one team with a defined date
 	function insertTeamUserCapacity( $team_id, $user_id, $date, $capacity ) {
+		
+		$db_date = $this->getNormalDateFormat($date);
+		
 		$t_sql = "DELETE FROM gadiv_rel_user_team_capacity 
 				WHERE team_id=" . db_param( 0 ) . " 
 				AND user_id=" . db_param( 1 ) . " 
 				AND date=" . db_param( 2 );
-		$t_params = array($team_id,$user_id,$date );
+		$t_params = array($team_id,$user_id,$db_date );
 		db_query_bound( $t_sql, $t_params );
-		$t_sql = "INSERT INTO gadiv_rel_user_team_capacity 
-				SET team_id=" . db_param( 0 ) . ", 
-				user_id=" . db_param( 1 ) . ", 
-				date=" . db_param( 2 ) . ", 
-				capacity=" . db_param( 3 );
-		$t_params = array($team_id,$user_id,$date,$capacity );
+		$t_sql = "INSERT INTO gadiv_rel_user_team_capacity (team_id, user_id, date, capacity) VALUES (" 
+		         . db_param( 0 ) . "," . db_param( 1 ) . "," . db_param( 2 ) . "," . db_param( 3 ) . " )";
+		$t_params = array($team_id,$user_id,$db_date,$capacity );
 		db_query_bound( $t_sql, $t_params );
 	}
 	
@@ -430,7 +429,8 @@ class gadiv_team extends gadiv_commonlib {
 		$t_sql = "SELECT min( id ) AS currentsprint, name 
 				FROM gadiv_sprints 
 				WHERE team_id=" . db_param( 0 ) . " 
-				AND status != 2";
+				AND status != 2
+				GROUP BY name";
 		$t_params = array($team_id );
 		$get = $this->executeQuery( $t_sql, $t_params );
 		if( $get[0]['currentsprint'] > 0 && !is_null( $get[0]['currentsprint'] ) ) {
@@ -467,7 +467,8 @@ class gadiv_team extends gadiv_commonlib {
 	function countMemberTeams( $user_id ) {
 		$t_sql = "SELECT count(DISTINCT team_id) AS teams 
 				FROM gadiv_rel_team_user 
-				WHERE user_id=" . db_param( 0 );
+				WHERE user_id=" . db_param( 0 ) . "
+				GROUP BY user_id";
 		$t_params = array($user_id );
 		$user = $this->executeQuery( $t_sql, $t_params );
 		return $user[0]['teams'];
@@ -508,9 +509,8 @@ class gadiv_team extends gadiv_commonlib {
 		if( !empty( $team_id ) ) {
 			$t_sql = "SELECT DISTINCT(pb_id) 
 					FROM gadiv_teams 
-					WHERE id IN(" . db_param( 0 ) . ")";
-			$t_params = array($team_id );
-			return $this->executeQuery( $t_sql, $t_params );
+					WHERE id IN(" . $team_id . ")";
+			return $this->executeQuery( $t_sql );
 		}
 	}
 	
@@ -527,7 +527,7 @@ class gadiv_team extends gadiv_commonlib {
 		return $this->executeQuery( $t_sql, $t_params );
 	}
 	function getTotalTeamMemberCapacityBySprint( $user_id, $sprint_name ) {
-		$t_sql = "SELECT start,status, end, team_id 
+		$t_sql = "SELECT start, status, enddate as " . AGILEMANTIS_END_FIELD . ", team_id 
 				FROM gadiv_sprints 
 				WHERE name=" . db_param( 0 );
 		$t_params = array($sprint_name );
@@ -538,7 +538,7 @@ class gadiv_team extends gadiv_commonlib {
 		}
 		
 		if( $result[0]['status'] == 1 ) {
-			$date_start = date( 'Y-m-d' );
+			$date_start = $this->getNormalDateFormat(date( 'Y-m-d' ));
 		}
 		
 		if( $result[0]['status'] == 0 ) {
@@ -550,7 +550,8 @@ class gadiv_team extends gadiv_commonlib {
 				WHERE user_id=" . db_param( 0 ) . " 
 				AND team_id=" . db_param( 1 ) . " 
 				AND date>=" . db_param( 2 ) . " 
-				AND date<=" . db_param( 3 );
+				AND date<=" . db_param( 3 ) . "
+				GROUP BY user_id";
 		$t_params = array($user_id,$result[0]['team_id'],$date_start,$result[0]['end'] );
 		$result = $this->executeQuery( $t_sql, $t_params );
 		

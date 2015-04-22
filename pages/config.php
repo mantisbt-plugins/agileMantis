@@ -54,10 +54,7 @@
 	html_page_top( plugin_lang_get( 'manage_settings_title' ) );
 	
 	$disable_combobox_task_unit = "";
-	if($agilemantis_tasks->tasksExist()) {
-		$disable_combobox_task_unit = "disabled";
-	}
-
+	
 	# checks if the current user is administrator oder agileMantis administrator
 	if ( current_user_is_administrator() || $_SESSION['AGILEMANTIS_ISMANTISADMIN'] == 1 ) {
 ?>
@@ -285,7 +282,7 @@
 	<td class="left">
 		<input type="hidden" name="old_task_unit_mode" value ="<?php 
 			echo plugin_config_get( 'gadiv_task_unit_mode' ) ?>">
-		<select <?php echo $disable_combobox_task_unit; ?> id="gadiv_task_unit_mode" name="gadiv_task_unit_mode" 
+		<select id="gadiv_task_unit_mode" name="gadiv_task_unit_mode" 
 		onChange="changeTaskUnit('<?php echo plugin_config_get( 'gadiv_task_unit_mode') ?>','<?php 
 					echo plugin_lang_get( 'manage_settings_error_106102')?>','<?php 
 					echo plugin_lang_get('manage_settings_error_106102B')?>','<?php 

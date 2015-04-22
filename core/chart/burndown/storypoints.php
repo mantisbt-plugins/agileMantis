@@ -37,13 +37,16 @@ echo '<entry date="' . date( 'd.m.Y H:i', $sprintinfo['start'] ) . '" value="' .
 	 '"></entry>';
 
 $gesamt_storypoints = $storypoints;
-ksort( $storypoints_left );
-foreach( $storypoints_left as $key => $value ) {
-	$gesamt_storypoints -= $value;
-	if( $key <= mktime() && $key >= $sprintinfo['start'] && $key <= $sprintinfo['end'] + 86400 &&
-		 $gesamt_storypoints >= 0 ) {
-		echo '<entry date="' . date( 'd.m.Y H:i', $key ) . '" value="' . $gesamt_storypoints .
-		 '"></entry>';
+if( !empty( $storypoints_left ) ){
+	ksort( $storypoints_left );
+
+	foreach( $storypoints_left as $key => $value ) {
+		$gesamt_storypoints -= $value;
+		if( $key <= mktime() && $key >= $sprintinfo['start'] && $key <= $sprintinfo['end'] + 86400 &&
+			 $gesamt_storypoints >= 0 ) {
+			echo '<entry date="' . date( 'd.m.Y H:i', $key ) . '" value="' . $gesamt_storypoints .
+			 '"></entry>';
+		}
 	}
 }
 for( $i = $sprintinfo['start']; $i <= $sprintinfo['end']; $i += 86400 ) {

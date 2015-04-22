@@ -24,9 +24,9 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with agileMantis. If not, see <http://www.gnu.org/licenses/>.
 
+ob_start();
 
-
-error_reporting( NULL );
+//error_reporting( NULL );
 
 $mantisBtPath = realpath(dirname(__FILE__));
 $mantisBtPath = str_replace('plugins' . DIRECTORY_SEPARATOR . 
@@ -48,25 +48,28 @@ $_COOKIE['MANTIS_STRING_COOKIE'] = $_POST['cookie_string'];
 // Lade die Konfigurationsdatei und stelle die Datenbankverbindung her
 // Zugriff auf die agileMantis Funktionen
 
-
-// Load language stuff
-if( $_POST['language'] == 'german' ) {
-	require_once ($mantisBtPath . 'lang' . DIRECTORY_SEPARATOR . 'strings_german.txt');
-	require_once ($mantisBtPath . 'plugins' . DIRECTORY_SEPARATOR . 'agileMantis' . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . 'strings_german.txt');
-} else {
-	require_once ($mantisBtPath . 'lang' . DIRECTORY_SEPARATOR . 'strings_english.txt');
-	require_once ($mantisBtPath . 'plugins' . DIRECTORY_SEPARATOR . 'agileMantis' . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . 'strings_english.txt');
-}
-
 if( $_POST['timezone'] ) {
 	date_default_timezone_set( $_POST['timezone'] );
 }
+ob_end_clean();
 
 if( $_POST['user'] ) {
 	$sitekey = $agilemantis_tasks->getConfigValue( 'plugin_agileMantis_gadiv_sitekey' );
 	$heute = mktime( 0, 0, 0, date( 'm' ), date( 'd' ), date( 'y' ) );
 	$generatedKey = md5( $sitekey . $heute );
 	$user_id = $_POST['user'];
+	$language = user_pref_get_language( $user_id );
+	lang_load( $language, $mantisBtPath . 'plugins' . DIRECTORY_SEPARATOR . 'agileMantis' . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR );	
+	lang_push( $language );
+
+	// Load language stuff
+	if( $language == 'german' ) {
+		require_once ($mantisBtPath . 'lang' . DIRECTORY_SEPARATOR . 'strings_german.txt');
+		require_once ($mantisBtPath . 'plugins' . DIRECTORY_SEPARATOR . 'agileMantis' . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . 'strings_german.txt');
+	} else {
+		require_once ($mantisBtPath . 'lang' . DIRECTORY_SEPARATOR . 'strings_english.txt');
+		require_once ($mantisBtPath . 'plugins' . DIRECTORY_SEPARATOR . 'agileMantis' . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . 'strings_english.txt');
+	}
 	
 	if( $_POST['event'] == 'checkIdentity' ) {
 		if( $generatedKey == $_POST['appletkey'] ) {
@@ -85,7 +88,6 @@ if( $_POST['user'] ) {
 			switch( $_POST['event'] ) {
 				case 'loadLicense':
 					echo '<licenseData>';
-								
 					if( is_file( AGILEMANTIS_LICENSE_PATH ) ) {
 						$lines = array();
 						$fp = fopen( AGILEMANTIS_LICENSE_PATH, 'r' );
@@ -104,10 +106,10 @@ if( $_POST['user'] ) {
 						fclose( $fp );
 						if( count( $lines ) <= 5 ) {
 							echo '<licenseKey>' . $lines[0] . '</licenseKey>';
-							echo '<domain>' . $lines[1] . '</domain>';
-							echo '<organisation>' . $lines[2] . '</organisation>';
+							echo '<domain><![CDATA[' . $lines[1] . ']]></domain>';
+							echo '<organisation><![CDATA[' . $lines[2] . ']]></organisation>';
 							echo '<date>' . $lines[3] . '</date>';
-							echo '<developer>' . $lines[4] . '</developer>';
+							echo '<developer><![CDATA[' . $lines[4] . ']]></developer>';
 						} else {
 							echo '<licenseKey>corrupted</licenseKey>';
 						}
@@ -130,13 +132,13 @@ if( $_POST['user'] ) {
 					$pbName = $agilemantis_pb->getProductBacklogNameById( $sprintData['pb_id'] );
 					echo '<sprint>';
 					echo '<id>' . $sprintData['id'] . '</id>';
-					echo '<name><![CDATA[' . $sprintData['name'] . ']]></name>';
+					echo '<name>' . $agilemantis_commonlib->safeCData($sprintData['name']) . '</name>';
 					echo '<status>' . $sprintData['status'] . '</status>';
 					echo '<team>' . $agilemantis_sprint->getTeamById( $sprintData['team_id'] ) . '</team>';
 					echo '<start>' . date( 'd.m.Y', $sprintData['start'] ) . '</start>';
 					echo '<end>' . date( 'd.m.Y', $sprintData['end'] ) . '</end>';
-					echo '<description><![CDATA[' . $sprintData['description'] . ']]></description>';
-					echo '<productBacklog><![CDATA[' . $pbName . ']]></productBacklog>';
+					echo '<description>' . $agilemantis_commonlib->safeCData($sprintData['description']) .'</description>';
+					echo '<productBacklog>' . $agilemantis_commonlib->safeCData($pbName) . '</productBacklog>';
 					echo '</sprint>';
 					break;
 				// Lädt alle Userstories mit den entsprechenden Tasks, die zu
@@ -154,6 +156,7 @@ if( $_POST['user'] ) {
 					}
 					$agilemantis_sprint->us_id = $_POST['userstory_id'];
 					include (AGILEMANTIS_PLUGIN_URI . 'core/schnittstelle_load_userstory.php');
+	
 					break;
 				case 'loadUserstories':
 					
@@ -180,7 +183,7 @@ if( $_POST['user'] ) {
 						}
 					}
 					break;
-				// Der Status kann bearbeitet werden
+				//Der Status kann bearbeitet werden
 				case 'updateUserstory':
 					$id = ( int ) $_POST['id'];
 					if( $id > 0 ) {
@@ -193,11 +196,11 @@ if( $_POST['user'] ) {
 						echo $status;
 					}
 					break;
-				// Ein Task kann anhand seiner id bearbeitet werden, wobei
-				// zuerst alle Variablen übergeben werden und dabei der neue
-				// Rest-Aufwand gebildet wird und anschließend in die Datenbank
-				// geschrieben. Es werden die Änderungen an einer Task in Form
-				// von generiertem XML ausgegeben.
+				//Ein Task kann anhand seiner id bearbeitet werden, wobei
+				//zuerst alle Variablen übergeben werden und dabei der neue
+				//Rest-Aufwand gebildet wird und anschließend in die Datenbank
+				//geschrieben. Es werden die Änderungen an einer Task in Form
+				//von generiertem XML ausgegeben.
 				case 'editTask':
 					
 					// Hole Sprint Informationen
@@ -229,9 +232,9 @@ if( $_POST['user'] ) {
 					$agilemantis_tasks->status = $_POST['status'];
 					$agilemantis_tasks->daily_scrum = 0;
 					
-					if( $_POST['id'] == 0 ) {
-						$agilemantis_tasks->unit = $_POST['gadiv_task_unit_mode'];
-					}
+					//if( $_POST['id'] == 0 ) {
+					$agilemantis_tasks->unit = $_POST['gadiv_task_unit_mode'];
+					//}
 					
 					if( $getSprint['status'] == 1 && str_replace( ',', '.', $_POST['rest_capacity'] ) != str_replace( ',', '.', $_POST['old_rest_capacity'] ) && str_replace( ',', '.', $_POST['rest_capacity'] ) > 0 ) {
 						$agilemantis_tasks->daily_scrum = 1;
@@ -456,8 +459,8 @@ if( $_POST['user'] ) {
 					$closed = $agilemantis_tasks->getTaskEvent( $row['id'], 'closed' );
 					echo '<task>';
 					echo '<id>' . $taskInfo['id'] . '</id>';
-					echo '<name><![CDATA[' . $taskInfo['name'] . ']]></name>';
-					echo '<description><![CDATA[' . $taskInfo['description'] . ']]></description>';
+					echo '<name>' . $agilemantis_commonlib->safeCData($taskInfo['name']) . '</name>';
+					echo '<description>' . $agilemantis_commonlib->safeCData($taskInfo['description']) .'</description>';
 					echo '<task_daily_scrum>' . $taskInfo['daily_scrum'] . '</task_daily_scrum>';
 					if( $taskInfo['developer_id'] > 0 ) {
 						echo '<developer>';
@@ -521,7 +524,7 @@ if( $_POST['user'] ) {
 						echo '</developers>';
 					}
 					break;
-				// Löscht eine Task anhand der Benutzer-id
+ 				//Löscht eine Task anhand der Benutzer-id
 				case 'deleteTask':
 					$agilemantis_tasks->id = ( int ) $_POST['id'];
 					echo $agilemantis_tasks->deleteTask();
@@ -535,7 +538,7 @@ if( $_POST['user'] ) {
 					$agilemantis_tasks->updateTaskLog( $agilemantis_tasks->id, ( int ) $_POST['developer'], "daily_scrum" );
 					echo 1;
 					break;
-				// Loggt alle Vorgänge rund um die Tasks.
+				//Loggt alle Vorgänge rund um die Tasks.
 				case 'logTaskAction':
 					$agilemantis_tasks->updateTaskLog( $_POST['id'], $_POST['user'], $_POST['taskAction'] );
 					if( $_POST['taskAction'] == 'confirmed' || $_POST['taskAction'] == 'reopened' ) {
@@ -545,18 +548,22 @@ if( $_POST['user'] ) {
 					break;
 				case 'getStatistics':
 					if( isset( $_POST['sprintName'] ) ) {
+						
 						$name = $_POST['sprintName'];
 						$onlyOpenStories = false;
 						if( $_POST['only_open_userstories'] == 1 ) {
 							$onlyOpenStories = true;
 						}
+						
 						$userstories = $agilemantis_sprint->getSprintStories( $name, $onlyOpenStories );
 						
 						$agilemantis_sprint->sprint_id = $name;
 						$sprintinfo = $agilemantis_sprint->getSprintById();
 						
-						$sprint_start_date = explode( '-', $sprintinfo['start'] );
-						$sprint_end_date = explode( '-', $sprintinfo['end'] );
+						$convertedDateStart = substr($sprintinfo['start'], 0, 10);
+						$convertedDateEnd = substr($sprintinfo['end'], 0, 10);
+						$sprint_start_date = explode( '-', $convertedDateStart );
+						$sprint_end_date = explode( '-', $convertedDateEnd );
 						$sprintinfo['start'] = mktime( 0, 0, 0, $sprint_start_date[1], $sprint_start_date[2], $sprint_start_date[0] );
 						$sprintinfo['startdayend'] = mktime( 23, 59, 0, $sprint_start_date[1], $sprint_start_date[2], $sprint_start_date[0] );
 						$sprintinfo['end'] = mktime( 23, 59, 0, $sprint_end_date[1], $sprint_end_date[2], $sprint_end_date[0] );
@@ -690,16 +697,18 @@ if( $_POST['user'] ) {
 							if( $previousDate == date( 'd.m.Y', $i ) ) {
 								continue;
 							}
-							foreach( $sprintTask as $key => $value ) {
-								if( $sprintinfo['status'] >= 1 ) {
-									if( isset( $task_array[$value][date( 'd.m.Y', $i )] ) ) {
-										$last_entry[$value] = $task_array[$value][date( 'd.m.Y', $i )];
-										$work_done[date( 'd.m.Y', $i )] += $task_array[$value][date( 'd.m.Y', $i )];
+							if( isset( $sprintTask ) ) {
+								foreach( $sprintTask as $key => $value ) {
+									if( $sprintinfo['status'] >= 1 ) {
+										if( isset( $task_array[$value][date( 'd.m.Y', $i )] ) ) {
+											$last_entry[$value] = $task_array[$value][date( 'd.m.Y', $i )];
+											$work_done[date( 'd.m.Y', $i )] += $task_array[$value][date( 'd.m.Y', $i )];
+										} else {
+											$work_done[date( 'd.m.Y', $i )] += $last_entry[$value];
+										}
 									} else {
-										$work_done[date( 'd.m.Y', $i )] += $last_entry[$value];
+										$work_done[date( 'd.m.Y', $i )] += $task_array[$value][date( 'd.m.Y', $sprintinfo['start'] )];
 									}
-								} else {
-									$work_done[date( 'd.m.Y', $i )] += $task_array[$value][date( 'd.m.Y', $sprintinfo['start'] )];
 								}
 							}
 							$previousDate = date( 'd.m.Y', $i );
@@ -737,12 +746,13 @@ if( $_POST['user'] ) {
 					include_once (AGILEMANTIS_PLUGIN_URI . 'core/chart/generate_velocity_data.php');
 					break;
 				case 'getClosedTeamSprints':
+					
 					$agilemantis_sprint->sprint_id = $_POST['sprintName'];
 					$sprintData = $agilemantis_sprint->getSprintById();
 					$team_sprint = $agilemantis_sprint->getLatestSprints( $sprintData['team_id'] );
 					echo '<team_sprints>';
 					foreach( $team_sprint as $num => $row ) {
-						echo '<sprint id="' . $row['id'] . '" name="' . $row['name'] . '" />';
+						echo '<sprint id="' . $row['id'] . '" name="' . string_display_links($row['name']) . '" />';
 					}
 					echo '</team_sprints>';
 					break;
@@ -840,7 +850,7 @@ if( $_POST['user'] ) {
 							$usernames .= ', ' . $sender_info['username'];
 						}
 						
-						// Email Betreff erweitern, wenn Userstory oder Task ausgewählt worden ist
+// 						// Email Betreff erweitern, wenn Userstory oder Task ausgewählt worden ist
 						$subject .= $_POST['subject'];
 						$message = $_POST['message'];
 						
@@ -876,13 +886,13 @@ if( $_POST['user'] ) {
 					
 					$task = $agilemantis_tasks->getSelectedTask( $_POST['id'] );
 					
-					// Allgemein
+// 					// Allgemein
 					$agilemantis_tasks->us_id = $task['us_id'];
 					$agilemantis_tasks->name = $task['name'];
 					$agilemantis_tasks->description = $task['description'];
 					$agilemantis_tasks->daily_scrum = 1;
 					
-					// Alte Task
+// 					// Alte Task
 					$agilemantis_tasks->id = $task['id'];
 					$agilemantis_tasks->developer = $task['developer_id'];
 					$agilemantis_tasks->status = 4;
@@ -892,7 +902,7 @@ if( $_POST['user'] ) {
 					$agilemantis_tasks->editTask();
 					$agilemantis_tasks->setDailyScrum( $agilemantis_tasks->id, $agilemantis_tasks->daily_scrum );
 					
-					// Neue Task
+// 					// Neue Task
 					$agilemantis_tasks->id = 0;
 					$agilemantis_tasks->us_id = $task['us_id'];
 					$agilemantis_tasks->description = $task['description'];
@@ -965,7 +975,8 @@ if( $_POST['user'] ) {
 						echo '<developer name="' . $name . '">';
 						foreach( $capacity as $key => $value ) {
 							
-							echo '<date>' . date( 'd.m.Y', strtotime( $value['date'] ) ) . '</date>';
+							$convertedDate = substr($value['date'], 0, 10);
+							echo '<date>' . date( 'd.m.Y', strtotime( $convertedDate ) ) . '</date>';
 							echo '<capacity>' . $value['capacity'] . '</capacity>';
 						}
 						echo '</developer>';

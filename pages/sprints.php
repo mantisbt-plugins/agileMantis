@@ -113,8 +113,10 @@ if( $t_user_right == 2 || $t_user_right == 3 || current_user_is_administrator() 
 		}
 		
 		# format sprint start and end date
-		$temp_start_date = explode( '-', $row['start'] );
-		$temp_end_date = explode( '-', $row['end'] );
+		$convertedDateStart = substr($row['start'], 0, 10);
+		$convertedDateEnd = substr($row['end'], 0, 10);
+		$temp_start_date = explode('-',$convertedDateStart);
+		$temp_end_date = explode('-',$convertedDateEnd);		
 		$row['start'] = mktime( 0, 0, 0, $temp_start_date[1], $temp_start_date[2], $temp_start_date[0] );
 		$row['end'] = mktime( 0, 0, 0, $temp_end_date[1], $temp_end_date[2], $temp_end_date[0] );
 		
@@ -152,7 +154,7 @@ if( $t_user_right == 2 || $t_user_right == 3 || current_user_is_administrator() 
 		?>
 	<tr>
 			<td style="background:<?php echo $color?>;">
-			<?php echo $row['sname']?>
+			<?php echo string_display_links($row['sname'])?>
 		</td>
 			<td style="background:<?php echo $color?>;">
 			<?php echo date('d.m.Y',$row['start'])?>

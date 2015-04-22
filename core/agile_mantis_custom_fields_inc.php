@@ -136,7 +136,7 @@ echo '
 	if( $row['name'] == $story['name'] ) { 
 		echo 'selected';
 	}?>><?php 
-	echo $row['name']?></option>
+	echo string_display_links($row['name'])?></option>
 <?php }?>
 				<?php echo '
 			</select>
@@ -173,7 +173,7 @@ echo '
 			echo 'selected';
 			$selected = true;
 		}?>><?php 
-		echo $row['sname']?></option>
+		echo string_display_links($row['sname'])?></option>
 <?php }}?>
 	<?php if($agilemantis_sprint->getUserStoryStatus( $p_project_id ) >= 80 
 				&& !empty( $story['sprint'] ) && $selected == false ) {?>

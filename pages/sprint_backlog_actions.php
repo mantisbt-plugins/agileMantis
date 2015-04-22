@@ -200,8 +200,7 @@ if( $page_name == 'statistics' ) {
 				$sprint_start = $s['start'];
 				$is_begin_date_tomorrow_or_earlier = ( $sprint_start <= $tomorrow );
 				$prev_sprint_closed = $agilemantis_sprint->previousSprintIsClosed( 
-					$s['team_id'], $agilemantis_sprint->sprint_id );
-
+					$s['team_id'], $s['id'] );
 				if( $is_begin_date_tomorrow_or_earlier &&
 					$has_userstories &&
 					$status_open &&
@@ -312,7 +311,7 @@ if( $page_name == 'statistics' ) {
 		$productBacklog = $agilemantis_sprint->getSelectedProductBacklog();
 		?>
 		<tr style="background-color:<?php echo $bgcolor;?>">
-			<td><?php echo $s['name']?></td>
+			<td><?php echo string_display_links($s['name'])?></td>
 			<td><?php echo date('d.m.Y',$s['start']) ?></td>
 			<td><?php echo date('d.m.Y',$s['end']) ?></td>
 			<td><?php echo $gesamt_storypoints?></td>
@@ -322,7 +321,7 @@ if( $page_name == 'statistics' ) {
 			<td><?php echo $span_left?><?php echo sprintf( "%.2f", $capacity )?>
 				<?php echo $span_right?></td>
 			<td><?php echo $agilemantis_sprint->getTeamById($s['team_id']);?></td>
-			<td><?php echo $productBacklog[0]['name']?></td>
+			<td><?php echo string_display_links($productBacklog[0]['name'])?></td>
 		</tr>
 	<?php if(!empty($s['description'])){?>
 		<tr>
@@ -331,7 +330,7 @@ if( $page_name == 'statistics' ) {
 		</tr>
 		<tr style="background-color:<?php echo $bgcolor;?>">
 			<td colspan="9">
-				<?php echo nl2br($s['description'])?>
+				<?php echo nl2br(string_display_links($s['description']))?>
 			</td>
 		</tr>
 	<?php }?>

@@ -23,7 +23,15 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with agileMantis. If not, see <http://www.gnu.org/licenses/>.
+global $agilemantis_pb;
 
+$pb_id = $information[0]['id'];
+if( empty( $pb_id ) ) {
+	$pb = $agilemantis_pb->getProductBacklogByName( $product_backlog );
+	$pb_id = $pb[0]['id'];
+}
+$user_id_po = $agilemantis_pb->getUserIdOfPoByPbId($pb_id);
+$logged_in_user_is_po_of_selected_pb = ($user_id_po == $user_id);
 
 ?>
 <br>
@@ -47,7 +55,24 @@
 				<input type="submit" name="add_new_sprint"
 						value="<?php echo plugin_lang_get( 'product_backlog_add_sprint' )?>"
 						<?php echo $disable_button?>>
-				</form></td>
+				</form>
+				<form action="<?php echo plugin_page("edit_product_backlog.php")?>"
+					method="post">
+					<input type="submit" name="edit_product_backlog"
+						value="<?php echo plugin_lang_get( 'edit_product_backlog_title' )?>"
+						<?php 
+							if( !$logged_in_user_is_po_of_selected_pb ) {
+								echo " disabled";
+							}
+						?> />
+					<input type="hidden" name="pageFrom" value="product_backlog.php">
+					<?php 
+						if( $logged_in_user_is_po_of_selected_pb ) {
+							echo '<input type="hidden" name="id" value="' . $pb_id . '" />';
+						}
+					?>
+				</form>
+			</td>
 		</tr>
 	<?php
 		# get all sprint which work on a product backlog and get the latest out of it
@@ -58,8 +83,10 @@
 		$sprints = $agilemantis_pb->productBacklogHasRunningSprint( $pb_info[0]['id'] );
 		if( !empty( $sprints ) ) {
 			foreach( $sprints as $num => $row ) {
-				$sprint_start_date = explode( '-', $row['start'] );
-				$sprint_end_date = explode( '-', $row['end'] );
+				$convertedDateStart = substr($row['start'], 0, 10);
+				$convertedDateEnd = substr($row['end'], 0, 10);
+				$sprint_start_date = explode( '-', $convertedDateStart );
+				$sprint_end_date = explode( '-', $convertedDateEnd );
 				$row['start'] = mktime( 0, 0, 0, $sprint_start_date[1], $sprint_start_date[2], 
 					$sprint_start_date[0] );
 				$row['end'] = mktime( 0, 0, 0, $sprint_end_date[1], $sprint_end_date[2], 
@@ -82,8 +109,8 @@
 		<?php }?>
 	</tr>
 		<tr <?php echo helper_alternate_class() ?>>
-			<td><?php echo $product_backlog?></td>
-			<td><?php echo nl2br($pb_info[0]['description'])?></td>
+			<td><?php echo string_display_links($product_backlog)?></td>
+			<td><?php echo nl2br(string_display_links($pb_info[0]['description']))?></td>
 		<?php if( $agilemantis_pb->checkProductBacklogMoreOneTeam( $product_backlog ) ) { ?>
 		<td><?php echo $team_info[0]['name']?></td>
 			<td><?php echo $agilemantis_team->getUserName( $agilemantis_team->getTeamProductOwner() )?></td>

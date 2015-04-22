@@ -76,9 +76,9 @@ $teams = $agilemantis_team->getTeams();
 			foreach( $teams AS $num => $row ) { 
 	?>
 	<tr <?php echo helper_alternate_class() ?>>
-			<td><?php echo $row['name']?></td>
-			<td><?php echo $row['description']?></td>
-			<td><?php echo $agilemantis_team->getTeamBacklog( $row['product_backlog'] ) ?></td>
+			<td><?php echo string_display_line( $row['name'])?></td>
+			<td><?php echo string_display_line($row['description'])?></td>
+			<td><?php echo string_display_line($agilemantis_team->getTeamBacklog( $row['product_backlog']) ) ?></td>
 			<td><?php echo $agilemantis_team->getProductOwner( $row['id'] ) ?></td>
 			<td><?php echo $agilemantis_team->getScrumMaster( $row['id'] ) ?></td>
 			<td class="right" width="205">

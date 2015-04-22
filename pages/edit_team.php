@@ -43,8 +43,7 @@ if( empty($_POST) || $_POST['back_button'] ) {
 	} elseif( isset( $_POST['developer'] ) ) {
 		$user_id = $_POST['developer'];
 	}
-	
-	if( $team_id != "" && $user_id != "" ) {
+	if( $team_id != "" && $user_id != "" && $user_id!="0" ) {
 		
 		$projects = "";
 		if( !$agilemantis_team->is_admin_user( $user_id ) ) {
@@ -199,6 +198,7 @@ if( empty($_POST) || $_POST['back_button'] ) {
 				}
 			}
 		}
+		
 	}
 	
 	# delete one team member
@@ -272,7 +272,7 @@ if( empty($_POST) || $_POST['back_button'] ) {
 				?>
 		
 				<td class="left"><textarea name="t_description" 
-						cols="80" rows="10"><?php echo $t_descr ?></textarea>
+						cols="80" rows="10"><?php echo string_display_line($t_descr) ?></textarea>
 				</td>
 			</tr>
 			<tr <?php echo helper_alternate_class() ?>>
@@ -300,10 +300,10 @@ if( empty($_POST) || $_POST['back_button'] ) {
 							<?php 
 								if( $t[0]['pb_id']==$row['id'] ) { 
 									echo 'selected';
-									$name=$row['name'];
+									$name=string_display_line($row['name']);
 								}
 							?>>
-							<?php echo $row['name']?></option>
+							<?php echo string_display_line($row['name'])?></option>
 				<?php }?>
 			</select>
 				</td>
@@ -376,7 +376,7 @@ if( empty($_POST) || $_POST['back_button'] ) {
 									echo 'selected'; 
 									$opoid = $row['id'];
 								}?>>
-								<?php echo $row['realname']?></option>
+								<?php echo empty( $row['realname'] ) ? $row['username'] : $row['realname'] ?></option>
 						<?php }?>
 					</select> <input type="submit" name="addProductOwner"
 						value="<?php echo plugin_lang_get( 'button_change' )?>">
@@ -409,7 +409,7 @@ if( empty($_POST) || $_POST['back_button'] ) {
 								if( $agilemantis_team->getTeamScrumMaster() == $row['id'] ) { 
 									echo 'selected';$oscid = $row['id'];
 								}?>>
-								<?php echo $row['realname']?></option>
+								<?php echo empty( $row['realname'] ) ? $row['username'] : $row['realname'] ?></option>
 					<?php } ?>
 				</select> <input type="submit" name="addProductOwner"
 						value="<?php echo plugin_lang_get( 'button_change' )?>">
@@ -477,6 +477,7 @@ if( empty($_POST) || $_POST['back_button'] ) {
 			</td>
 		</tr>
 	<?php 
+	
 			}
 		} 
 	?>
@@ -494,7 +495,8 @@ if( empty($_POST) || $_POST['back_button'] ) {
 					foreach( $team_user AS $num => $row ) {
 						if( $row['developer'] == 1 ) {
 					?>
-					<option value="<?php echo $row['id']?>"><?php echo $row['realname']?></option>
+					<option value="<?php echo $row['id']?>"><?php 
+					  echo empty( $row['realname'] ) ? $row['username'] : $row['realname'] ?></option>
 					<?php
 						}
 					}
@@ -510,7 +512,8 @@ if( empty($_POST) || $_POST['back_button'] ) {
 <div class="table-container">
 	<table align="center" class="width75" cellspacing="1">
 		<tr <?php echo helper_alternate_class() ?>>
-			<td class="form-title" colspan="4"><a name="ProductUser"><?php echo plugin_lang_get( 'edit_team_product_user' )?></a>
+			<td class="form-title" colspan="4"><a name="ProductUser"><?php 
+				echo plugin_lang_get( 'edit_team_product_user' )?></a>
 			</td>
 		</tr>
 		<tr <?php echo helper_alternate_class() ?>>
@@ -557,7 +560,8 @@ if( empty($_POST) || $_POST['back_button'] ) {
 					$team_user = $agilemantis_au->getAgileUser();
 					foreach( $team_user AS $num => $row ) {
 					?>
-					<option value="<?php echo $row['id']?>"><?php echo $row['realname']?></option>
+					<option value="<?php echo $row['id']?>"><?php 
+					  echo empty( $row['realname'] ) ? $row['username'] : $row['realname'] ?></option>
 					<?php
 					}
 					?>
@@ -618,7 +622,8 @@ if( empty($_POST) || $_POST['back_button'] ) {
 					$team_user = $agilemantis_au->getAgileUser();
 					foreach( $team_user AS $num => $row ) {
 					?>
-					<option value="<?php echo $row['id']?>"><?php echo $row['realname']?></option>
+					<option value="<?php echo $row['id']?>"><?php 
+						echo empty( $row['realname'] ) ? $row['username'] : $row['realname'] ?></option>
 					<?php
 					}
 					?>
@@ -681,7 +686,8 @@ if( empty($_POST) || $_POST['back_button'] ) {
 					$team_user = $agilemantis_au->getAgileUser();
 					foreach( $team_user AS $num => $row ) {
 					?>
-					<option value="<?php echo $row['id']?>"><?php echo $row['realname']?></option>
+					<option value="<?php echo $row['id']?>"><?php 
+					  echo empty( $row['realname'] ) ? $row['username'] : $row['realname'] ?></option>
 					<?php
 					}
 					?>

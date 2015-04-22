@@ -24,36 +24,39 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with agileMantis. If not, see <http://www.gnu.org/licenses/>.
 
-
-
 $capacityValue = 0;
 $velocityValue = 0;
 sort( $avarage );
-$sprintCapacity = $agilemantis_av->getTeamCapacity( $sprintinfo['team_id'], $sprintinfo['start'], 
-	$sprintinfo['end'] );
+$sprintCapacity = $agilemantis_av->getTeamCapacity( $sprintinfo['team_id'], $convertedStart, $convertedEnd, false );
+
 echo '
 		<VelocityCapacity>';
 echo '<capacity>';
 if( !empty( $avarage ) ) {
 	foreach( $avarage as $num => $row ) {
 		if( $row['status'] == 2 ) {
-			echo '<entry name="' . $row['name'] . '" value="' . $row['total_developer_capacity'] .
+			echo '<entry name="' . string_html_specialchars($row['name']) . '" value="' . $row['total_developer_capacity'] .
 				 '"></entry>';
 		}
 	}
 }
-echo '<entry name="' . $sprintinfo['name'] . '" value="' . $sprintCapacity . '"></entry>';
+echo '<entry name="' . string_html_specialchars($sprintinfo['name']) . '" value="' . $sprintCapacity . '"></entry>';
 echo '</capacity>';
 echo '<velocity>';
 if( !empty( $avarage ) ) {
 	foreach( $avarage as $num => $row ) {
-		echo '<entry name="' . $row['name'] . '" value="' . $row['storypoints_sprint'] . '"></entry>';
+		echo '<entry name="' . string_html_specialchars($row['name']) . '" value="' . $row['storypoints_sprint'] . '"></entry>';
 		$velocityValue += $row['storypoints_sprint'];
 	}
 }
-echo '<entry name="' . $sprintinfo['name'] . '" value="' . $storypointsSprintCurrentDayRest .
+echo '<entry name="' . string_html_specialchars($sprintinfo['name']) . '" value="' . $storypointsSprintCurrentDayRest .
 	 '"></entry>';
-$avgVelocity = $velocityValue / $_POST['amountOfSprints'];
+if( $_POST['amountOfSprints'] != 0 ){	
+	$avgVelocity = $velocityValue / $_POST['amountOfSprints'];
+} else {
+	$agilemantis_commonlib->createAgManWarning( 'amountOfSprints' );
+	$avgVelocity = $velocityValue;
+}
 echo '</velocity>';
 echo '<avgVelocity>';
 echo '<entry value="' . $avgVelocity . '"></entry>';

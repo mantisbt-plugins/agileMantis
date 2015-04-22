@@ -33,7 +33,7 @@ class gadiv_calendar extends gadiv_commonlib {
 	# function which generates on calendar with a fixed start and enddate for one user
 	function getCalender( $start, $end, $user_id, 
 		$headline = array( 'Mo', 'Di', 'Mi', 'Do' ,'Fr' , 'Sa', 'So' ) ) {
-		
+			
 		# make a new instance of availability class and get user information
 		global $agilemantis_av;
 		$agilemantis_av->user_id = $user_id;
@@ -71,13 +71,16 @@ class gadiv_calendar extends gadiv_commonlib {
 		
 		# collect all availabilities and capacities from one user
 		if( $team > 0 ) {
+			
 			$date_start = $year . '-' . $month . '-' . date( 'd', $start );
 			$date_end = $year . '-' . $month . '-' . date( 'd', $end );
 			$user1 = $agilemantis_av->getUserCapacityByTeam( $team, $user_id, $date_start, 
 				$date_end );
+			
 			if( !empty( $user1 ) ) {
 				foreach( $user1 as $num => $row ) {
-					$user[$row['user_id']][$row['date']] = $row['capacity'];
+					$convertedDate = substr($row['date'], 0, 10);
+					$user[$row['user_id']][$convertedDate] = $row['capacity'];
 				}
 			}
 			if( $_POST['addavailability'] ) {
@@ -100,6 +103,7 @@ class gadiv_calendar extends gadiv_commonlib {
 				$date_end = $year . '-' . $month . '-' . date( 'd', $end );
 				
 				$user2 = $agilemantis_av->getPredaysCapacity( $user_id, $date_start, $date_end );
+			    
 				if( !empty( $user2 ) ) {
 					foreach( $user2 as $num => $row ) {
 						if( $user[$row['user_id']][$row['date']] == "" ||
@@ -112,7 +116,8 @@ class gadiv_calendar extends gadiv_commonlib {
 								$row['capacity'] = 0.00;
 							}
 							
-							$user[$row['user_id']][$row['date']] = $row['capacity'];
+							$convertedDate = substr($row['date'], 0, 10);
+							$user[$row['user_id']][$convertedDate] = $row['capacity'];
 						}
 					}
 				}
@@ -139,6 +144,7 @@ class gadiv_calendar extends gadiv_commonlib {
 					$month = $standard_month;
 				}
 				if( $_POST['standard_availability'] ) {
+					
 					$date_start = $year . '-' . $month . '-01';
 					$date_end = $year . '-' . $month . '-' . date( 'd', $end );
 					for( $i = $start_day; $i <= $end_day; $i++ ) {
@@ -151,7 +157,8 @@ class gadiv_calendar extends gadiv_commonlib {
 								$date_end );
 							if( !empty( $user4 ) ) {
 								foreach( $user4 as $num => $row ) {
-									$user[$row['user_id']][$row['date']] = $row['capacity'];
+									$convertedDate = substr($row['date'], 0, 10);
+									$user[$row['user_id']][$convertedDate] = $row['capacity'];
 								}
 							}
 						}

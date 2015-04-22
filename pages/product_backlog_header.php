@@ -111,8 +111,10 @@ if( !empty( $sprints ) ) {
 	$sprint_in_same_time = 0;
 	foreach( $sprints as $num => $row ) {
 		
-		$sprint_start_date = explode( '-', $row['start'] );
-		$sprint_end_date = explode( '-', $row['end'] );
+		$convertedDateStart = substr($row['start'], 0, 10);
+		$convertedDateEnd = substr($row['end'], 0, 10);
+		$sprint_start_date = explode( '-', $convertedDateStart );
+		$sprint_end_date = explode( '-', $convertedDateEnd );
 		
 		$row['start'] = mktime( 0, 0, 0, $sprint_start_date[1], $sprint_start_date[2], 
 			$sprint_start_date[0] );

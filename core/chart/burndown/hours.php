@@ -68,12 +68,21 @@ $sprintCapacity = $agilemantis_av->getTeamCapacity( $sprintinfo['team_id'],
 	date( 'Y-m-d', $sprintinfo['start'] ), date( 'Y-m-d', $sprintinfo['end'] ) );
 
 # VPK(S) = (WP(S) + WPz(S) - WPr(S)) / K(S)
-$vpks = ($workPlanned - $additionalCapacity) / $sprintCapacity;
+if( $sprintCapacity != 0 ){
+	$vpks = ($workPlanned - $additionalCapacity) / $sprintCapacity;
+} else {
+	$agilemantis_commonlib->createAgManWarning( 'sprintCapacity' );
+	$vpks = $workPlanned - $additionalCapacity;
+}
 echo '<entry date="' . date( 'd.m.Y H:i', $sprintinfo['start'] ) . '" value="' .
 	 $planned_capacity_new * $multiplier . '"></entry>';
 for( $i = $sprintinfo['start']; $i <= $sprintinfo['end'] + 86340; $i += 86400 ) {
 	echo '<entry date="' . date( 'd.m.Y H:i', $i ) . '" value="' . $workPlanned . '"></entry>';
-	if( $workPlanned -
+	if($agilemantis_av->getTeamCapacity( $sprintinfo['team_id'], date( 'Y-m-d', $sprintinfo['start'] ), 
+			date( 'Y-m-d', $sprintinfo['end'] ) ) == 0){
+		echo '<entry date="' . date( 'd.m.Y H:i', $sprintinfo['end'] ) . '" value="0"></entry>';
+		break;
+	}else if( $workPlanned -
 		 $agilemantis_av->getTeamCapacity( $sprintinfo['team_id'], date( 'Y-m-d', $i ), 
 			date( 'Y-m-d', $i ) ) * $vpks < 0 ) {
 		$workPlanned = 0;

@@ -1,4 +1,5 @@
 <?php
+
 # This file is part of agileMantis.
 #
 # Developed by: 
@@ -55,8 +56,7 @@ if( $_POST['back_button'] ) {
 							$system = plugin_lang_get( 'manage_capacity_error_984400' );
 						}
 						if( $row >= 0.00 && $row <= 24.00 ) {
-							$agilemantis_team->insertTeamUserCapacity( $_POST['team'], $user, $num, 
-								$row );
+							$agilemantis_team->insertTeamUserCapacity( $_POST['team'], $user, $num, $row );
 						}
 						if( $agilemantis_av->getAvailabilityToSavedCapacity( $user, $num ) <
 							 $agilemantis_av->getCapacityToSavedAvailability( $user, $num ) &&
@@ -279,13 +279,16 @@ if( $_POST['back_button'] ) {
 				$sprints = $agilemantis_sprint->getSprints();
 				if(!empty($sprints)){
 					foreach($sprints as $num => $row){
-						$start_date = explode('-',$row['start']);
-						$end_date = explode('-',$row['end']);
+
+						$convertedDateStart = substr($row['start'], 0, 10);
+						$convertedDateEnd = substr($row['end'], 0, 10);
+						$start_date = explode('-',$convertedDateStart);
+						$end_date = explode('-',$convertedDateEnd);
 
 					?>
 						<option value="<?php echo $row['sname']?>"
 							<?php if($row['sname'] == htmlspecialchars($_POST['sprint'])){?>
-							selected <?php }?>><?php echo $row['sname']?>
+							selected <?php }?>><?php echo string_display_links($row['sname'])?>
 							<?php echo plugin_lang_get( 'manage_capacity_realised_by' )?>
 							<?php echo $agilemantis_sprint->getTeamById($row['team_id'])?>
 							<?php echo plugin_lang_get( 'manage_capacity_from' )?>
@@ -388,7 +391,7 @@ $system = "";
 						style="color: grey;"><?php 
 						$agilemantis_team->id = $_POST['team'];
 						$currentTeam = $agilemantis_team->getSelectedTeam();
-						echo $currentTeam[0]['name'];
+						echo string_display_links($currentTeam[0]['name']);
 						?>
 					</span>
 				</td>
@@ -438,7 +441,6 @@ $system = "";
 		
 		$agilemantis_team->id 		=	$_POST['team'];
 		$teamDeveloper 	= 	$agilemantis_team->getTeamDeveloper($_POST['team']);
-
 		# open calendary foreach developer in chosen team
 		if( !empty($teamDeveloper ) ) {
 			foreach( $teamDeveloper AS $num => $row ) {

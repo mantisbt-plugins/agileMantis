@@ -1,5 +1,6 @@
 <?php
-	
+
+
 	# Tage
 	$s_plugin_agileMantis_days										= 	'Tage';
 	$s_plugin_agileMantis_monday									= 	'Montag';
@@ -16,7 +17,7 @@
 	$s_plugin_agileMantis_fr										= 	'Fr';
 	$s_plugin_agileMantis_sa										= 	'Sa';
 	$s_plugin_agileMantis_su										= 	'So';
-	
+
 	# Monate
 	$s_plugin_agileMantis_months									=	'Monate';
 	$s_plugin_agileMantis_january									=	'Januar';
@@ -31,7 +32,7 @@
 	$s_plugin_agileMantis_october									=	'Oktober';
 	$s_plugin_agileMantis_november									=	'November';
 	$s_plugin_agileMantis_december									=	'Dezember';
-	
+
 	# Status
 	$s_plugin_agileMantis_status_all								=	'all';
 	$s_plugin_agileMantis_status_new								=	'neu';
@@ -42,7 +43,7 @@
 	$s_plugin_agileMantis_status_resolved							=	'erledigt';
 	$s_plugin_agileMantis_status_closed								=	'geschlossen';
 	$s_plugin_agileMantis_status_reopened                           =   'wurde wiedereröffnet';
-	
+
 	# Buttons
 	$s_plugin_agileMantis_button_edit								= 	'Bearbeiten';
 	$s_plugin_agileMantis_button_delete								= 	'Löschen';
@@ -54,16 +55,16 @@
 	$s_plugin_agileMantis_button_change								= 	'Ändern';
 	$s_plugin_agileMantis_button_assume								= 	'Übernehmen';
 	$s_plugin_agileMantis_button_resolve							= 	'Erledigen';
-	
+
 	# Allgemeine Sprachstrings
 	$s_plugin_agileMantis_common_description						= 	'Beschreibung';
-	$s_plugin_agileMantis_common_actions							= 	'Aktionen';	
-	$s_plugin_agileMantis_common_chose								= 	'Bitte wählen';	
+	$s_plugin_agileMantis_common_actions							= 	'Aktionen';
+	$s_plugin_agileMantis_common_chose								= 	'Bitte wählen';
 
 	# Benutzerdefinierte Felder
 	$s_plugin_agileMantis_custom_chose_product_backlog				=	'Product Backlog auswählen';
 	$s_plugin_agileMantis_custom_chose_sprint						=	'Sprint auswählen';
-	
+
 	# Info-Seite
 	$s_plugin_agileMantis_info_title								=	'agileMantis - Informationen';
 	$s_plugin_agileMantis_info_company								=	'Firma';
@@ -88,7 +89,7 @@
 	$s_plugin_agileMantis_manage_user_expert						= 	'Expert-Benutzer';
 	$s_plugin_agileMantis_manage_user_remove_from_license			= 	'Lizenz freigeben';
 	$s_plugin_agileMantis_manage_user_error_921A00					= 	'[<span style="font-size:14px;">912A00</span>] Sie haben nicht die notwendigen Rechte, um die agileMantis-Benutzer zu verwalten.';
-	
+
 	# Save agileMantis Users
 	$s_plugin_agileMantis_manage_user_su_no_save 					= 	'Speichern nicht zulässig.';
 	$s_plugin_agileMantis_manage_user_su_is_owner_or_master 		= 	'Mindestens ein Mitglied ist Owner oder Master in einem laufenden Sprint und verliert sein Recht zur Ausübung dieser Rolle.';
@@ -105,39 +106,39 @@
 	$s_plugin_agileMantis_manage_user_su_no_change 					= 	'Sie haben keine Rechte geändert.';
 	$s_plugin_agileMantis_manage_user_su_yes						=	'Ja';
 	$s_plugin_agileMantis_manage_user_su_no							=	'Nein';
-	
+
 	# Product Backlogs verwalten
 	$s_plugin_agileMantis_manage_product_backlogs_title				= 	'Product Backlogs verwalten';
 	$s_plugin_agileMantis_manage_product_backlogs_add				= 	'Product Backlog hinzufügen';
-	
+
 	# Product Backlog löschen
 	$s_plugin_agileMantis_delete_product_backlog 					=	'Soll das Product Backlog mit allen zugehörigen Einstellungen gelöscht werden?';
 	$s_plugin_agileMantis_delete_product_backlog_delete_button		=	'Product Backlog löschen';
-	
+
 	# Projekt aus Product Backlog entfernen
 	$s_plugin_agileMantis_delete_project_title						= 	'Projekt aus Product Backlog entfernen';
 	$s_plugin_agileMantis_delete_project_message					= 	'Soll das Projekt mit allen zugehörigen Einstellungen aus dem Product Backlog entfernt werden?';
 	$s_plugin_agileMantis_delete_project_name						= 	'Projekt-Name';
 	$s_plugin_agileMantis_delete_project_warning					= 	'<br>Warnung: Es gibt unbearbeitete User Storys aus diesem Projekt.<br>Deren Zuordnung zum Product Backlog werden beim Löschen aufgehoben.<br>';
-	
+
 	# Product Backlog bearbeiten
 	$s_plugin_agileMantis_edit_product_backlog_title				=	'Product Backlog bearbeiten';
 	$s_plugin_agileMantis_edit_product_backlog_error_100600			=	'[<span style="font-size:14px;">100600</span>] Bitte beachten Sie, dass das Projekt bereits in einem anderen Product Backlog bearbeitet wird.';
 	$s_plugin_agileMantis_edit_product_backlog_error_922600			=	'[<span style="font-size:14px;">922600</span>] Bitte geben Sie einen Namen für das Product Backlog an.';
 	$s_plugin_agileMantis_edit_product_backlog_error_923600			=	'[<span style="font-size:14px;">923600</span>] Bitte geben Sie eine gültige Email-Adresse ein.';
 	$s_plugin_agileMantis_edit_product_backlog_error_982600			=	'[<span style="font-size:14px;">982600</span>] Bitte verwenden Sie einen eindeutigen Namen für das Product Backlog.';
-	$s_plugin_agileMantis_edit_product_backlog_error_982601			=	'[<span style="font-size:14px;">982601</span>] Der Product Backlog Name ist ungültig. Erlaubt sind nur lateinische Buchstaben, Ziffern, Leerzeichen, Bindestriche, Punkte, Pluszeichen und Unterstriche.';
+	$s_plugin_agileMantis_edit_product_backlog_error_982601			=	'[<span style="font-size:14px;">982601</span>] Der Product Backlog Name ist ungültig. Es sind unerlaubte Zeichen enthalten oder eine Länge von 22 wurde überschritten.';
 	$s_plugin_agileMantis_edit_product_backlog_error_100601			=	'[<span style="font-size:14px;">100601</span>] Die Zuordnung der Projekt-Tracker zu diesem Product Backlog wurde aufgehoben.';
 	$s_plugin_agileMantis_edit_product_backlog_error_100602         =   '[<span style="font-size:14px;">100602</span>] Achtung: Folgende Teammitglieder besitzen keine Zugriffsrechte für das neue Projekt: [names]. Bitte Rechte vergeben.';
 	$s_plugin_agileMantis_edit_product_backlog_error_100603         =   '[<span style="font-size:14px;">100603</span>] Achtung, diesem neuen Teammitglied fehlen Zugriffsrechte auf folgende Projekte: [names]. Bitte Rechte vergeben.';
 	$s_plugin_agileMantis_edit_product_backlog_user_email			=	'Email-Adresse des Team-Users';
 	$s_plugin_agileMantis_edit_product_backlog_projects				=	'Projekte';
 	$s_plugin_agileMantis_edit_product_backlog_add_project			=	'Projekt hinzufügen';
-	
+
 	# Teams verwalten
 	$s_plugin_agileMantis_manage_teams_title						=	'Teams verwalten';
 	$s_plugin_agileMantis_manage_teams_add							=	'Team hinzufügen';
-	
+
 	# Team bearbeiten
 	$s_plugin_agileMantis_edit_teams_title							=	'Team bearbeiten';
 	$s_plugin_agileMantis_edit_team_developer						=	'Entwickler';
@@ -153,7 +154,7 @@
 	# Team löschen
 	$s_plugin_agileMantis_delete_team_title							=	'Team löschen';
 	$s_plugin_agileMantis_delete_team_message						=	'Soll das Team mit allen zugehörigen Einstellungen gelöscht und dessen Mitglieder daraus entfernt werden?';
-	
+
 	# Mitglied aus Team entfernen
 	$s_plugin_agileMantis_remove_member_title						=	'Mitglied aus Team entfernen';
 	$s_plugin_agileMantis_remove_member_messageA					=	'Soll das Team-Mitglied in der Rolle als';
@@ -162,57 +163,57 @@
 	$s_plugin_agileMantis_remove_member_developer					=	'Entwickler';
 	$s_plugin_agileMantis_remove_member_customer					=	'Kunde';
 	$s_plugin_agileMantis_remove_member_user						=	'Produkt-Nutzer';
-	
+
 	# Verfügbarkeit verwalten
-	$s_plugin_agileMantis_manage_availability_title					=	'Verfügbarkeit verwalten';	
-	$s_plugin_agileMantis_manage_availability_show_all				=	'Alle';	
-	$s_plugin_agileMantis_manage_availability_successful_saved		=	'Die Standard-Verfügbarkeit wurde erfolgreich gespeichert.';	
-	$s_plugin_agileMantis_manage_availability_standard_title		=	'Standard-Verfügbarkeit verwalten';	
-	$s_plugin_agileMantis_manage_availability_user					=	'Benutzer';	
-	$s_plugin_agileMantis_manage_availability_total					=	'Gesamt';	
-	$s_plugin_agileMantis_manage_availability_planning				=	'Verfügbarkeit planen';	
-	$s_plugin_agileMantis_manage_availability_planning_for			=	'Verfügbarkeitsplanung für';	
-	$s_plugin_agileMantis_manage_availability_save_standard			=	'Standard übernehmen und speichern';	
-	$s_plugin_agileMantis_manage_availability_save_all				=	'Alles speichern';	
-	$s_plugin_agileMantis_manage_availability_error_985300			=	'[<span style="font-size:14px;">985300</span>] Die Eingaben hatten kein gültiges Format.';	
-	$s_plugin_agileMantis_manage_availability_error_984302			=	'[<span style="font-size:14px;">984302</span>] Die Verfügbarkeit eines einzelnen Tages kann 24h nicht überschreiten.';	
-	$s_plugin_agileMantis_manage_availability_error_984303			=	'[<span style="font-size:14px;">984303</span>] Die Verfügbarkeit eines einzelnen Tages kann nicht negativ werden.';	
-	$s_plugin_agileMantis_manage_availability_error_985301			=	'[<span style="font-size:14px;">985301</span>] Die Eingaben hatten kein gültiges Format und wurden auf 0.00 zurückgesetzt.';	
-	$s_plugin_agileMantis_manage_availability_error_984301			=	'[<span style="font-size:14px;">984301</span>] Die Verfügbarkeit eines einzelnen Tages kann 24h nicht überschreiten.<br> Der Wert wurde auf 0.00 gesetzt.';	
-	$s_plugin_agileMantis_manage_availability_error_984300			=	'[<span style="font-size:14px;">984300</span>] Die Verfügbarkeit eines einzelnen Tages kann 0.00h nicht unterschreiten.<br> Der Wert wurde auf 0.00 gesetzt.';	
-	$s_plugin_agileMantis_manage_availability_error_108300			=	'[<span style="font-size:14px;">108300</span>] Die Verfügbarkeit des Entwicklers unterschreitet die für ihn geplante Entwicklungskapazität.<br> Bitte passen Sie die Entwicklungskapazitäten oder Verfügbarkeiten an.';	
+	$s_plugin_agileMantis_manage_availability_title					=	'Verfügbarkeit verwalten';
+	$s_plugin_agileMantis_manage_availability_show_all				=	'Alle';
+	$s_plugin_agileMantis_manage_availability_successful_saved		=	'Die Standard-Verfügbarkeit wurde erfolgreich gespeichert.';
+	$s_plugin_agileMantis_manage_availability_standard_title		=	'Standard-Verfügbarkeit verwalten';
+	$s_plugin_agileMantis_manage_availability_user					=	'Benutzer';
+	$s_plugin_agileMantis_manage_availability_total					=	'Gesamt';
+	$s_plugin_agileMantis_manage_availability_planning				=	'Verfügbarkeit planen';
+	$s_plugin_agileMantis_manage_availability_planning_for			=	'Verfügbarkeitsplanung für';
+	$s_plugin_agileMantis_manage_availability_save_standard			=	'Standard übernehmen und speichern';
+	$s_plugin_agileMantis_manage_availability_save_all				=	'Alles speichern';
+	$s_plugin_agileMantis_manage_availability_error_985300			=	'[<span style="font-size:14px;">985300</span>] Die Eingaben hatten kein gültiges Format.';
+	$s_plugin_agileMantis_manage_availability_error_984302			=	'[<span style="font-size:14px;">984302</span>] Die Verfügbarkeit eines einzelnen Tages kann 24h nicht überschreiten.';
+	$s_plugin_agileMantis_manage_availability_error_984303			=	'[<span style="font-size:14px;">984303</span>] Die Verfügbarkeit eines einzelnen Tages kann nicht negativ werden.';
+	$s_plugin_agileMantis_manage_availability_error_985301			=	'[<span style="font-size:14px;">985301</span>] Die Eingaben hatten kein gültiges Format und wurden auf 0.00 zurückgesetzt.';
+	$s_plugin_agileMantis_manage_availability_error_984301			=	'[<span style="font-size:14px;">984301</span>] Die Verfügbarkeit eines einzelnen Tages kann 24h nicht überschreiten.<br> Der Wert wurde auf 0.00 gesetzt.';
+	$s_plugin_agileMantis_manage_availability_error_984300			=	'[<span style="font-size:14px;">984300</span>] Die Verfügbarkeit eines einzelnen Tages kann 0.00h nicht unterschreiten.<br> Der Wert wurde auf 0.00 gesetzt.';
+	$s_plugin_agileMantis_manage_availability_error_108300			=	'[<span style="font-size:14px;">108300</span>] Die Verfügbarkeit des Entwicklers unterschreitet die für ihn geplante Entwicklungskapazität.<br> Bitte passen Sie die Entwicklungskapazitäten oder Verfügbarkeiten an.';
 	$s_plugin_agileMantis_manage_availability_error_108301			=	'[<span style="font-size:14px;">108301</span>] Verfügbarkeiten werden überschritten.';
 	$s_plugin_agileMantis_manage_availability_error_108302			=	'[<span style="font-size:14px;">108302</span>] Die Verfügbarkeit einiger Entwicklers unterschreitet die für sie geplante Entwicklungskapazität.<br> Bitte passen Sie die Entwicklungskapazitäten oder Verfügbarkeiten an.';
 
 	# Entwicklungskapazitäten verwalten
-	$s_plugin_agileMantis_manage_capacity_title						=	'Entwicklungskapazitäten verwalten';	
-	$s_plugin_agileMantis_manage_capacity_end						=	'Ende';	
-	$s_plugin_agileMantis_manage_capacity_planning_for				=	'Entwicklungskapazitäten planen für Team';	
-	$s_plugin_agileMantis_manage_capacity_add_availability			=	'Verfügbarkeit ergänzen';	
-	$s_plugin_agileMantis_manage_capacity_realised_by				=	' bearbeitet von ';	
-	$s_plugin_agileMantis_manage_capacity_from						=	' vom ';	
-	$s_plugin_agileMantis_manage_capacity_till						=	' bis ';	
-	$s_plugin_agileMantis_manage_capacity_totally_planned			=	' Insges. verplant ';	
-	$s_plugin_agileMantis_manage_capacity_of						=	' von ';	
-	$s_plugin_agileMantis_manage_capacity_error_984401				=	'[<span style="font-size:14px;">984401</span>] Entwicklungskapazitäten können nicht kleiner als 0.00 sein.';	
-	$s_plugin_agileMantis_manage_capacity_error_984400				=	'[<span style="font-size:14px;">984400</span>] Einige Kapazitäten überschreiten 24h.';	
-	$s_plugin_agileMantis_manage_capacity_error_108400				=	'[<span style="font-size:14px;">108400</span>] Die Entwicklungskapazitäten einiger Entwickler überschreiten die geplante Verfügbarkeit.<br> Bitte passen Sie die Entwicklungskapazitäten oder Verfügbarkeiten an.';	
-	$s_plugin_agileMantis_manage_capacity_error_108401				=	'[<span style="font-size:14px;">108401</span>] Entwicklungskapazitäten überschreiten Verfügbarkeit';	
-	$s_plugin_agileMantis_manage_capacity_error_985402				=	'[<span style="font-size:14px;">985402</span>] Das Startdatum ist nicht im richtigen Format eingegeben worden.';	
-	$s_plugin_agileMantis_manage_capacity_error_985400				=	'[<span style="font-size:14px;">985400</span>] Das Enddatum ist nicht im richtigen Format eingegeben worden.';	
-	$s_plugin_agileMantis_manage_capacity_error_985403				=	'[<span style="font-size:14px;">985403</span>] Das Startdatum ist nicht im richtigen Format eingegeben worden.';	
-	$s_plugin_agileMantis_manage_capacity_error_985401				=	'[<span style="font-size:14px;">985401</span>] Das Enddatum ist nicht im richtigen Format eingegeben worden.';	
-	$s_plugin_agileMantis_manage_capacity_error_985404				=	'[<span style="font-size:14px;">985404</span>] Das Startdatum ist nicht im richtigen Format eingegeben worden.';	
-	$s_plugin_agileMantis_manage_capacity_error_985406				=	'[<span style="font-size:14px;">985406</span>] Das Enddatum ist nicht im richtigen Format eingegeben worden.';	
-	$s_plugin_agileMantis_manage_capacity_error_180401				=	'[<span style="font-size:14px;">180401</span>] Das Startdatum liegt zu weit in der Zukunft und wird zurückgesetzt.';	
-	$s_plugin_agileMantis_manage_capacity_error_180400				=	'[<span style="font-size:14px;">180400</span>] Das Enddatum liegt zu weit in der Zukunft';	
-	$s_plugin_agileMantis_manage_capacity_error_180402				=	'[<span style="font-size:14px;">180402</span>] Das Enddatum darf nicht vor dem Startdatum liegen.';	
-	$s_plugin_agileMantis_manage_capacity_error_923400				=	'[<span style="font-size:14px;">923400</span>] Bitte geben Sie ein Enddatum ein.';	
-	$s_plugin_agileMantis_manage_capacity_error_923402				=	'[<span style="font-size:14px;">923402</span>] Bitte geben Sie ein Startdatum ein.';	
-	$s_plugin_agileMantis_manage_capacity_error_980400				=	'[<span style="font-size:14px;">980400</span>] Start- und Enddatum liegen zu weit in der Vergangenheit.';	
-	$s_plugin_agileMantis_manage_capacity_error_923401				=	'[<span style="font-size:14px;">923401</span>] Bitte wählen Sie ein Team aus.';	
-	$s_plugin_agileMantis_manage_capacity_error_985405				=	'[<span style="font-size:14px;">985405</span>] Die Eingaben hatten kein gültiges Format und wurden zurückgesetzt.';	
-	
+	$s_plugin_agileMantis_manage_capacity_title						=	'Entwicklungskapazitäten verwalten';
+	$s_plugin_agileMantis_manage_capacity_end						=	'Ende';
+	$s_plugin_agileMantis_manage_capacity_planning_for				=	'Entwicklungskapazitäten planen für Team';
+	$s_plugin_agileMantis_manage_capacity_add_availability			=	'Verfügbarkeit ergänzen';
+	$s_plugin_agileMantis_manage_capacity_realised_by				=	' bearbeitet von ';
+	$s_plugin_agileMantis_manage_capacity_from						=	' vom ';
+	$s_plugin_agileMantis_manage_capacity_till						=	' bis ';
+	$s_plugin_agileMantis_manage_capacity_totally_planned			=	' Insges. verplant ';
+	$s_plugin_agileMantis_manage_capacity_of						=	' von ';
+	$s_plugin_agileMantis_manage_capacity_error_984401				=	'[<span style="font-size:14px;">984401</span>] Entwicklungskapazitäten können nicht kleiner als 0.00 sein.';
+	$s_plugin_agileMantis_manage_capacity_error_984400				=	'[<span style="font-size:14px;">984400</span>] Einige Kapazitäten überschreiten 24h.';
+	$s_plugin_agileMantis_manage_capacity_error_108400				=	'[<span style="font-size:14px;">108400</span>] Die Entwicklungskapazitäten einiger Entwickler überschreiten die geplante Verfügbarkeit.<br> Bitte passen Sie die Entwicklungskapazitäten oder Verfügbarkeiten an.';
+	$s_plugin_agileMantis_manage_capacity_error_108401				=	'[<span style="font-size:14px;">108401</span>] Entwicklungskapazitäten überschreiten Verfügbarkeit';
+	$s_plugin_agileMantis_manage_capacity_error_985402				=	'[<span style="font-size:14px;">985402</span>] Das Startdatum ist nicht im richtigen Format eingegeben worden.';
+	$s_plugin_agileMantis_manage_capacity_error_985400				=	'[<span style="font-size:14px;">985400</span>] Das Enddatum ist nicht im richtigen Format eingegeben worden.';
+	$s_plugin_agileMantis_manage_capacity_error_985403				=	'[<span style="font-size:14px;">985403</span>] Das Startdatum ist nicht im richtigen Format eingegeben worden.';
+	$s_plugin_agileMantis_manage_capacity_error_985401				=	'[<span style="font-size:14px;">985401</span>] Das Enddatum ist nicht im richtigen Format eingegeben worden.';
+	$s_plugin_agileMantis_manage_capacity_error_985404				=	'[<span style="font-size:14px;">985404</span>] Das Startdatum ist nicht im richtigen Format eingegeben worden.';
+	$s_plugin_agileMantis_manage_capacity_error_985406				=	'[<span style="font-size:14px;">985406</span>] Das Enddatum ist nicht im richtigen Format eingegeben worden.';
+	$s_plugin_agileMantis_manage_capacity_error_180401				=	'[<span style="font-size:14px;">180401</span>] Das Startdatum liegt zu weit in der Zukunft und wird zurückgesetzt.';
+	$s_plugin_agileMantis_manage_capacity_error_180400				=	'[<span style="font-size:14px;">180400</span>] Das Enddatum liegt zu weit in der Zukunft';
+	$s_plugin_agileMantis_manage_capacity_error_180402				=	'[<span style="font-size:14px;">180402</span>] Das Enddatum darf nicht vor dem Startdatum liegen.';
+	$s_plugin_agileMantis_manage_capacity_error_923400				=	'[<span style="font-size:14px;">923400</span>] Bitte geben Sie ein Enddatum ein.';
+	$s_plugin_agileMantis_manage_capacity_error_923402				=	'[<span style="font-size:14px;">923402</span>] Bitte geben Sie ein Startdatum ein.';
+	$s_plugin_agileMantis_manage_capacity_error_980400				=	'[<span style="font-size:14px;">980400</span>] Start- und Enddatum liegen zu weit in der Vergangenheit.';
+	$s_plugin_agileMantis_manage_capacity_error_923401				=	'[<span style="font-size:14px;">923401</span>] Bitte wählen Sie ein Team aus.';
+	$s_plugin_agileMantis_manage_capacity_error_985405				=	'[<span style="font-size:14px;">985405</span>] Die Eingaben hatten kein gültiges Format und wurden zurückgesetzt.';
+
 	# Sprints verwalten
 	$s_plugin_agileMantis_manage_sprints_title						=	'Sprints verwalten';
 	$s_plugin_agileMantis_manage_sprints_add						=	'Sprint hinzufügen';
@@ -221,7 +222,7 @@
 	$s_plugin_agileMantis_manage_sprints_end						=	'Ende';
 	$s_plugin_agileMantis_manage_sprints_rest						=	'Restdauer';
 	$s_plugin_agileMantis_manage_sprints_error_921500				=	'[<span style="font-size:14px;">921500</span>] Sie haben nicht die notwendigen Rechte, um Sprints zu verwalten.';
-	
+
 	# Sprint bearbeiten
 	$s_plugin_agileMantis_edit_sprint_title							=	'Sprint bearbeiten';
 	$s_plugin_agileMantis_edit_sprint_goals							=	'Sprint-Ziel';
@@ -246,11 +247,11 @@
 	$s_plugin_agileMantis_edit_sprints_error_980502					=	'[<span style="font-size:14px;">980502</span>] Das Enddatum liegt vor dem Startdatum.';
 	$s_plugin_agileMantis_edit_sprints_error_923502					=	'[<span style="font-size:14px;">923502</span>] Bitte wählen Sie ein Team aus das den Sprint bearbeiten soll.';
 	$s_plugin_agileMantis_edit_sprints_error_980500					=	'[<span style="font-size:14px;">980500</span>] Der eingetragene Sprint-Zeitraum überschneidet sich mit einem anderen Sprint.';
-	
+
 	# Sprint löschen
 	$s_plugin_agileMantis_delete_sprint_title						= 	'Sprint löschen';
 	$s_plugin_agileMantis_delete_sprint_message						= 	'Soll der Sprint mit allen zugehörigen Einstellungen gelöscht werden?';
-	
+
 	# Einstellungen verwalten
 	$s_plugin_agileMantis_manage_settings_title						=	'Einstellungen verwalten';
 	$s_plugin_agileMantis_manage_settings_options					=	'Optionen';
@@ -291,15 +292,15 @@
 	$s_plugin_agileMantis_manage_settings_custom_field_title 		=   'Lokalisierung der agileMantis Zusatzfelder';
 	$s_plugin_agileMantis_manage_settings_custom_field_instructions =   'Damit in MantisBT die lokalisierten Bezeichnungen für die von agileMantis angelegten custom fields ' .
 																		'angezeigt werden, muss der unten angezeigte Sourcecode in die Datei ' .
-																		'<i>custom_strings_inc.php</i> ' . 
+																		'<i>custom_strings_inc.php</i> ' .
 																		'eingetragen werden (copy-and-paste).';
 	$s_plugin_agileMantis_manage_settings_custom_field_instructions1=	'Diese Datei befindet sich im MantisBT-Installationsverzeichnis. ';
 	$s_plugin_agileMantis_manage_settings_custom_field_instructions2=	'Wenn nicht, dann muss sie angelegt werden. ';
 	$s_plugin_agileMantis_manage_settings_custom_field_instructions3=	'Bitte achten Sie auf die korrekte Vergabe der Zugriffsrechte ' .
 																		'(wenigstens Lesezugriff).';
 	$s_plugin_agileMantis_manage_settings_custom_field_instructions4=	'Existiert die Datei schon, dann muss der Sourcecode an den ' .
-																		'möglicherweise bestehenden Inhalt angehängt werden.'; 
-	
+																		'möglicherweise bestehenden Inhalt angehängt werden.';
+
 	# Einträge anzeigen
 	$s_plugin_agileMantis_view_issue_save_infos						=	'Infos speichern';
 	$s_plugin_agileMantis_view_issue_edit_tasks						=	'Tasks bearbeiten';
@@ -308,7 +309,10 @@
 	$s_plugin_agileMantis_view_issue_technical_presentable			=	'technisch präsentabel';
 	$s_plugin_agileMantis_view_issue_functional_presentable			=	'fachlich präsentabel';
 	$s_plugin_agileMantis_view_issue_chose_product_backlog			=	'Product Backlog auswählen';
-	
+	$s_plugin_agileMantis_view_issue_goto_product_backlog			= 	'Zum Product Backlog';
+	$s_plugin_agileMantis_view_issue_goto_sprint_backlog			= 	'Zum Sprint Backlog';
+	$s_plugin_agileMantis_view_issue_look_through_notes             =   'Bitte Notizen sichten';
+
 	# Tasks bearbeiten
 	$s_plugin_agileMantis_edit_tasks_title							=	'Tasks bearbeiten';
 	$s_plugin_agileMantis_edit_tasks_category						=	'Kategorie';
@@ -328,7 +332,7 @@
 	$s_plugin_agileMantis_edit_tasks_error_107801					=	'[<span style="font-size:14px;">107801</span>] Der Status des Task wurde auf <span style="font-size: 16px;font-style:italic;">geschlossen</span> gesetzt.';
 	$s_plugin_agileMantis_edit_tasks_error_120800					=	'[<span style="font-size:14px;">120800</span>] Für andere Tasks aus diesem Sprint existieren bereits geplante Aufwände.';
 	$s_plugin_agileMantis_edit_tasks_error_108800					=	'[<span style="font-size:14px;">108800</span>] Der Entwickler hat keine weiteren Kapazitäten für den geplanten Aufwand des Tasks.';
-	
+
 	# Task bearbeiten
 	$s_plugin_agileMantis_edit_task_title							=	'Task bearbeiten';
 	$s_plugin_agileMantis_edit_task_name							=	'Bezeichnung';
@@ -351,10 +355,10 @@
 	$s_plugin_agileMantis_edit_task_error_127904					=	'[<span style="font-size:14px;">127904</span>] Bitte geben Sie einen Restaufwand an. Der Task konnte nicht auf <span style="font-size: 16px;font-style:italic;">übernommen</span> gesetzt werden.';
 	$s_plugin_agileMantis_edit_task_error_127905					=	'[<span style="font-size:14px;">127905</span>] Die Änderungen konnten nicht gespeichert werden. Der Restaufwand kann nicht negativ werden.';
 	$s_plugin_agileMantis_edit_task_error_106900					=	'[<span style="font-size:14px;">106900</span>] Die Taskeinheit im Sprint unterscheidet sich von der in den Einstellungen Ausgewählten.<br>Sie können den Taskaufwand nur in der Einheit des Sprints planen.';
-	$s_plugin_agileMantis_edit_task_error_127900					=	'[<span style="font-size:14px;">127900</span>] Sie haben heute noch keinen erbrachten Aufwand in den Task eingetragen.<br> Bitte geben Sie einen erbrachten Aufwand (0 ist erlaubt) an, um den Task zu erledigen.';	
-	$s_plugin_agileMantis_edit_task_error_127901					=	'[<span style="font-size:14px;">127901</span>] Sie haben heute noch keinen erbrachten Aufwand in den Task eingetragen.<br> Bitte geben Sie einen erbrachten Aufwand (0 ist erlaubt) an, um den Task zu erledigen.';	
-	$s_plugin_agileMantis_edit_task_error_127906					=	'[<span style="font-size:14px;">127906</span>] Der eingetragene Aufwand kann nicht gespeichert werden.';	
-	
+	$s_plugin_agileMantis_edit_task_error_127900					=	'[<span style="font-size:14px;">127900</span>] Sie haben heute noch keinen erbrachten Aufwand in den Task eingetragen.<br> Bitte geben Sie einen erbrachten Aufwand (0 ist erlaubt) an, um den Task zu erledigen.';
+	$s_plugin_agileMantis_edit_task_error_127901					=	'[<span style="font-size:14px;">127901</span>] Sie haben heute noch keinen erbrachten Aufwand in den Task eingetragen.<br> Bitte geben Sie einen erbrachten Aufwand (0 ist erlaubt) an, um den Task zu erledigen.';
+	$s_plugin_agileMantis_edit_task_error_127906					=	'[<span style="font-size:14px;">127906</span>] Der eingetragene Aufwand kann nicht gespeichert werden.';
+
 	# User Storys aufteilen
 	$s_plugin_agileMantis_divide_userstories_title					=	'User Storys aufteilen';
 	$s_plugin_agileMantis_divide_userstories_single_title			=	'User Story aufteilen';
@@ -368,7 +372,7 @@
 	$s_plugin_agileMantis_divide_userstories_old_estimation			=	'Ehemalige Bewertung US ';
 	$s_plugin_agileMantis_divide_userstories_with					=	' mit ';
 	$s_plugin_agileMantis_divide_userstories_error_106D00			=	'[<span style="font-size:14px;">106D00</span>] Die Taskeinheit im Sprint unterscheidet sich von der in den Einstellungen Ausgewählten.<br>Während dem Aufteilen der User Story/User Storys werden die Restaufwände nicht mit in die neuen Tasks übernommen.';
-	
+
 	# User Storys übernehmen
 	$s_plugin_agileMantis_assume_userstories_title					=	'User Storys übernehmen';
 	$s_plugin_agileMantis_assume_userstories_chosen_sp				=	'Story Points gewählt';
@@ -380,7 +384,7 @@
 	$s_plugin_agileMantis_assume_userstories_error_120C01			=	'[<span style="font-size:14px;">120C01</span>] Es sind keine unfertigen User Storys vorhanden.';
 	$s_plugin_agileMantis_assume_userstories_error_106C00			=	'[<span style="font-size:14px;">106C00</span>] Die Taskeinheit im Sprint unterscheidet sich von der in den Einstellungen Ausgewählten,<br>deswegen wurden die geplanten Aufwände bei der Übernahme der Tasks entfernt.';
 	$s_plugin_agileMantis_assume_userstories_error_120C00			=	'[<span style="font-size:14px;">120C00</span>] Sie haben keine User Storys ausgewählt, die in den Sprint übernommen werden sollen.';
-	
+
 	# Product Backlog
 	$s_plugin_agileMantis_product_backlog_title						=	'Product Backlog bearbeiten';
 	$s_plugin_agileMantis_product_backlog_chose						=	'Product Backlog wählen';
@@ -411,7 +415,7 @@
 	$s_plugin_agileMantis_product_backlog_opened					=	'davon offen';
 	$s_plugin_agileMantis_product_backlog_show_info					=	'Detailinformationen zur User Story anzeigen';
 	$s_plugin_agileMantis_product_backlog_error_921B00				=	'[<span style="font-size:14px;">921B00</span>] Sie haben nicht die notwendigen Rechte, um das Product Backlog zu verwalten';
-	
+
 	# Sprint Backlog
 	$s_plugin_agileMantis_sprint_backlog_title						=	'Sprint Backlog bearbeiten';
 	$s_plugin_agileMantis_sprint_backlog_hint						=	'Es sind keine Sprints vorhanden.';
@@ -457,23 +461,23 @@
 	$s_plugin_agileMantis_sprint_backlog_error_108702				=	'[<span style="font-size:14px;">108702</span>] Der verbleibende Restaufwand ist größer als die noch vorhandene Rest-Kapazität.';
 	$s_plugin_agileMantis_sprint_backlog_error_127700				=	'[<span style="font-size:14px;">127700</span>] Sie haben heute noch keinen erbrachten Aufwand in den Task eingetragen.<br> Bitte geben Sie einen erbrachten Aufwand (0 ist erlaubt) an, um den Task zu erledigen.';
 	$s_plugin_agileMantis_sprint_backlog_error_107701				=	'[<span style="font-size:14px;">107701</span>] Der Task hat keinen Restaufwand mehr und wurde auf <span style="font-size: 16px;font-style:italic;">erledigt</span> gesetzt.';
-	
+
 	# Statistiken
 	$s_plugin_agileMantis_statistics_title							=	'Statistiken';
 	$s_plugin_agileMantis_statistics_edit							=	'Statistiken bearbeiten';
-	
+
 	# Taskboard
 	$s_plugin_agileMantis_taskboard_title							=	'Taskboard bearbeiten';
-	
+
 	# Version
 	$s_plugin_agileMantis_version_issue 							=	'Einträge';
-	
-	# Screenshots 
+
+	# Screenshots
 	$s_plugin_agileMantis_screenshot_title							=	'Screenshot der Expert-Version';
 	$s_plugin_agileMantis_screenshot_title_more						=	'Weitere Screenshots der Export-Version';
 	$s_plugin_agileMantis_screenshot_dialog_title					=	'Screenshot der Expert-Komponente';
 	$s_plugin_agileMantis_screenshot_dialog_text					=	'Diese Aktion ist zurzeit nicht möglich, da es sich um einen Screenshot für die Expert-Version handelt.<br><br>Für weitere Informationen besuchen Sie bitte ';
-	
+
 	# API
 	$s_plugin_agileMantis_Presentable 								= 	'Praesentabel';
 	$s_plugin_agileMantis_InReleaseDocu								= 	'In Freigabedoku';
@@ -481,11 +485,11 @@
 	$s_plugin_agileMantis_RankingOrder 								= 	'Rangfolge';
 	$s_plugin_agileMantis_Technical 								= 	'Technisch';
 	$s_plugin_agileMantis_PlannedWorkUnit 							= 	'Aufwandseinheit';
-	
+
 	#Lizenzen
 	$s_plugin_agileMantis_license_download							=	'Expert-Komponenten herunterladen';
 	$s_plugin_agileMantis_license_buy								=	'Freie Testlizenz erwerben';
-	
+
 	#Mailing
 	$s_plugin_agileMantis_mail_subject                              =   'Ihre agileMantis Rechte';
 	$s_plugin_agileMantis_mail_body_1                               =   'Ihre agileMantis Rechte wurden geaendert.';
@@ -494,4 +498,8 @@
 	$s_plugin_agileMantis_mail_body_4                               =   'Rechte:';
 	$s_plugin_agileMantis_mail_yes                                  =   'ja';
 	$s_plugin_agileMantis_mail_no                                   =   'nein';
+	
+	#Warning
+	$s_plugin_agileMantis_warning_1									=	'Das Feld ';
+	$s_plugin_agileMantis_warning_2									=	' ist leer oder 0.';
 ?>

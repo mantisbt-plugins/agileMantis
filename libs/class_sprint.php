@@ -34,10 +34,18 @@ class gadiv_sprint extends gadiv_commonlib {
 	
 	# get all sprints with sorting functions
 	function getSprints( $chron = "", $show_closed_sprints = "" ) {
+
+		if (db_is_mssql()) {
+			$endedatum = '[end]';
+		} else {
+			$endedatum = 'end';
+		}
+		
+		
 		$addsql = "";
 		$orderby = "";
 		$startjoin = "";
-		$removeStatus = 'WHERE status != 2';
+		$removeStatus = ' WHERE status != 2';
 		$klickStatus = $_GET['klickStatus'];
 		$disable_click = $_POST['disable_click'];
 		$clicked = $klickStatus == 1 && $disable_click != 1;
@@ -46,7 +54,7 @@ class gadiv_sprint extends gadiv_commonlib {
 			if( $_POST['show_all_sprints'] == 1 || $clicked || $show_closed_sprints == 1 ) {
 				$removeStatus = '';
 			} else {
-				$removeStatus = 'WHERE status != 2';
+				$removeStatus = ' WHERE status != 2';
 			}
 		}
 		if( isset( $_GET['sort_by'] ) ) {
@@ -54,10 +62,10 @@ class gadiv_sprint extends gadiv_commonlib {
 				switch( $_GET['sort_by'] ) {
 					case 'id':
 						if( $_SESSION['order_id'] == 0 ) {
-							$orderby = "ORDER BY sname ASC";
+							$orderby = " ORDER BY sname ASC";
 							$_SESSION['order_id'] = 1;
 						} else {
-							$orderby = "ORDER BY sname DESC";
+							$orderby = " ORDER BY sname DESC";
 							$_SESSION['order_id'] = 0;
 						}
 						$_SESSION['order_rest'] = 0;
@@ -67,10 +75,10 @@ class gadiv_sprint extends gadiv_commonlib {
 						break;
 					case 'team':
 						if( $_SESSION['order_team'] == 0 ) {
-							$orderby = "ORDER BY t.name ASC";
+							$orderby = " ORDER BY t.name ASC";
 							$_SESSION['order_team'] = 1;
 						} else {
-							$orderby = "ORDER BY t.name DESC";
+							$orderby = " ORDER BY t.name DESC";
 							$_SESSION['order_team'] = 0;
 						}
 						$_SESSION['order_rest'] = 0;
@@ -80,35 +88,42 @@ class gadiv_sprint extends gadiv_commonlib {
 						break;
 					case 'rest':
 						if( $_SESSION['order_rest'] == 0 && $klickStatus == 0 ) {
-							$orderby = "ORDER BY  restaufwand  ASC";
+							$orderby = " ORDER BY  restaufwand  ASC";
 						}
 						if( $_SESSION['order_rest'] == 0 ) {
-							$orderby = "ORDER BY  restaufwand  DESC";
+							$orderby = " ORDER BY  restaufwand  DESC";
 							$_SESSION['order_rest'] = 1;
 							$_SESSION['order_end'] = 1;
 							$_SESSION['order_id'] = 0;
 						} else {
-							$orderby = "ORDER BY  restaufwand  ASC";
+							$orderby = " ORDER BY  restaufwand  ASC";
 							$_SESSION['order_rest'] = 0;
 							$_SESSION['order_end'] = 0;
 							$_SESSION['order_id'] = 1;
 						}
-						$diff_now_end = "CEIL((UNIX_TIMESTAMP(end) - " . time() . ") / 86400)";
-						$diff_start_end = "CEIL((UNIX_TIMESTAMP(end) - UNIX_TIMESTAMP(start)) / 86400)";
+// 						$diff_now_end = "CEIL((UNIX_TIMESTAMP(end) - " . time() . ") / 86400)";
+// 						$diff_start_end = "CEIL((UNIX_TIMESTAMP(end) - UNIX_TIMESTAMP(start)) / 86400)";
 						
-						$addsql = ",
-							IF(($diff_now_end) < ($diff_start_end),
-								($diff_now_end),
-								($diff_start_end)) AS restaufwand";
+// 						$addsql = ",
+// 							IF(($diff_now_end) < ($diff_start_end),
+// 								($diff_now_end),
+// 								($diff_start_end)) AS restaufwand";
+
+						if (db_is_mssql()) {
+							$addsql = ", (CASE WHEN (DATEDIFF(day,GETDATE(),enddate) > DATEDIFF(day,start,enddate)) THEN DATEDIFF(day,start,enddate) ELSE  DATEDIFF(day,GETDATE(), enddate) END) as restaufwand";
+						} else {
+							$addsql = ", if (DATEDIFF(end,curdate())>DATEDIFF(end,start), DATEDIFF(end,start),  DATEDIFF(end,curdate()))";  
+						}
+						
 						$_SESSION['order_team'] = 0;
 						$_SESSION['order_start'] = 0;
 						break;
 					case 'start':
 						if( $_SESSION['order_start'] == 0 ) {
-							$orderby = "ORDER BY start ASC";
+							$orderby = " ORDER BY start ASC";
 							$_SESSION['order_start'] = 1;
 						} else {
-							$orderby = "ORDER BY start DESC";
+							$orderby = " ORDER BY start DESC";
 							$_SESSION['order_start'] = 0;
 						}
 						$_SESSION['order_rest'] = 0;
@@ -118,21 +133,21 @@ class gadiv_sprint extends gadiv_commonlib {
 						break;
 					case 'pb':
 						if( $_SESSION['oder_pb'] == 0 ) {
-							$orderby = "ORDER BY pname ASC";
+							$orderby = " ORDER BY pname ASC";
 							$_SESSION['oder_pb'] = 1;
 						} else {
-							$orderby = "ORDER BY pname DESC";
+							$orderby = " ORDER BY pname DESC";
 							$_SESSION['oder_pb'] = 0;
 						}
 						break;
 					case 'end':
 					default:
 						if( $_SESSION['order_end'] == 0 ) {
-							$orderby = "ORDER BY end DESC";
+							$orderby = " ORDER BY " . $endedatum . " DESC";
 							$_SESSION['order_end'] = 1;
 							$_SESSION['order_rest'] = 1;
 						} else {
-							$orderby = "ORDER BY end ASC";
+							$orderby = " ORDER BY " . $endedatum . " ASC";
 							$_SESSION['order_end'] = 0;
 							$_SESSION['order_rest'] = 0;
 						}
@@ -144,19 +159,20 @@ class gadiv_sprint extends gadiv_commonlib {
 			}
 		} else {
 			$startjoin = "";
-			$orderby = "ORDER BY end DESC, t.name ASC";
+			$orderby = " ORDER BY " . $endedatum . " DESC, t.name ASC";
 			$_SESSION['order'] = 0;
 		}
 		
 		if( $chron != "" ) {
-			$orderby = "ORDER BY end DESC";
+			$orderby = " ORDER BY " . $endedatum . " DESC";
 		}
 		
-		$t_sql = "SELECT s.id AS sid, s.name AS sname, team_id, s.status, 
-						s.end, s.start, p.name AS pname " . $addsql . " 
-					FROM gadiv_sprints AS s 
-					LEFT JOIN gadiv_teams AS t ON t.id = s.team_id 
-					LEFT JOIN gadiv_productbacklogs AS p ON p.id = t.pb_id  " . $removeStatus . " " . $orderby;
+		$t_sql = "SELECT s.id AS sid, s.name AS sname, team_id, s.status,
+				         s.enddate as " . $endedatum . ", s.start, p.name AS pname " . $addsql . " 
+								FROM gadiv_sprints AS s
+				LEFT JOIN gadiv_teams AS t ON t.id = s.team_id
+				LEFT JOIN gadiv_productbacklogs AS p ON p.id = t.pb_id  " . $removeStatus . " " . $orderby;
+
 		return $this->executeQuery( $t_sql );
 	}
 	
@@ -270,11 +286,28 @@ class gadiv_sprint extends gadiv_commonlib {
 	# get sprint information by name
 	function getSprintById() {
 		if( $this->sprint_id != "" ) {
-			$t_sql = "SELECT * FROM gadiv_sprints WHERE name=" . db_param( 0 );
+			$t_sql = "SELECT id,
+								team_id,
+								pb_id,
+								name,
+								description,
+								status,
+								daily_scrum,
+								start,
+								dispose as " . AGILEMANTIS_COMMIT_FIELD . ",
+								enddate as " . AGILEMANTIS_END_FIELD . ",
+								closed,
+								unit_storypoints,
+								unit_planned_work,
+								unit_planned_task,
+								workday_length
+		 FROM gadiv_sprints WHERE name=" . db_param( 0 );
 				
 			$t_params = array( $this->sprint_id );
 			$sprint = $this->executeQuery( $t_sql, $t_params );
 			
+			$sprint[0]['start'] = substr($sprint[0]['start'], 0, 10);
+			$sprint[0]['end'] = substr($sprint[0]['end'], 0, 10);
 			return $sprint[0];
 		}
 	}
@@ -282,37 +315,95 @@ class gadiv_sprint extends gadiv_commonlib {
 	# get sprint information by id
 	function getSprintByName() {
 		if( $this->sprint_id != "" ) {
-			$t_sql = "SELECT * FROM gadiv_sprints WHERE id=" . db_param( 0 );
+			$t_sql = "SELECT id,
+								team_id,
+								pb_id,
+								name,
+								description,
+								status,
+								daily_scrum,
+								start,
+								dispose as " . AGILEMANTIS_COMMIT_FIELD . ",
+								enddate as " . AGILEMANTIS_END_FIELD . ",
+								closed,
+								unit_storypoints,
+								unit_planned_work,
+								unit_planned_task,
+								workday_length
+		 FROM gadiv_sprints WHERE id=" . db_param( 0 );
 			$t_params = array( $this->sprint_id );
 			$sprint = $this->executeQuery( $t_sql, $t_params );
+			$sprint[0]['start'] = substr($sprint[0]['start'], 0, 10);
+			$sprint[0]['end'] = substr($sprint[0]['end'], 0, 10);
 			return $sprint[0];
 		}
 	}
 	
 	# add new sprint
 	function newSprint() {
-		$t_sql = "INSERT INTO gadiv_sprints SET
-					team_id=" . db_param( 0 ) . ",
-					pb_id=" . db_param( 1 ) . ",
-					name=" . db_param( 2 ) . ",
-					description=" . db_param( 3 ) . ",
-					status = 0,
-					daily_scrum=" . db_param( 4 ) . ",
-					start=" . db_param( 5 ) . ",
-					commit = '0000-00-00 00:00:00',
-					end=" . db_param( 6 ) . ",
-					closed = '0000-00-00 00:00:00',
-					unit_storypoints = 0,
-					unit_planned_work = 0,
-					unit_planned_task = 0,
-					workday_length = 0.00;";
 		
+		if (db_is_mssql()) {
+			
+			$t_sql = "INSERT INTO gadiv_sprints (team_id,pb_id,name,description,status,daily_scrum,
+		                 start,dispose,enddate,closed,unit_storypoints,unit_planned_work,unit_planned_task,workday_length
+			          ) VALUES ("
+					     . db_param( 0 )
+					     . ","
+						 . db_param( 1 )
+						 . ","
+						 . db_param( 2 )
+						 . ","
+						 . db_param( 3 )
+						 . ",0,"
+						 . db_param( 4 )
+						 . ","
+						 . db_param( 5 )
+						 . ",'" . $this->getDateFormat(1900,1,1) . "',"
+			             . db_param( 6 )
+			             . ",'" . $this->getDateFormat(1900,1,1) . "',"
+			             . "0,0,0,0.00)";
+		} else {
+			$t_sql = "INSERT INTO gadiv_sprints (team_id,pb_id,name,description,status,daily_scrum,
+		                 start,dispose,enddate,closed,unit_storypoints,unit_planned_work,unit_planned_task,workday_length
+			          ) VALUES ("
+					     . db_param( 0 )
+					     . ","
+						 . db_param( 1 )
+						 . ","
+						 . db_param( 2 )
+						 . ","
+						 . db_param( 3 )
+						 . ",0,"
+						 . db_param( 4 )
+						 . ","
+						 . db_param( 5 )
+						 . ",'1900-01-01 00:00:00',"
+			             . db_param( 6 )
+					     . ",'1900-01-01 00:00:00',"
+			             . "0,0,0,0.00)";
+		}
+				
 		$t_params = array( $this->team_id, $this->pb_id, $this->name, $this->description, 
-			$this->daily_scrum, $this->start, $this->end );
+			$this->daily_scrum, $this->getNormalDateFormat($this->start), $this->getNormalDateFormat($this->end ));
 		db_query_bound( $t_sql, $t_params );
-		$this->sprint_id = db_insert_id();
+		$this->sprint_id = db_insert_id("gadiv_sprints");
 		
-		$result = $this->executeQuery( "SELECT * FROM gadiv_sprints ORDER BY name ASC" );
+		$result = $this->executeQuery( "SELECT id,
+												team_id,
+												pb_id,
+												name,
+												description,
+												status,
+												daily_scrum,
+												start,
+												dispose as " . AGILEMANTIS_COMMIT_FIELD . ",
+												enddate as " . AGILEMANTIS_END_FIELD . ",
+												closed,
+												unit_storypoints,
+												unit_planned_work,
+												unit_planned_task,
+												workday_length
+		 FROM gadiv_sprints ORDER BY name ASC" );
 		
 		foreach( $result as $num => $row ) {
 			if( $row['status'] != 2 ) {
@@ -339,16 +430,31 @@ class gadiv_sprint extends gadiv_commonlib {
 				daily_scrum=" . db_param( 2 ) . ", 
 				team_id=" . db_param( 3 ) . ", 
 				start=" . db_param( 4 ) . ", 
-				end=" . db_param( 5 ) . ", 
+				enddate=" . db_param( 5 ) . ", 
 				pb_id=" . db_param( 6 ) . " 
 				WHERE id=" . db_param( 7 );
 		
 		$t_params = array( $this->name, $this->description, $this->daily_scrum, $this->team_id, 
-							$this->start, $this->end, $this->pb_id, $this->sprint_id );
+							$this->getNormalDateFormat($this->start), $this->getNormalDateFormat($this->end), $this->pb_id, $this->sprint_id );
 		
 		db_query_bound( $t_sql, $t_params );
 		
-		$result = $this->executeQuery( "SELECT * FROM gadiv_sprints ORDER BY name ASC" );
+		$result = $this->executeQuery( "SELECT id,
+												team_id,
+												pb_id,
+												name,
+												description,
+												status,
+												daily_scrum,
+												start,
+												dispose as " . AGILEMANTIS_COMMIT_FIELD . ",
+												enddate as " . AGILEMANTIS_END_FIELD . ",
+												closed,
+												unit_storypoints,
+												unit_planned_work,
+												unit_planned_task,
+												workday_length
+		 FROM gadiv_sprints ORDER BY name ASC" );
 		if( !empty( $result ) ) {
 			foreach( $result as $num => $row ) {
 				$t_sprints .= $row['name'] . '|';
@@ -367,7 +473,22 @@ class gadiv_sprint extends gadiv_commonlib {
 		$t_params = array( $this->id );
 		db_query_bound( $t_sql, $t_params );
 		
-		$result = $this->executeQuery( "SELECT * FROM gadiv_sprints ORDER BY name ASC" );
+		$result = $this->executeQuery( "SELECT id,
+												team_id,
+												pb_id,
+												name,
+												description,
+												status,
+												daily_scrum,
+												start,
+												dispose as " . AGILEMANTIS_COMMIT_FIELD . ",
+												enddate as " . AGILEMANTIS_END_FIELD . ",
+												closed,
+												unit_storypoints,
+												unit_planned_work,
+												unit_planned_task,
+												workday_length
+		 FROM gadiv_sprints ORDER BY name ASC" );
 		
 		foreach( $result as $num => $row ) {
 			if( $row['status'] != 2 ) {
@@ -388,7 +509,22 @@ class gadiv_sprint extends gadiv_commonlib {
 		$ergebnis = db_query_bound( $t_sql, $t_params );
 		
 		if( $status == 2 ) {
-			$result = $this->executeQuery( "SELECT * FROM gadiv_sprints ORDER BY name ASC" );
+			$result = $this->executeQuery( "SELECT id,
+													team_id,
+													pb_id,
+													name,
+													description,
+													status,
+													daily_scrum,
+													start,
+													dispose as " . AGILEMANTIS_COMMIT_FIELD . ",
+													enddate as " . AGILEMANTIS_END_FIELD . ",
+													closed,
+													unit_storypoints,
+													unit_planned_work,
+													unit_planned_task,
+													workday_length
+			 FROM gadiv_sprints ORDER BY name ASC" );
 			
 			foreach( $result as $num => $row ) {
 				if( $row['status'] != 2 ) {
@@ -421,7 +557,8 @@ class gadiv_sprint extends gadiv_commonlib {
 		
 		$t_sql = "SELECT count(*) AS sprints 
 				FROM gadiv_sprints 
-				WHERE name LIKE " . db_param( 0 ) . $addsql;
+				WHERE name LIKE " . db_param( 0 ) . $addsql ."
+					GROUP BY name";
 		$result = $this->executeQuery( $t_sql, $t_params );
 		
 		if( $result[0]['sprints'] > 0 ) {
@@ -439,13 +576,13 @@ class gadiv_sprint extends gadiv_commonlib {
 				FROM gadiv_sprints
 				WHERE team_id = " . db_param() . " 
 				AND start <= " . db_param() . " 
-				AND end >= " . db_param() . " 
+				AND enddate >= " . db_param() . " 
 				AND id <> " . db_param();
 		
 		$t_params = array();
 		$t_params[] = $this->team_id;
-		$t_params[] = $this->end;
-		$t_params[] = $this->start;
+		$t_params[] = $this->getNormalDateFormat($this->end);
+		$t_params[] = $this->getNormalDateFormat($this->start);
 		$t_params[] = $this->sprint_id;
 
 		$result = $this->executeQuery( $t_sql, $t_params );
@@ -463,7 +600,8 @@ class gadiv_sprint extends gadiv_commonlib {
 				WHERE team_id = " . db_param( 0 ) . " 
 				AND status != 2 
 				AND status != 0 
-				AND id != " . db_param( 1 );
+				AND id != " . db_param( 1 ) . "
+				GROUP BY team_id";
 		$t_params = array( $team_id, $sprint_id );
 		$result = $this->executeQuery( $t_sql, $t_params );
 		if( $result[0]['amount'] > 0 ) {
@@ -493,7 +631,8 @@ class gadiv_sprint extends gadiv_commonlib {
 		$t_sql = "SELECT count(*) AS count_userstories 
 				FROM $t_mantis_custom_field_string_table 
 				WHERE value = " . db_param( 0 ) . " 
-				AND field_id=" . db_param( 1 );
+				AND field_id=" . db_param( 1 ) . "
+				GROUP BY field_id";
 		$t_params = array( $name, $this->spr );
 		$result = $this->executeQuery( $t_sql, $t_params );
 		if( $result[0]['count_userstories'] > 0 ) {
@@ -505,23 +644,44 @@ class gadiv_sprint extends gadiv_commonlib {
 	
 	# get the current sprint for the current logged in user
 	function getCurrentUserSprint( $user_id ) {
-		$t_sql = "SELECT * 
+		$top = $limit = "";
+		if (db_is_mssql()) {
+			$top = " top 1";
+		} else {
+			$limit = " limit 1";
+		}
+		$t_sql = "SELECT " . $top . "rtu.team_id, rtu.user_id, rtu.role, s.id,
+							s.team_id,
+							s.pb_id,
+							s.name,
+							s.description,
+							s.status,
+							s.daily_scrum,
+							s.start,
+							s.dispose as " . AGILEMANTIS_COMMIT_FIELD . ",
+							s.enddate as " . AGILEMANTIS_END_FIELD . ",
+							s.closed,
+							s.unit_storypoints,
+							s.unit_planned_work,
+							s.unit_planned_task,
+							s.workday_length
 				FROM gadiv_rel_team_user AS rtu 
 				LEFT JOIN gadiv_sprints AS s ON s.team_id = rtu.team_id 
 				WHERE user_id=" . db_param( 0 ) . " 
 				AND STATUS != 2 
-				ORDER BY start LIMIT 1";
+				ORDER BY start" . $limit;
 		$t_params = array( $user_id );
 		return $this->executeQuery( $t_sql, $t_params );
 	}
 	
 	# count all sprints belonging to one user
 	function countUserSprints( $user_id ) {
-		$t_sql = "SELECT COUNT(DISTINCT(s.team_id)) AS sprints 
+		$t_sql = "SELECT COUNT(DISTINCT s.team_id ) AS sprints 
 				FROM gadiv_rel_team_user AS tu 
 				LEFT JOIN gadiv_sprints AS s ON s.team_id = tu.team_id 
 				WHERE user_id=" . db_param( 0 ) . " 
-				AND s.name IS NOT NULL";
+				AND s.name IS NOT NULL
+				GROUP BY user_id";
 		$t_params = array( $user_id );
 		$user = $this->executeQuery( $t_sql, $t_params );
 		return $user[0]['sprints'];
@@ -554,7 +714,21 @@ class gadiv_sprint extends gadiv_commonlib {
 	
 	# get all sprints which are not resolved or closed by the selected team
 	function getUndoneSprintsByTeam( $team_id, $sprint_id ) {
-		$t_sql = "SELECT * 
+		$t_sql = "SELECT id,
+							team_id,
+							pb_id,
+							name,
+							description,
+							status,
+							daily_scrum,
+							start,
+							dispose as " . AGILEMANTIS_COMMIT_FIELD . ",
+							enddate as " . AGILEMANTIS_END_FIELD . ",
+							closed,
+							unit_storypoints,
+							unit_planned_work,
+							unit_planned_task,
+							workday_length
 				FROM gadiv_sprints 
 				WHERE team_id = " . db_param( 0 ) . " 
 				AND status < 2 
@@ -570,10 +744,10 @@ class gadiv_sprint extends gadiv_commonlib {
 				unit_planned_work=" . db_param( 1 ) . ", 
 				unit_planned_task=" . db_param( 2 ) . ", 
 				workday_length=" . db_param( 3 ) . ", 
-				commit=" . db_param( 4 ) . " 
+				dispose=" . db_param( 4 ) . " 
 				WHERE id=" . db_param( 5 );
 		$t_params = array( $unit_sp, $this->getUnitId( $unit_wu ), $this->getUnitId( $unit_wt ), 
-			$ld, date( "Y-m-d H:i:s" ), $id );
+			$ld, $this->getDateFormat(date( 'Y' ), date( 'm' ), date( 'd' ), true), $id );
 		db_query_bound( $t_sql, $t_params );
 	}
 	
@@ -582,7 +756,8 @@ class gadiv_sprint extends gadiv_commonlib {
 		$t_sql = "SELECT COUNT(*) AS developer 
 				FROM gadiv_rel_team_user 
 				WHERE team_id=" . db_param( 0 ) . " 
-				AND role='3'";
+				AND role='3'" . "
+				GROUP BY role";
 		$t_params = array( $team_id );
 		$team = $this->executeQuery( $t_sql, $t_params );
 		return $team[0]['developer'];
@@ -683,7 +858,8 @@ class gadiv_sprint extends gadiv_commonlib {
 						WHERE user_id=" . db_param( 0 ) . " 
 						AND team_id=" . db_param( 1 ) . " 
 						AND date>=" . db_param( 2 ) . " 
-						AND date<=" . db_param( 3 );
+						AND date<=" . db_param( 3 ) . "
+						GROUP BY user_id";
 				$t_params = array( $value, $sprint['team_id'], $sprint['start'], $sprint['end'] );
 				$capacity = $this->executeQuery( $t_sql, $t_params );
 				$ks += $capacity[0]['developer'];
@@ -695,26 +871,22 @@ class gadiv_sprint extends gadiv_commonlib {
 				FROM gadiv_rel_user_team_capacity 
 				WHERE team_id=" . db_param( 0 ) . " 
 				AND date>=" . db_param( 1 ) . " 
-				AND date<=" . db_param( 2 );
+				AND date<=" . db_param( 2 ) . "
+				GROUP BY team_id";
 		$t_params = array( $sprint['team_id'], $sprint['start'], $sprint['end'] );
 		$team = $this->executeQuery( $t_sql, $t_params );
 		$kds = $team[0]['total_cap'];
 		
+		if ( is_null($kds) ) {
+			$kds = 0;
+		}
+		
 		$t_sql = "INSERT INTO gadiv_rel_sprint_closed_information 
-				SET sprint_id=" . db_param( 0 ) . ",
-				count_user_stories=" . db_param( 1 ) . ",
-				count_task_sprint=" . db_param( 2 ) . ",
-				count_splitted_user_stories_sprint=" . db_param( 3 ) . ",
-				storypoints_sprint=" . db_param( 4 ) . ",
-				storypoints_in_splitted_user_stories=" . db_param( 5 ) . ",
-				work_planned_sprint=" . db_param( 6 ) . ",
-				work_performed=" . db_param( 7 ) . ",
-				work_moved=" . db_param( 8 ) . ",
-				storypoints_moved=" . db_param( 9 ) . ",
-				count_developer_team=" . db_param( 10 ) . ",
-				total_developer_capacity=" . db_param( 11 ) . ",
-				count_developer_team_task=" . db_param( 12 ) . ",
-				total_developer_capacity_task=" . db_param( 13 );
+				VALUES (" . db_param( 0 ) . "," . db_param( 1 ) . "," . db_param( 2 ) . "," 
+				          . db_param( 3 ) . "," . db_param( 4 ) . "," . db_param( 5 ) . "," 
+				          . db_param( 6 ) . "," . db_param( 7 ) . "," . db_param( 8 ) . "," 
+				          . db_param( 9 ) . "," . db_param( 10) . "," . db_param( 11) . "," 
+				          . db_param( 12) . "," . db_param( 13) . ") ";
 		$t_params = array( $id, $cus, $cts, $csus, $sps, $spus, $wps, $wes, $wms, $spm, $cdvt, $kds, 
 			$cdv, $ks );
 		db_query_bound( $t_sql, $t_params );
@@ -723,55 +895,131 @@ class gadiv_sprint extends gadiv_commonlib {
 				SET closed=" . db_param( 0 ) . " 
 				WHERE id=" . db_param( 1 );
 		$t_params = array( 
-			(date( 'Y' ) . "-" . date( 'm' ) . "-" . date( 'd' ) . " " . date( 'H' ) . ":" .
-				 date( 'i' ) . ":" . date( 's' )), $id );
+			$this->getDateFormat(date( 'Y' ), date( 'm' ), date( 'd' ), true), $id );
 		db_query_bound( $t_sql, $t_params );
 	}
 
-	function getLatestSprints( $team_id, $amountOfSprints = "", $sprintName = "", $previous = "" ) {
-		if( $amountOfSprints != "" ) {
-			$addSql = " ORDER BY id DESC LIMIT 0, " . ( int ) $amountOfSprints;
+	function getLatestSprints( $team_id, $amountOfSprints = 0, $sprintName = "", $previous = "" ) {
+		
+		$top="";
+		if (db_is_mysql()) {
+			if( $amountOfSprints != "" ) {
+				$addSql = " ORDER BY id DESC LIMIT 0, " . ( int ) $amountOfSprints;
+			}
+			
+			if( $previous == true ) {
+				$addSql = " ORDER BY id DESC LIMIT 1, " . ( int ) $amountOfSprints;
+			}
+		} else {
+			//mssql
+			$addSql = " ORDER BY id DESC ";
+			if($amountOfSprints > 0 ){
+				$top = " top "  . ( int ) $amountOfSprints . " ";
+			}
 		}
 		
-		if( $previous == true ) {
-			$addSql = " ORDER BY id DESC LIMIT 1, " . ( int ) $amountOfSprints;
-		}
-		
-		$t_params = array( $team_id );
+		$t_params[0] =  $team_id;
 		
 		if( $sprintName != "" ) {
 			$addSql = " AND name=" . db_param( 1 );
-			$t_params[] = $sprintName;
+			$t_params[1] = $sprintName;
 		}
 		
-		$t_sql = "SELECT * 
+		$t_sql = "SELECT " . $top . " id,
+							team_id,
+							pb_id,
+							name,
+							description,
+							status,
+							daily_scrum,
+							start,
+							dispose as " . AGILEMANTIS_COMMIT_FIELD . ",
+							enddate as " . AGILEMANTIS_END_FIELD . ",
+							closed,
+							unit_storypoints,
+							unit_planned_work,
+							unit_planned_task,
+							workday_length,
+							sprint_id,
+							count_user_stories,
+							count_task_sprint,
+							count_splitted_user_stories_sprint,
+							storypoints_sprint,
+							storypoints_in_splitted_user_stories,
+							work_planned_sprint,
+							work_performed,
+							work_moved,
+							storypoints_moved,
+							count_developer_team,
+							total_developer_capacity,
+							count_developer_team_task,
+							total_developer_capacity_task
 				FROM gadiv_sprints 
 				LEFT JOIN gadiv_rel_sprint_closed_information ON sprint_id = id 
 				WHERE team_id=" . db_param( 0 ) . $addSql;
+				
 		return $this->executeQuery( $t_sql, $t_params );
 	}
 
 	function getPreviousSprint( $sprint_id, $team_id ) {
-		$t_sql = "SELECT end FROM gadiv_sprints WHERE id=" . db_param( 0 );
+		$t_sql = "SELECT enddate as " . AGILEMANTIS_END_FIELD . " FROM gadiv_sprints WHERE id=" . db_param( 0 );
 		$t_params = array( $sprint_id );
 		$sprint = $this->executeQuery( $t_sql, $t_params );
 		
-		$t_sql = "SELECT * 
+		$top="";
+		$limit="";
+		if (db_is_mssql()) {
+			$top = " top 1 ";
+		} else {
+			$limit = " LIMIT 0, 1 ";
+		}
+		
+		$t_sql = "SELECT " . $top . "id,
+							team_id,
+							pb_id,
+							name,
+							description,
+							status,
+							daily_scrum,
+							start,
+							dispose as " . AGILEMANTIS_COMMIT_FIELD . ",
+							enddate as " . AGILEMANTIS_END_FIELD . ",
+							closed,
+							unit_storypoints,
+							unit_planned_work,
+							unit_planned_task,
+							workday_length,
+							sprint_id,
+							count_user_stories,
+							count_task_sprint,
+							count_splitted_user_stories_sprint,
+							storypoints_sprint,
+							storypoints_in_splitted_user_stories,
+							work_planned_sprint,
+							work_performed,
+							work_moved,
+							storypoints_moved,
+							count_developer_team,
+							total_developer_capacity,
+							count_developer_team_task,
+							total_developer_capacity_task
 				FROM gadiv_sprints 
 				LEFT JOIN gadiv_rel_sprint_closed_information ON sprint_id = id 
-				WHERE end<" . db_param( 0 ) . " 
+				WHERE enddate < " . db_param( 0 ) . " 
 				AND team_id=" . db_param( 1 ) . " 
-				ORDER BY id DESC LIMIT 0, 1";
-		$t_params = array( $sprint[0]['end'], $team_id );
+				ORDER BY id DESC" . $limit;
+		$t_params = array( $sprint[0]['end'], $team_id );		
 		return $this->executeQuery( $t_sql, $t_params );
 	}
 
-	function getTeamCapacityInSprint( $team_id, $sprint_start, $sprint_end ) {
+	function getTeamCapacityInSprint( $team_id, $sprint_start, $sprint_end) {
+		
 		$t_sql = "SELECT sum( capacity ) AS total_cap 
 				FROM gadiv_rel_user_team_capacity 
 				WHERE team_id=" . db_param( 0 ) . " 
 				AND date>=" . db_param( 1 ) . " 
-				AND date<=" . db_param( 2 );
+				AND date<=" . db_param( 2 ) . "
+				GROUP BY team_id";
 		$t_params = array( $team_id, $sprint_start, $sprint_end );
 		$team = $this->executeQuery( $t_sql, $t_params );
 		return $team[0]['total_cap'];

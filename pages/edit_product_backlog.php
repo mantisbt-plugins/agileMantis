@@ -37,7 +37,11 @@
 
 	// Redirect to backlog list view if invalid or back_button
 	if( empty($_POST) || $_POST['back_button'] ) {
-		header("Location: ".plugin_page('product_backlogs.php'));
+		$fromPage = 'product_backlogs.php';
+		if( $_POST['pageFrom'] ) {
+			$fromPage = $_POST['pageFrom'];
+		}
+		header("Location: ".plugin_page($fromPage));
 	} else {
 		
 		# get product backlog id
@@ -97,7 +101,7 @@
 		$result = $agilemantis_pb->getTeamUserId( $agilemantis_pb->id );
 		if( $result > -1 ) {
 			$user_id_team_user = $result;
-			$agilemantis_pb->giveReporterRightsToTeamUser( $user_id_team_user, $t_project_id );
+			$agilemantis_pb->giveDeveloperRightsToTeamUser( $user_id_team_user, $t_project_id );
 		}
 		
 		// warning message if there are users without access rights
@@ -148,7 +152,11 @@
 														$pb_name_old, $agilemantis_pb->name );
 						
 						if( $_POST['project_id'] == 0 && $_POST['id'] > 0 ) {
-							header( "Location: " . plugin_page( 'product_backlogs.php' ) );
+							$fromPage = 'product_backlogs.php';
+							if( $_POST['pageFrom'] ) {
+								$fromPage = $_POST['pageFrom'];
+							}
+							header("Location: ".plugin_page($fromPage));
 						}
 					}
 				} else {
@@ -271,10 +279,11 @@
 			<tr>
 				<td><span class="required"> * <?php echo lang_get( 'required' ) ?></span>
 				</td>
-				<td class="center"><input type="submit" class="button"
-					value="<?php echo plugin_lang_get( 'button_save' )?>"> <input
-					type="submit" name="back_button"
-					value="<?php echo plugin_lang_get( 'button_back' )?>"></td>
+				<td class="center">
+					<input type="submit" class="button" value="<?php echo plugin_lang_get( 'button_save' )?>" /> 
+					<input type="submit" name="back_button" value="<?php echo plugin_lang_get( 'button_back' )?>" />
+					<input type="hidden" name="pageFrom" value="<?php echo $_POST['pageFrom'] ?>" />
+				</td>
 			</tr>
 			</form>
 		</table>

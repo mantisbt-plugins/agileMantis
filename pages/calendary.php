@@ -60,13 +60,14 @@ for( $x = 0; $x <= $amount_of_month; $x++ ) {
 		$end_tag = $end;
 	}
 	
-	$date_start = date( 'Y', $start_tag ) . '-' . date( 'm', $start_tag ) . '-' .
-		 date( 'd', $start_tag );
+	$date_start = date( 'Y', $start_tag ) . '-' . date( 'm', $start_tag ) . '-' . date( 'd', $start_tag );
 	$date_end = date( 'Y', $end_tag ) . '-' . date( 'm', $end_tag ) . '-' . date( 'd', $end_tag );
 	
 	$getTMC2 = $agilemantis_team->getTeamMemberCapacity( $row['id'], $date_start, $date_end );
+	
 	$getTMC = $getTMC2[0]['total_cap'];
 	$getCap = $agilemantis_av->getMemberCapacity( $row['id'], $date_start, $date_end );
+
 	if( $getTMC == NULL ) {
 		$getTMC = 0.00;
 	}
@@ -113,8 +114,8 @@ for( $x = 0; $x <= $amount_of_month; $x++ ) {
 			<tr>
 				<td>';
 				echo '<div class="calendar ' . $t_cal_height_class . '">';
-				$count = $agilemantis_cal->getCalender(
-							$start_tag, $end_tag, $row['user_id'], $days_of_week );
+				$count = $agilemantis_cal->getCalender($start_tag, $end_tag, $row['user_id'], $days_of_week );
+							
 				echo '</div>';
 				if( $count > 0 ) { 
 					$error = '<center><span class="message_error">'.

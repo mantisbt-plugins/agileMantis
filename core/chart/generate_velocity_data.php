@@ -24,9 +24,6 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with agileMantis. If not, see <http://www.gnu.org/licenses/>.
 
-
-
-
 // choosen Sprint
 $name = $_POST['sprintName'];
 $userstories = $agilemantis_sprint->getSprintStories( $name );
@@ -39,35 +36,46 @@ $current = $agilemantis_sprint->getVelocityDataFromSprint( $userstories );
 $agilemantis_team->id = $sprintinfo['team_id'];
 $countDeveloper = count( $agilemantis_team->getTeamDeveloper() );
 
+// convert Start and End
+$convertedStart = $agilemantis_sprint->getNormalDateFormat($sprintinfo['start']);
+$convertedEnd = $agilemantis_sprint->getNormalDateFormat($sprintinfo['end']);
+
+// convert current date
+$convertedCurDate = $agilemantis_sprint->getNormalDateFormat(date( 'Y-m-d', strtotime( '+1 day' )));
+
 // get referenced Sprint velocity data
-$referenced = $agilemantis_sprint->getLatestSprints( $sprintinfo['team_id'], 1, 
-	$_POST['referencedSprint'] );
-if( $referenced[0]['status'] < 2 ) {
+if(isset($_POST['referencedSprint'])){
+	$referenced = $agilemantis_sprint->getLatestSprints( $sprintinfo['team_id'], 1, 
+		$_POST['referencedSprint'] );
+} else {
+	$referenced = 0;
+}
+if( isset($referenced[0]) && $referenced[0]['status'] < 2 ) {
 	$userstories = $agilemantis_sprint->getSprintStories( $referenced[0]['name'] );
-	$referencedSprint = $agilemantis_sprint->getVelocityDataFromSprint( $userstories );
+ 	$referencedSprint = $agilemantis_sprint->getVelocityDataFromSprint( $userstories );
 	$referenced[0]['storypoints_moved'] = $referencedSprint['storypointsmoved'];
 	$referenced[0]['storypoints_in_splitted_user_stories'] = $referencedSprint['workmoved'];
-	$referenced[0]['storypoints_sprint'] = $referencedSprint['storypoints'];
+ 	$referenced[0]['storypoints_sprint'] = $referencedSprint['storypoints'];
 	if( $referenced[0]['status'] == 0 ) {
 		$referenced[0]['workday_length'] = $agilemantis_tasks->getConfigValue( 
 			'plugin_agileMantis_gadiv_workday_in_hours' );
 	}
 	$countDeveloper = count( $agilemantis_team->getTeamDeveloper() );
 	$referenced[0]['count_developer_team'] = $countDeveloper;
+	
 	if( strtotime( $referenced[0]['start'] ) >= mktime() ) {
 		$restCapacity = $agilemantis_sprint->getTeamCapacityInSprint( $referenced[0]['team_id'], 
 			$referenced[0]['start'], $referenced[0]['end'] );
 	} else {
-		$restCapacity = $agilemantis_sprint->getTeamCapacityInSprint( $referenced[0]['team_id'], 
-			date( 'Y-m-d', strtotime( '+1 day' ) ), $referenced[0]['end'] );
+		$restCapacity = $agilemantis_sprint->getTeamCapacityInSprint( $referenced[0]['team_id'], $convertedCurDate , $referenced[0]['end'] );
 	}
 	$referenced[0]['work_performed'] = $referencedSprint['performed'] + $restCapacity;
 	$referenced[0]['total_developer_capacity'] = $restCapacity;
 }
 
-// get previous Sprint velocity data
+//get previous Sprint velocity data
 $previous = $agilemantis_sprint->getPreviousSprint( $sprintinfo['id'], $sprintinfo['team_id'] );
-if( $previous[0]['status'] < 2 ) {
+if( !empty($previous) && $previous[0]['status'] < 2 ) {
 	$userstories = $agilemantis_sprint->getSprintStories( $previous[0]['name'] );
 	$previousSprint = $agilemantis_sprint->getVelocityDataFromSprint( $userstories );
 	$previous[0]['storypoints_moved'] = $previousSprint['storypointsmoved'];
@@ -80,18 +88,16 @@ if( $previous[0]['status'] < 2 ) {
 	}
 	$previous[0]['count_developer_team'] = $countDeveloper;
 	if( strtotime( $previous[0]['start'] ) >= mktime() ) {
-		$restCapacity = $agilemantis_sprint->getTeamCapacityInSprint( $previous[0]['team_id'], 
-			$previous[0]['start'], $previous[0]['end'] );
+		$restCapacity = $agilemantis_sprint->getTeamCapacityInSprint( $previous[0]['team_id'], $previous[0]['start'], $previous[0]['end'] );
 	} else {
-		$restCapacity = $agilemantis_sprint->getTeamCapacityInSprint( $previous[0]['team_id'], 
-			date( 'Y-m-d', strtotime( '+1 day' ) ), $previous[0]['end'] );
+		$restCapacity = $agilemantis_sprint->getTeamCapacityInSprint( $previous[0]['team_id'], $convertedCurDate , $previous[0]['end'] );
 	}
 	$previous[0]['work_performed'] = $previousSprint['performed'] + $restCapacity;
 	$previous[0]['total_developer_capacity'] = $agilemantis_sprint->getTeamCapacityInSprint( 
 		$previous[0]['team_id'], $previous[0]['start'], $previous[0]['end'] );
 }
 
-// get avarage Sprint velocity data
+//get avarage Sprint velocity data
 $avarage = $agilemantis_sprint->getLatestSprints( $sprintinfo['team_id'], 
 	$_POST['amountOfSprints'] );
 
@@ -100,14 +106,12 @@ if( $sprintinfo['status'] < 1 ) {
 		'plugin_agileMantis_gadiv_workday_in_hours' );
 }
 
-$capacity = $agilemantis_sprint->getTeamCapacityInSprint( $sprintinfo['team_id'], 
-	$sprintinfo['start'], $sprintinfo['end'] );
+$capacity = $agilemantis_sprint->getTeamCapacityInSprint( $sprintinfo['team_id'],$convertedStart, $convertedEnd ); 
+	
 if( strtotime( $sprintinfo['start'] ) >= mktime() ) {
-	$restCapacity = $agilemantis_sprint->getTeamCapacityInSprint( $sprintinfo['team_id'], 
-		$sprintinfo['start'], $sprintinfo['end'] );
+	$restCapacity = $agilemantis_sprint->getTeamCapacityInSprint( $sprintinfo['team_id'], $convertedStart, $convertedEnd );
 } else {
-	$restCapacity = $agilemantis_sprint->getTeamCapacityInSprint( $sprintinfo['team_id'], 
-		date( 'Y-m-d', strtotime( '+1 day' ) ), $sprintinfo['end'] );
+	$restCapacity = $agilemantis_sprint->getTeamCapacityInSprint( $sprintinfo['team_id'], $convertedCurDate , $convertedEnd );
 }
 
 // Storypoints gesamt - Sprint Current
@@ -124,12 +128,17 @@ $storypointsSprintTotalRest = $current['storypoints'] - $storypointsSprintTotalW
 	 $storypointsSprintTotalStoryPointsMoved;
 
 // Storypoints gesamt - Sprint Referenced
+if(isset($referenced[0])){
 $storypointsSprintReferencedStoryPointsMoved = $referenced[0]['storypoints_moved'];
 $storypointsSprintReferencedWorkMoved = $referenced[0]['storypoints_in_splitted_user_stories'] -
 	 $storypointsSprintReferencedStoryPointsMoved;
 $storypointsSprintReferencedRest = $referenced[0]['storypoints_sprint'] -
 	 $storypointsSprintReferencedWorkMoved - $storypointsSprintReferencedStoryPointsMoved;
-
+} else {
+	$storypointsSprintReferencedStoryPointsMoved = 0;
+	$storypointsSprintReferencedWorkMoved = 0;
+	$storypointsSprintReferencedRest = 0;
+}
 // Storypoints gesamt -  Sprint Previous
 $storypointsSprintPreviousStoryPointsMoved = $previous[0]['storypoints_moved'];
 $storypointsSprintPreviousWorkMoved = $previous[0]['storypoints_in_splitted_user_stories'] -
@@ -157,7 +166,7 @@ if( !empty( $avarage ) ) {
 					$row['start'], $row['end'] );
 			} else {
 				$restCapacity = $agilemantis_sprint->getTeamCapacityInSprint( $row['team_id'], 
-					date( 'Y-m-d', strtotime( '+1 day' ) ), $row['end'] );
+					$agilemantis_sprint->getNormalDateFormat(date( 'Y-m-d', strtotime( '+1 day' ))), $row['end'] );
 			}
 			$row['total_developer_capacity'] = $restCapacity;
 		}
@@ -165,9 +174,13 @@ if( !empty( $avarage ) ) {
 		$SprintAvarageWorkMoved += $row['storypoints_in_splitted_user_stories'];
 		$SprintAvarageStoryPointsMoved += $row['storypoints_moved'];
 		$SprintAvarageDeveloper += $row['count_developer_team'];
-		$SprintAvarageKid += $row['total_developer_capacity'] / $row['workday_length'];
-		$SprintAvarageWes += $row['work_performed'] / $row['workday_length'];
-		$SprintAvarageWorkPerformed += $row['work_performed'] / $row['workday_length'];
+		if( $row['workday_length'] != 0 ){
+			$SprintAvarageKid += $row['total_developer_capacity'] / $row['workday_length'];
+			$SprintAvarageWes += $row['work_performed'] / $row['workday_length'];
+			$SprintAvarageWorkPerformed += $row['work_performed'] / $row['workday_length'];
+		}else{
+			echo $agilemantis_commonlib->createAgManWarning( plugin_lang_get('warning_1').'workday_lenght of Sprint'.plugin_lang_get('warning_2') );
+		}
 	}
 }
 
@@ -179,34 +192,52 @@ $storypointsSprintAvarageRest = sprintf( "%.2f",
 	($SprintAvarageRest / $_POST['amountOfSprints']) - $storypointsSprintAvarageWorkMoved -
 		 $storypointsSprintAvarageStoryPointsMoved );
 
-$currentSprintKid = $capacity / $sprintinfo['workday_length'];
-$currentSprintWes = ($current['performed'] + $restCapacity) / $sprintinfo['workday_length'];
+if( $sprintinfo['workday_length'] != 0 ){
+	$currentSprintKid = $capacity / $sprintinfo['workday_length'];
+	$currentSprintWes = ($current['performed'] + $restCapacity) / $sprintinfo['workday_length'];
+} else {
+	echo $agilemantis_commonlib->createAgManWarning( 'workday_lenght of Sprint' );
+}
 
-$kidref = $referenced[0]['total_developer_capacity'] / $referenced[0]['workday_length'];
-$kidpre = $previous[0]['total_developer_capacity'] / $previous[0]['workday_length'];
+if( $previous[0]['workday_length'] != 0 ){
+	$kidpre = $previous[0]['total_developer_capacity'] / $previous[0]['workday_length'];
+	$wespre = ($previous[0]['work_performed'] / $previous[0]['workday_length']);
+} else {
+	echo $agilemantis_commonlib->createAgManWarning('workday_lenght of previous Sprint');
+}
+#if(false){
+if( $referenced[0]['workday_length'] != 0 ){
+	$kidref = $referenced[0]['total_developer_capacity'] / $referenced[0]['workday_length'];
+	$wesref = ($referenced[0]['work_performed'] / $referenced[0]['workday_length']);
+} else if( $referenced != 0 ) {
+	echo $agilemantis_commonlib->createAgManWarning( 'workday_lenght of referenced Sprint' );
+}
 
-$wesref = ($referenced[0]['work_performed'] / $referenced[0]['workday_length']);
-$wespre = ($previous[0]['work_performed'] / $previous[0]['workday_length']);
+// Storypoints Entwickler - Sprint Current
+if( $countDeveloper != 0 ){
+	$developerSprintCurrentDayStoryPointsMoved = sprintf( "%.2f", 
+		($current['storypointsmoved'] / $countDeveloper) );
+	$developerSprintCurrentDayWorkMoved = sprintf( "%.2f", 
+		($current['workmoved'] / $countDeveloper) - $developerSprintCurrentDayStoryPointsMoved );
+	$developerSprintCurrentDayRest = sprintf( "%.2f", 
+		($current['reststorypoints'] / $countDeveloper) - $developerSprintCurrentDayWorkMoved -
+			 $developerSprintCurrentDayStoryPointsMoved );
 
-// Storypints Entwickler - Sprint Current
-$developerSprintCurrentDayStoryPointsMoved = sprintf( "%.2f", 
-	($current['storypointsmoved'] / $countDeveloper) );
-$developerSprintCurrentDayWorkMoved = sprintf( "%.2f", 
-	($current['workmoved'] / $countDeveloper) - $developerSprintCurrentDayStoryPointsMoved );
-$developerSprintCurrentDayRest = sprintf( "%.2f", 
-	($current['reststorypoints'] / $countDeveloper) - $developerSprintCurrentDayWorkMoved -
-		 $developerSprintCurrentDayStoryPointsMoved );
-
-// Storypoints Entwickler - Sprint Total
-$developerSprintTotalStoryPointsMoved = sprintf( "%.2f", 
-	($current['storypointsmoved'] / $countDeveloper) );
-$developerSprintTotalWorkMoved = sprintf( "%.2f", 
-	($current['workmoved'] / $countDeveloper) - $developerSprintTotalStoryPointsMoved );
-$developerSprintTotalRest = sprintf( "%.2f", 
-	($current['storypoints'] / $countDeveloper) - $developerSprintTotalWorkMoved -
-		 $developerSprintTotalStoryPointsMoved );
+	
+	// Storypoints Entwickler - Sprint Total
+	$developerSprintTotalStoryPointsMoved = sprintf( "%.2f", 
+		($current['storypointsmoved'] / $countDeveloper) );
+	$developerSprintTotalWorkMoved = sprintf( "%.2f", 
+		($current['workmoved'] / $countDeveloper) - $developerSprintTotalStoryPointsMoved );
+	$developerSprintTotalRest = sprintf( "%.2f", 
+		($current['storypoints'] / $countDeveloper) - $developerSprintTotalWorkMoved -
+			 $developerSprintTotalStoryPointsMoved );
+} else {
+	echo $agilemantis_commonlib->createAgManWarning( 'countDeveloper' );
+}
 
 // Storypoints Entwickler - Sprint Referenced
+if( $referenced[0]['count_developer_team'] != 0 ) {
 $developerSprintReferencedStoryPointsMoved = sprintf( "%.2f", 
 	($referenced[0]['storypoints_moved'] / $referenced[0]['count_developer_team']) );
 $developerSprintReferencedWorkMoved = sprintf( "%.2f", 
@@ -215,8 +246,12 @@ $developerSprintReferencedWorkMoved = sprintf( "%.2f",
 $developerSprintReferencedRest = sprintf( "%.2f", 
 	($referenced[0]['storypoints_sprint'] / $referenced[0]['count_developer_team']) -
 		 $developerSprintReferencedWorkMoved - $developerSprintReferencedStoryPointsMoved );
+} else if( $referenced != 0) {
+	echo $agilemantis_commonlib->createAgManWarning( 'countDeveloper in referenced Sprint' );
+}
 
 // Storypoints Entwickler - Sprint Previous
+if($previous[0]['count_developer_team'] != 0){
 $developerSprintPreviousStoryPointsMoved = sprintf( "%.2f", 
 	($previous[0]['storypoints_moved'] / $previous[0]['count_developer_team']) );
 $developerSprintPreviousWorkMoved = sprintf( "%.2f", 
@@ -225,8 +260,14 @@ $developerSprintPreviousWorkMoved = sprintf( "%.2f",
 $developerSprintPreviousRest = sprintf( "%.2f", 
 	($previous[0]['storypoints_sprint'] / $previous[0]['count_developer_team']) -
 		 $developerSprintPreviousWorkMoved - $developerSprintPreviousStoryPointsMoved );
+} else {
+	$developerSprintPreviousStoryPointsMoved = 0;
+	$developerSprintPreviousWorkMoved = 0;
+	$developerSprintPreviousRest = 0;
+}
 
 // Storypoints Entwickler - Sprint Avarage
+if($SprintAvarageDeveloper != 0){
 $developerSprintAvarageStoryPointsMoved = sprintf( "%.2f", 
 	($SprintAvarageStoryPointsMoved / $SprintAvarageDeveloper) );
 $developerSprintAvarageWorkMoved = sprintf( "%.2f", 
@@ -234,6 +275,11 @@ $developerSprintAvarageWorkMoved = sprintf( "%.2f",
 $developerSprintAvarageRest = sprintf( "%.2f", 
 	($SprintAvarageRest / $SprintAvarageDeveloper) - $developerSprintAvarageWorkMoved -
 		 $developerSprintAvarageStoryPointsMoved );
+} else {
+	$developerSprintAvarageStoryPointsMoved = 0;
+	$developerSprintAvarageWorkMoved = 0;
+	$developerSprintAvarageRest = 0;
+}
 
 if( $currentSprintKid > 0 ) {
 	// Entwickler-Tag - Sprint Current
@@ -290,26 +336,46 @@ if( $SprintAvarageKid > 0 ) {
 			 $developerDaySprintAvarageStoryPointsMoved );
 }
 
-// Aufwands-Tag - Sprint Current
-$capacityDaySprintCurrentDayStoryPointsMoved = sprintf( "%.2f", 
-	($current['storypointsmoved'] / $currentSprintWes) );
-$capacityDaySprintCurrentDayWorkMoved = sprintf( "%.2f", 
-	($current['workmoved'] / $currentSprintWes) - $capacityDaySprintCurrentDayStoryPointsMoved );
-$capacityDaySprintCurrentDayRest = sprintf( "%.2f", 
-	($current['reststorypoints'] / $currentSprintWes) - $capacityDaySprintCurrentDayWorkMoved -
-		 $capacityDaySprintCurrentDayStoryPointsMoved );
-
-// Aufwands-Tag - Sprint Total
-$capacityDaySprintTotalStoryPointsMoved = sprintf( "%.2f", 
-	($current['storypointsmoved'] / $currentSprintWes) );
-$capacityDaySprintTotalWorkMoved = sprintf( "%.2f", 
-	($current['workmoved'] / $currentSprintWes) - $capacityDaySprintTotalStoryPointsMoved );
-$capacityDaySprintTotalRest = sprintf( "%.2f", 
-	($current['storypoints'] / $currentSprintWes) - $capacityDaySprintTotalWorkMoved -
-		 $capacityDaySprintTotalStoryPointsMoved );
+if( $currentSprintWes != 0 ){
+	// Aufwands-Tag - Sprint Current
+	$capacityDaySprintCurrentDayStoryPointsMoved = sprintf( "%.2f", 
+		($current['storypointsmoved'] / $currentSprintWes) );
+	$capacityDaySprintCurrentDayWorkMoved = sprintf( "%.2f", 
+		($current['workmoved'] / $currentSprintWes) - $capacityDaySprintCurrentDayStoryPointsMoved );
+	$capacityDaySprintCurrentDayRest = sprintf( "%.2f", 
+		($current['reststorypoints'] / $currentSprintWes) - $capacityDaySprintCurrentDayWorkMoved -
+			 $capacityDaySprintCurrentDayStoryPointsMoved );
+	
+	// Aufwands-Tag - Sprint Total
+	$capacityDaySprintTotalStoryPointsMoved = sprintf( "%.2f", 
+		($current['storypointsmoved'] / $currentSprintWes) );
+	$capacityDaySprintTotalWorkMoved = sprintf( "%.2f", 
+		($current['workmoved'] / $currentSprintWes) - $capacityDaySprintTotalStoryPointsMoved );
+	$capacityDaySprintTotalRest = sprintf( "%.2f", 
+		($current['storypoints'] / $currentSprintWes) - $capacityDaySprintTotalWorkMoved -
+			 $capacityDaySprintTotalStoryPointsMoved );
+}else{
+	// Aufwands-Tag - Sprint Current
+	$capacityDaySprintCurrentDayStoryPointsMoved = sprintf( "%.2f", 
+		( $current['storypointsmoved'] ) );
+	$capacityDaySprintCurrentDayWorkMoved = sprintf( "%.2f", 
+		( $current['workmoved'] ) - $capacityDaySprintCurrentDayStoryPointsMoved );
+	$capacityDaySprintCurrentDayRest = sprintf( "%.2f", 
+		( $current['reststorypoints'] ) - $capacityDaySprintCurrentDayWorkMoved -
+			 $capacityDaySprintCurrentDayStoryPointsMoved );
+	
+	// Aufwands-Tag - Sprint Total
+	$capacityDaySprintTotalStoryPointsMoved = sprintf( "%.2f", 
+		( $current['storypointsmoved'] ) );
+	$capacityDaySprintTotalWorkMoved = sprintf( "%.2f", 
+		( $current['workmoved'] ) - $capacityDaySprintTotalStoryPointsMoved );
+	$capacityDaySprintTotalRest = sprintf( "%.2f", 
+		( $current['storypoints'] ) - $capacityDaySprintTotalWorkMoved -
+			 $capacityDaySprintTotalStoryPointsMoved );
+}
 
 // Aufwands-Tag - Sprint Referenced
-if( $referenced[0]['work_performed'] > 0 ) {
+if( $referenced[0]['work_performed'] > 0 && $wesref != 0 ) {
 	$capacityDaySprintReferencedStoryPointsMoved = sprintf( "%.2f", 
 		($referenced[0]['storypoints_moved'] / $wesref) );
 	$capacityDaySprintReferencedWorkMoved = sprintf( "%.2f", 
@@ -318,10 +384,12 @@ if( $referenced[0]['work_performed'] > 0 ) {
 	$capacityDaySprintReferencedRest = sprintf( "%.2f", 
 		($referenced[0]['storypoints_sprint'] / $wesref) - $capacityDaySprintReferencedWorkMoved -
 			 $capacityDaySprintReferencedStoryPointsMoved );
+}else if( $referenced[0]['work_performed'] > 0 ) {
+	echo $agilemantis_commonlib->createAgManWarning( 'wesref' );
 }
 
 // Aufwands-Tag - Sprint Previous
-if( $previous[0]['work_performed'] > 0 ) {
+if( $previous[0]['work_performed'] > 0 && $wespre != 0 ) {
 	$capacityDaySprintPreviousStoryPointsMoved = sprintf( "%.2f", 
 		($previous[0]['storypoints_moved'] / $wespre) );
 	$capacityDaySprintPreviousWorkMoved = sprintf( "%.2f", 
@@ -330,10 +398,12 @@ if( $previous[0]['work_performed'] > 0 ) {
 	$capacityDaySprintPreviousRest = sprintf( "%.2f", 
 		($previous[0]['storypoints_sprint'] / $wespre) - $capacityDaySprintPreviousWorkMoved -
 			 $capacityDaySprintPreviousStoryPointsMoved );
+}else if( $previous[0]['work_performed'] > 0 ) {
+	echo $agilemantis_commonlib->createAgManWarning( 'wespre' );
 }
 
 // Aufwands-Tag - Sprint Avarage
-if( $SprintAvarageWorkPerformed > 0 ) {
+if( $SprintAvarageWorkPerformed > 0 && $SprintAvarageWes != 0 ) {
 	$capacityDaySprintAvarageStoryPointsMoved = sprintf( "%.2f", 
 		($SprintAvarageStoryPointsMoved / $SprintAvarageWes) );
 	$capacityDaySprintAvarageWorkMoved = sprintf( "%.2f", 
@@ -341,7 +411,10 @@ if( $SprintAvarageWorkPerformed > 0 ) {
 	$capacityDaySprintAvarageRest = sprintf( "%.2f", 
 		($SprintAvarageRest / $SprintAvarageWes) - $capacityDaySprintAvarageWorkMoved -
 			 $capacityDaySprintAvarageStoryPointsMoved );
+}else if( $SprintAvarageWorkPerformed > 0 ) {
+	echo $agilemantis_commonlib->createAgManWarning( 'SprintAvarageWes' );
 }
+
 
 echo '<charts>';
 

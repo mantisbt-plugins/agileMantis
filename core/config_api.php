@@ -24,7 +24,14 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with agileMantis. If not, see <http://www.gnu.org/licenses/>.
 
-
+// set end-attribut and commit-attribut for ms-sql-server access
+if (db_is_mssql()) {
+	define( "AGILEMANTIS_END_FIELD", '[end]');
+	define( "AGILEMANTIS_COMMIT_FIELD", '[commit]');
+} else {
+	define( "AGILEMANTIS_END_FIELD", 'end');
+	define( "AGILEMANTIS_COMMIT_FIELD", 'commit');
+}
 
 // URL to agileMantis plugin
 define( "AGILEMANTIS_PLUGIN_URL", 

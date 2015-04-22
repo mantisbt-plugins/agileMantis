@@ -71,13 +71,11 @@ class gadiv_productBacklog extends gadiv_commonlib {
 		if( $this->team == 0 ) {
 			$this->team = $this->getLatestUser();
 		}
-		$t_sql = "INSERT INTO gadiv_productbacklogs 
-					SET name=" . db_param( 0 ) . ", 
-					description=" . db_param( 1 ) . ", 
-					user_id=" . db_param( 2 );
+		$t_sql = "INSERT INTO gadiv_productbacklogs (name, description, user_id) VALUES ( " . 
+		         db_param( 0 ) . ", " . db_param( 1 ) . ", " . db_param( 2 ) . ") ";
 		$t_params = array( $this->name, $this->description, $user_id );
 		db_query_bound( $t_sql, $t_params );
-		$this->id = db_insert_id();
+		$this->id = db_insert_id("gadiv_productbacklogs");
 		
 		$this->user_id = $user_id;
 		return $this->id;
@@ -161,8 +159,7 @@ class gadiv_productBacklog extends gadiv_commonlib {
 		db_query_bound( $t_sql, $t_params );
 		
 		$t_sql = "INSERT INTO gadiv_rel_productbacklog_projects 
-					SET pb_id=" . db_param( 0 ) . ", 
-					project_id=" . db_param( 1 );
+					VALUES (" . db_param( 0 ) . "," . db_param( 1 ) . ")";
 		$t_params = array( $backlog_id, $project_id );
 		db_query_bound( $t_sql, $t_params );
 	}
@@ -171,7 +168,8 @@ class gadiv_productBacklog extends gadiv_commonlib {
 	function isNameUnique() {
 		$t_sql = "SELECT count(*) AS uniqueName 
 					FROM gadiv_productbacklogs 
-					WHERE name=" . db_param( 0 );
+					WHERE name=" . db_param( 0 ) . "
+					GROUP BY name";
 		$t_params = array( $this->name );
 		$uniqueName = $this->executeQuery( $t_sql, $t_params );
 		if( $uniqueName[0]['uniqueName'] > 0 ) {
@@ -227,7 +225,7 @@ class gadiv_productBacklog extends gadiv_commonlib {
 	
 	# check amount of teams working with the selected product backlog
 	function checkProductBacklogTeam( $id ) {
-		$t_sql = "SELECT count(*) AS pbTeams FROM gadiv_teams WHERE pb_id=" . db_param( 0 );
+		$t_sql = "SELECT count(*) AS pbTeams FROM gadiv_teams WHERE pb_id=" . db_param( 0 ) . " GROUP BY pb_id";
 		$t_params = array( (( int ) $id) );
 		$pbTeams = $this->executeQuery( $t_sql, $t_params );
 		if( $pbTeams[0]['pbTeams'] > 0 ) {
@@ -310,7 +308,22 @@ class gadiv_productBacklog extends gadiv_commonlib {
 	
 	# check if product backlog is locked by running sprints
 	function productBacklogHasRunningSprint( $product_backlog ) {
-		$t_sql = "SELECT * FROM gadiv_sprints WHERE pb_id=" . db_param( 0 ) . " AND status=1";
+		$t_sql = "SELECT id,
+							team_id,
+							pb_id,
+							name,
+							description,
+							status,
+							daily_scrum,
+							start,
+							dispose as " . AGILEMANTIS_COMMIT_FIELD . ",
+							enddate as " . AGILEMANTIS_END_FIELD . ",
+							closed,
+							unit_storypoints,
+							unit_planned_work,
+							unit_planned_task,
+							workday_length
+	 FROM gadiv_sprints WHERE pb_id=" . db_param( 0 ) . " AND status=1";
 		$t_params = array( $product_backlog );
 		return $this->executeQuery( $t_sql, $t_params );
 	}
@@ -320,7 +333,21 @@ class gadiv_productBacklog extends gadiv_commonlib {
 		$t_mantis_custom_field_string_table = db_get_table( 'mantis_custom_field_string_table' );
 		
 		$this->getAdditionalProjectFields();
-		$t_sql = "SELECT * 
+		$t_sql = "SELECT field_id, bug_id, value, id,
+							team_id,
+							pb_id,
+							name,
+							description,
+							status,
+							daily_scrum,
+							start,
+							dispose as " . AGILEMANTIS_COMMIT_FIELD . ",
+							enddate as " . AGILEMANTIS_END_FIELD . ",
+							closed,
+							unit_storypoints,
+							unit_planned_work,
+							unit_planned_task,
+							workday_length
 					FROM $t_mantis_custom_field_string_table 
 					LEFT JOIN gadiv_sprints ON value LIKE name 
 					WHERE field_id=" . db_param( 0 ) . " 
@@ -336,7 +363,21 @@ class gadiv_productBacklog extends gadiv_commonlib {
 	function userStoriesInRunningSprints( $bug_id ) {
 		$t_mantis_custom_field_string_table = db_get_table( 'mantis_custom_field_string_table' );
 		$this->getAdditionalProjectFields();
-		$t_sql = "SELECT * 
+		$t_sql = "SELECT field_id, bug_id, value, id,
+							team_id,
+							pb_id,
+							name,
+							description,
+							status,
+							daily_scrum,
+							start,
+							dispose as " . AGILEMANTIS_COMMIT_FIELD . ",
+							enddate as " . AGILEMANTIS_END_FIELD . ",
+							closed,
+							unit_storypoints,
+							unit_planned_work,
+							unit_planned_task,
+							workday_length
 					FROM $t_mantis_custom_field_string_table 
 					LEFT JOIN gadiv_sprints ON value LIKE name 
 					WHERE field_id=" . db_param( 0 ) . " 
@@ -537,7 +578,7 @@ class gadiv_productBacklog extends gadiv_commonlib {
 	# get the latest mantis user 
 	function getLatestUser() {
 		$t_mantis_user_table = db_get_table( 'mantis_user_table' );
-		$team = $this->executeQuery( "SELECT max(id) AS id FROM $t_mantis_user_table" );
+		$team = $this->executeQuery( "SELECT max(id) AS id FROM $t_mantis_user_table GROUP BY enabled" );
 		return $team[0]['id'];
 	}
 
@@ -555,20 +596,20 @@ class gadiv_productBacklog extends gadiv_commonlib {
 		}
 	}
 
-	function giveReporterRightsToTeamUser( $user_id_team_user, $project_id ) {
+	function giveDeveloperRightsToTeamUser( $user_id_team_user, $project_id ) {
 		$t_mantis_project_user_list_table = db_get_table( 'mantis_project_user_list_table' );
 		
 		$t_sql = "SELECT user_id
 					FROM $t_mantis_project_user_list_table
 					WHERE project_id=" . db_param( 0 ) . " 
 					AND user_id=" . db_param( 1 ) . " 
-					AND access_level=25";
+					AND access_level=55";
 		$t_params = array( $project_id, $user_id_team_user );
 		$result = $this->executeQuery( $t_sql, $t_params );
 		if( empty( $result ) ) {
 			$t_sql = "INSERT INTO $t_mantis_project_user_list_table
 						(project_id, user_id, access_level)
-						VALUES (" . db_param( 0 ) . ", " . db_param( 1 ) . ", 25)";
+						VALUES (" . db_param( 0 ) . ", " . db_param( 1 ) . ", 55)";
 			$t_params = array( $project_id, $user_id_team_user );
 			db_query_bound( $t_sql, $t_params );
 		}
@@ -614,6 +655,19 @@ class gadiv_productBacklog extends gadiv_commonlib {
 		} else {
 			return '';
 		}
+	}
+	
+	function getUserIdOfPoByPbId($pb_id) {
+		$ROLE_PRODUCT_OWNER = 1;
+		$t_sql = "SELECT user_id 
+					FROM gadiv_rel_team_user tu
+					JOIN gadiv_teams t ON t.id = tu.team_id
+					WHERE t.pb_id = " . db_param() . "
+					AND tu.role = " . db_param();
+		
+		$t_params = array( $pb_id, $ROLE_PRODUCT_OWNER );
+		$t_result = $this->executeQuery( $t_sql, $t_params );
+		return $t_result[0]['user_id'];
 	}
 }
 ?>

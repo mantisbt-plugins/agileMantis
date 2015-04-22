@@ -225,7 +225,7 @@ if( $request['action'] == 'edit' ) {
 						<option value=""></option>
 					<?php if( !empty( $sprints ) ) { ?>
 					<?php foreach( $sprints AS $num => $row ) { ?>
-					<option value="<?php echo $row['name']?>"><?php echo $row['name']?></option>
+					<option value="<?php echo $row['name']?>"><?php echo string_display_links($row['name'])?></option>
 					<?php }?>
 					<?php }?>
 				</select>

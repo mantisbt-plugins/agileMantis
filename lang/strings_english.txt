@@ -126,7 +126,7 @@
 	$s_plugin_agileMantis_edit_product_backlog_error_922600			=	'[<span style="font-size:14px;">922600</span>] Please enter a name for the Product Backlog';
 	$s_plugin_agileMantis_edit_product_backlog_error_923600			=	'[<span style="font-size:14px;">923600</span>] Please enter a valid email address.';
 	$s_plugin_agileMantis_edit_product_backlog_error_982600			=	'[<span style="font-size:14px;">982600</span>] Please enter a unique name for Product Backlog.';
-	$s_plugin_agileMantis_edit_product_backlog_error_982601			=	'[<span style="font-size:14px;">982601</span>] The product backlog name is invalid. names may only contain Latin letters, numbers, spaces, hyphens, dots, plus signs and underscores.';
+	$s_plugin_agileMantis_edit_product_backlog_error_982601			=	'[<span style="font-size:14px;">982601</span>] The product backlog name is invalid. It contains illegal characters or a length of 22 was exceeded.';
 	$s_plugin_agileMantis_edit_product_backlog_error_100601			=	'[<span style="font-size:14px;">100601</span>] The assignment of the project issues to this Product Backlog has been removed.';
 	$s_plugin_agileMantis_edit_product_backlog_error_100602         =   '[<span style="font-size:14px;">100602</span>] Warning: The following team members have no access rights for the new project: [names]. Please assign rights.';
 	$s_plugin_agileMantis_edit_product_backlog_error_100603         =   '[<span style="font-size:14px;">100603</span>] Warning, The new team member has no access rights for the following projects: [names]. Please assign rights.';
@@ -304,6 +304,9 @@
 	$s_plugin_agileMantis_view_issue_technical_presentable			=	'Presentable technically';
 	$s_plugin_agileMantis_view_issue_functional_presentable			=	'Presentable functionally';
 	$s_plugin_agileMantis_view_issue_chose_product_backlog			=	'Choose Product Backlog';
+	$s_plugin_agileMantis_view_issue_goto_product_backlog			= 	'Product Backlog';
+	$s_plugin_agileMantis_view_issue_goto_sprint_backlog			= 	'Sprint Backlog';
+	$s_plugin_agileMantis_view_issue_look_through_notes             =   'Please look through notes';
 	
 	# Edit Tasks
 	$s_plugin_agileMantis_edit_tasks_title							=	'Edit Tasks';
@@ -490,5 +493,9 @@
 	$s_plugin_agileMantis_mail_body_4                               =   'Rights:';
 	$s_plugin_agileMantis_mail_yes                                  =   'yes';
 	$s_plugin_agileMantis_mail_no                                   =   'no';
+	
+	#Warning
+	$s_plugin_agileMantis_warning_1									=	'The field ';
+	$s_plugin_agileMantis_warning_2									=	' is empty or 0.';
 	
 ?>

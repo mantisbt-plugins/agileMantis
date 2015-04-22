@@ -64,12 +64,13 @@
 	$agilemantis_pb->productBacklogHasStoriesLeft( $row['name'] );
 	?>
 	<tr <?php echo helper_alternate_class() ?>>
-		<td><?php echo $row['name']?></td>
-		<td><?php echo nl2br($row['description'])?></td>
+		<td><?php echo string_display_links($row['name'])?></td>
+		<td><?php echo nl2br(string_display_links($row['description']))?></td>
 		<td class="right" width="205">
 			<form action="<?php echo plugin_page('edit_product_backlog.php') ?>" method="post">
 				<input type="submit" name="edit[<?php echo $row['id']?>]" 
-					value="<?php echo plugin_lang_get( 'button_edit' )?>" style="width:100px;"> 
+					value="<?php echo plugin_lang_get( 'button_edit' )?>" style="width:100px;" />
+				<input type="hidden" name="pageFrom" value="product_backlogs.php">
 			</form>
 			<form action="<?php echo plugin_page('delete_product_backlog.php') ?>" method="post">
 				<input type="hidden" name="product_backlog_id" value="<?php echo $row['id']?>">

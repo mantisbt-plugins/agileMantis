@@ -450,7 +450,7 @@ if( !$s['end'] ) {
 			<?php if( !$productBacklog[0]['name'] ) { ?>
 				<input type="hidden" name="negative" value="no_save">
 			<?php }?>
-			<?php echo $productBacklog[0]['name']?>
+			<?php echo string_display_links($productBacklog[0]['name'])?>
 			<input type="hidden" name="product_backlog_id"
 					value="<?php echo $productBacklog[0]['id']?>">
 				</td>

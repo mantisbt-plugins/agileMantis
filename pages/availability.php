@@ -24,6 +24,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with agileMantis. If not, see <http://www.gnu.org/licenses/>.
 
+ini_set("display_errors",1);
 	
 	html_page_top( plugin_lang_get( 'manage_availability_title' ) ); 
 ?>
@@ -69,11 +70,12 @@
 	
 	# save standard week availability
 	if( $_POST['action'] == "save" ) {
+		
 		foreach( $_POST['mo'] as $num => $row ) {
 			if( $agilemantis_av->getUserMarking( $num ) ) {
 				$hinweis = plugin_lang_get( 'manage_availability_error_108302' );
 				$mark_user[$num] = 1;
-			}
+			} 
 			
 			$_POST['mo'][$num] = str_replace( ',', '.', $_POST['mo'][$num] );
 			$_POST['tu'][$num] = str_replace( ',', '.', $_POST['tu'][$num] );
@@ -106,7 +108,7 @@
 				$mark_user[$num] = 1;
 			}
 			
-			if( $system == "" && $hinweis == "" ) {
+			if( $system == "" ) {
 				$agilemantis_av->user_id = $num;
 				$agilemantis_av->monday = $_POST['mo'][$num];
 				$agilemantis_av->tuesday = $_POST['tu'][$num];
@@ -122,6 +124,7 @@
 			}
 		}
 	}
+	
 	$userData = $agilemantis_au->getAgileUser( true );
 	if( !empty( $userData ) ) {
 		foreach( $userData as $num => $row ) {
@@ -249,6 +252,7 @@ if( $_POST['back_button'] ) {
 		foreach( $_POST['kalender'] as $num => $row ) {
 			$user_id = $num;
 			foreach( $_POST['capacity'][$user_id] as $key => $value ) {
+
 				$agilemantis_av->deleteUserCapacity( $user_id, $key );
 				$value = str_replace( ',', '.', $value );
 				if( !is_numeric( $value ) ) {
@@ -380,8 +384,8 @@ if( $_POST['kalender'] || $_POST['standard_availability'] != "" || $_POST['stayc
 				$start = mktime(0, 0, 0, $monat, 1, date('Y') );
 				$anzahl_tage_im_monat = date('t', $start);
 				$end = mktime(0, 0, 0, $monat, $anzahl_tage_im_monat,date( 'Y' ) );
-		?>
-		<div class="fullcalendar height550">
+				?>
+	<div class="fullcalendar height550">
 		<table cellspacing="1" class="width100">
 			<input type="hidden" name="calUser[<?php echo $num?>]"
 				value="Add Standard-Availability">
@@ -393,7 +397,9 @@ if( $_POST['kalender'] || $_POST['standard_availability'] != "" || $_POST['stayc
 			<tr>
 				<td>
 					<div class="calendar height400">
-						<?php $count = $agilemantis_cal->getCalender($start,$end,$num,$days);?>
+						<?php 
+						$count = $agilemantis_cal->getCalender($start,$end,$num,$days);
+						?>
 					</div>
 					<center>
 						<input type="submit"
@@ -411,7 +417,7 @@ if( $_POST['kalender'] || $_POST['standard_availability'] != "" || $_POST['stayc
 				</td>
 			</tr>
 		</table>
-	</div>
+	</div> 
 			<?php
 				if( $monat_count >= 12 ) { 
 					$monat_count = 0;

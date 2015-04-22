@@ -41,8 +41,10 @@ if( $_POST['sprintName'] != "" || $sprInfo[0]['name'] ) {
 	$s = $agilemantis_sprint->getSprintById();
 	$userIsScrumMaster = $agilemantis_team->isScrumMaster( $s['team_id'], $user_id );
 	$userIsDeveloper = $agilemantis_team->isDeveloper( $s['team_id'], $user_id );
-	$temp_start_date = explode( '-', $s['start'] );
-	$temp_end_date = explode( '-', $s['end'] );
+	$convertedDateStart = substr($s['start'], 0, 10);
+	$convertedDateEnd = substr($s['end'], 0, 10);
+	$temp_start_date = explode('-',$convertedDateStart);
+	$temp_end_date = explode('-',$convertedDateEnd);
 	$s['start'] = mktime( 0, 0, 0, $temp_start_date[1], $temp_start_date[2], $temp_start_date[0] );
 	$s['end'] = mktime( 0, 0, 0, $temp_end_date[1], $temp_end_date[2], $temp_end_date[0] );
 	

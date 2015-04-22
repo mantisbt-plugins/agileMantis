@@ -63,12 +63,13 @@ class gadiv_tasks extends gadiv_commonlib {
 					AND value = " . db_param( 1 ) . " 
 					AND us_id IS NOT NULL 
 					AND status < 4 
-					AND developer_id = " . db_param( 2 ) . " " . $addSql;
+					AND developer_id = " . db_param( 2 ) . " " . $addSql . "
+					GROUP BY field_id";
 		
 		$sprint = $this->executeQuery( $t_sql, $t_params );
 		
 		# Fetch Sprint Start and End
-		$t_sql = "SELECT start, end, team_id, status 
+		$t_sql = "SELECT start, enddate as " . AGILEMANTIS_END_FIELD . ", team_id, status 
 					FROM gadiv_sprints 
 					WHERE name = " . db_param( 0 );
 		$t_params = array( $userstory['sprint'] );
@@ -80,7 +81,7 @@ class gadiv_tasks extends gadiv_commonlib {
 		}
 		
 		if( $sprintinfo[0]['status'] == 1 ) {
-			$date_start = date( 'Y-m-d' );
+			$date_start = $this->getNormalDateFormat(date( 'Y-m-d' ));
 		}
 		
 		if( $sprintinfo[0]['status'] == 2 ) {
@@ -93,7 +94,8 @@ class gadiv_tasks extends gadiv_commonlib {
 					WHERE user_id = " . db_param( 0 ) . " 
 					AND team_id = " . db_param( 1 ) . " 
 					AND date >= " . db_param( 2 ) . " 
-					AND date <= " . db_param( 3 );
+					AND date <= " . db_param( 3 ) . "
+					GROUP BY user_id";
 		$t_params = array( $this->developer, $sprintinfo[0]['team_id'], $date_start, 
 			$sprintinfo[0]['end'] );
 		$developer = $this->executeQuery( $t_sql, $t_params );
@@ -126,13 +128,11 @@ class gadiv_tasks extends gadiv_commonlib {
 		db_query_bound( $t_sql, $t_params );
 		
 		$t_sql = "INSERT INTO $t_mantis_bug_history_table 
-					  SET user_id = " . db_param( 0 ) . ", 
-						bug_id = " . db_param( 1 ) . ", 
-						field_name = 'status', 
-						old_value = " . db_param( 2 ) . ", 
-						new_value = 80, 
-						type = 0, 
-						date_modified = " . db_param( 3 );
+		         (user_id, bug_id, field_name, old_value, new_value, type, date_modified) VALUES (" . 
+		          db_param( 0 ) . "," . 
+		          db_param( 1 ) . ",'status'," . 
+		          db_param( 2 ) . ",80,0," . 
+		          db_param( 3 ) . ") ";
 		$t_params = array( $user_id, $id, $status, 
 			mktime( date( 'H' ), date( 'i' ), date( 's' ), date( 'm' ), date( 'd' ), date( 'Y' ) ) );
 		db_query_bound( $t_sql, $t_params );
@@ -169,19 +169,19 @@ class gadiv_tasks extends gadiv_commonlib {
 		$task = $this->getSelectedTask( $task_id );
 		$user_name = $this->getUserName( $task['developer_id'] );
 		$t_note = "Task <b>\"" . $task['name'] . "\"</b>, ";
-		$t_note .= plugin_lang_get( 'edit_task_developer' );
+		$t_note .= plugin_lang_get( 'edit_task_developer' , 'agileMantis' );
 		$t_note .= " \"" . $user_name . "\", ";
 		$t_note .= $status_text;
 		$this->createBugNote( $story_id, $user_id, $t_note );
 	}
 
 	function addFinishedNote( $story_id, $task_id, $user_id ) {
-		$status_text = plugin_lang_get( 'status_resolved' );
+		$status_text = plugin_lang_get( 'status_resolved', 'agileMantis'  );
 		$this->addStatusNote( $story_id, $task_id, $user_id, $status_text );
 	}
 
 	function addReopenNote( $story_id, $task_id, $user_id ) {
-		$status_text = plugin_lang_get( 'status_reopened' );
+		$status_text = plugin_lang_get( 'status_reopened' , 'agileMantis' );
 		$this->addStatusNote( $story_id, $task_id, $user_id, $status_text );
 	}
 	
@@ -209,8 +209,9 @@ class gadiv_tasks extends gadiv_commonlib {
 		$t_sql = "SELECT sum(performed) AS performed_capacity 
 					FROM gadiv_daily_task_performance 
 					WHERE task_id = " . db_param( 0 ) . " 
-					AND date LIKE " . db_param( 1 );
-		$t_params = array( $task_id, "%" . date( 'Y-m-d' ) . "%" );
+					AND date LIKE " . db_param( 1 ) . "
+					GROUP BY task_id";
+		$t_params = array( $task_id, "%" . $this->getNormalDateFormat(date( 'Y-m-d' )) . "%" );
 		$task = $this->executeQuery( $t_sql, $t_params );
 		return $task[0]['performed_capacity'];
 	}
@@ -218,13 +219,13 @@ class gadiv_tasks extends gadiv_commonlib {
 	# get all assumed userstories in a predefined period
 	function getAssumedUserStories( $bugList, $dayStart, $dayEnd ) {
 		$t_mantis_bug_history_table = db_get_table( 'mantis_bug_history_table' );
-		
+
 		$t_sql = "SELECT * FROM $t_mantis_bug_history_table 
-					WHERE bug_id IN ( " . db_param( 0 ) . " ) 
+					WHERE bug_id IN ( " . $bugList . " ) 
 					AND field_name = 'Sprint' 
-					AND date_modified BETWEEN " . db_param( 1 ) . " 
-					AND " . db_param( 2 );
-		$t_params = array( $bugList, $dayStart, $dayEnd );
+					AND date_modified BETWEEN " . db_param( 0 ) . " 
+					AND " . db_param( 1 );
+		$t_params = array( $dayStart, $dayEnd );
 		return $this->executeQuery( $t_sql, $t_params );
 	}
 	
@@ -247,7 +248,7 @@ class gadiv_tasks extends gadiv_commonlib {
 					WHERE team_id = " . db_param( 0 ) . " 
 					AND date = " . db_param( 1 ) . " 
 					AND user_id = " . db_param( 2 );
-		$t_params = array( $team_id, date( 'Y-m-d' ), $user_id );
+		$t_params = array( $team_id, $this->getNormalDateFormat(date( 'Y-m-d' )), $user_id );
 		$user = $this->executeQuery( $t_sql, $t_params );
 		return $user[0]['capacity'];
 	}

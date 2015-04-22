@@ -30,20 +30,22 @@ class gadiv_productVersion extends gadiv_commonlib {
 	# get mantis version info by project id
 	function getVersionInformation( $p_project_id, $p_version = "" ) {
 		$t_version_id = version_get_id( $p_version, $p_project_id );
+		$t_version_id = version_cache_row( $t_version_id, false );
 		return $t_version_id;
 	}
 	
 	# get all tracker from a certain version and status
-	function getVersionTracker( $project_id, $version = "", $status ) {
+	function getVersionTracker( $project_id, $version = " ", $status ) {
 		$t_mantis_bug_table = db_get_table( 'mantis_bug_table' );
 		$t_sql = "SELECT count(*) AS tracker 
 						FROM $t_mantis_bug_table 
 						WHERE project_id=" . db_param( 0 ) . " 
 						AND target_version=" . db_param( 1 ) . " 
-						AND status=" . db_param( 2 );
-		$t_params = array( $project_id, $version, $status );
+						AND status IN(" . $status . ")
+						GROUP BY project_id";
+		$t_params = array( $project_id, $version );
 		$number_of_tracker = $this->executeQuery( $t_sql, $t_params );
-		return $number_of_tracker[0]['tracker'];
+		return 0 + $number_of_tracker[0]['tracker'];
 	}
 	
 	# get all user stories from a certain project and version
@@ -54,14 +56,15 @@ class gadiv_productVersion extends gadiv_commonlib {
 		
 		$t_sql = "SELECT count(*) AS userstories 
 						FROM $t_mantis_bug_table " . " 
-						LEFT JOIN $t_mantis_custom_field_string_table ON id = bug_id 
+						INNER JOIN $t_mantis_custom_field_string_table ON id = bug_id 
 						WHERE project_id=" . db_param( 0 ) . " 
 						AND target_version=" . db_param( 1 ) . " 
 						AND field_id=" . db_param( 2 ) . " 
-						AND value != ''";
+						AND value != ''" . "
+						GROUP BY field_id";
 		$t_params = array( $project_id, $version, $this->pb );
 		$number_of_tracker = $this->executeQuery( $t_sql, $t_params );
-		return $number_of_tracker[0]['userstories'];
+		return 0 + $number_of_tracker[0]['userstories'];
 	}
 	
 	# count number of user stories from a certain project and version
@@ -72,15 +75,16 @@ class gadiv_productVersion extends gadiv_commonlib {
 		
 		$t_sql = "SELECT count(*) AS userstories 
 					FROM $t_mantis_bug_table 
-					LEFT JOIN $t_mantis_custom_field_string_table ON id = bug_id 
+					INNER JOIN $t_mantis_custom_field_string_table ON id = bug_id 
 					WHERE project_id=" . db_param( 0 ) . " 
-					AND target_version=" . db_param( 1 ) . " 
-					AND status<80 
+					AND target_version = " . db_param( 1 ) . " 
+					AND status < 80 
 					AND field_id=" . db_param( 2 ) . " 
-					AND value!=''";
+					AND value != ''" . " 
+					GROUP BY field_id";
 		$t_params = array( $project_id, $version, $this->pb );
 		$total = $this->executeQuery( $t_sql, $t_params );
-		return $total[0]['userstories'];
+		return 0 + $total[0]['userstories'];
 	}
 }
 

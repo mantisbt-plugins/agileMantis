@@ -32,6 +32,10 @@ class gadiv_projects extends gadiv_commonlib {
 		return project_get_field( $p_project_id, 'name' );
 	}
 	
+	function getProjectDescription ( $p_project_id ) {
+		return project_get_field( $p_project_id, 'description' );
+	}
+	
 	# delete a project from a product backlog
 	function deleteProject( $backlog_id, $project_id ) {
 		$t_sql = "DELETE FROM gadiv_rel_productbacklog_projects 
@@ -163,7 +167,8 @@ class gadiv_projects extends gadiv_commonlib {
 	function backlog_project_is_unique( $project_id ) {
 		$t_sql = "SELECT count(*) AS projects 
 					FROM gadiv_rel_productbacklog_projects 
-					WHERE project_id=" . db_param( 0 );
+					WHERE project_id=" . db_param( 0 ) . "
+					GROUP BY project_id";
 		$t_params = array( $project_id );
 		$result = $this->executeQuery( $t_sql, $t_params );
 		if( $result[0]['projects'] > 1 ) {
