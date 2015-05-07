@@ -534,7 +534,7 @@ if( $_GET['us_id'] > 0 ) {
 						value="<?php echo $row['developer_id']?>"> <input type="hidden"
 						name="task_name" value="<?php echo $row['name']?>"> <input
 						type="hidden" name="task_description"
-						value="<?php echo string_display_links($row['description'])?>"> <input type="hidden"
+						value="<?php echo string_textarea($row['description'])?>"> <input type="hidden"
 						name="task_status" value="<?php echo $row['status']?>"> <input
 						type="hidden" name="rest_capacity"
 						value="<?php echo $row['rest_capacity']?>"> <input type="hidden"

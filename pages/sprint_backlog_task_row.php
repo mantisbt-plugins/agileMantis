@@ -116,7 +116,7 @@ if( !empty( $t ) ) {
 			<td style="background-color:<?php echo $uscolor;?>;"></td>
 			<td style="background-color:<?php echo $uscolor;?>;"></td>
 			<td style="background-color:<?php echo $uscolor;?>;"></td>
-			<td style="background-color:<?php echo $bgcolor;?>;"><?php echo string_display_links($value['name'])?></td>
+			<td style="background-color:<?php echo $bgcolor;?>;"><?php echo string_display($value['name'])?></td>
 			<td style="background-color:<?php echo $bgcolor;?>;"><?php 
 			if( $value['developer_id'] > 0 ) { 
 				echo $agilemantis_team->getUserName( $value['developer_id']); 
@@ -131,7 +131,7 @@ if( !empty( $t ) ) {
 					<input type="hidden" name="us_id" value="<?php echo $row['id']?>">
 					<input type="hidden" name="developer_id" value="<?php echo $value['developer_id']?>">
 					<input type="hidden" name="task_name" value="<?php echo $value['name']?>">
-					<input type="hidden" name="task_description" value="<?php echo string_display_links($value['description'])?>">
+					<input type="hidden" name="task_description" value="<?php echo string_display($value['description'])?>">
 					<input type="hidden" name="task_status" value="<?php echo $value['status']?>">
 					<input type="hidden" name="rest_capacity" value="<?php echo $value['rest_capacity']?>">
 					<input type="hidden" name="planned_capacity" value="<?php echo $value['planned_capacity']?>">
@@ -170,12 +170,12 @@ if( !empty( $t ) ) {
 						echo $sprint_end_disable?>>
 				</form>
 				<form action="<?php echo plugin_page("sprint_backlog.php")?>" method="post">
-					<input type="hidden" name="sprintName" value="<?php echo string_display_links($s['name'])?>">
+					<input type="hidden" name="sprintName" value="<?php echo string_display($s['name'])?>">
 					<input type="hidden" name="task_id" value="<?php echo $value['id']?>">
 					<input type="hidden" name="us_id" value="<?php echo $row['id']?>">
 					<input type="hidden" name="developer_id" value="<?php echo $value['developer_id']?>">
-					<input type="hidden" name="task_name" value="<?php echo string_display_links($value['name'])?>">
-					<input type="hidden" name="task_description" value="<?php echo string_display_links($value['description'])?>">
+					<input type="hidden" name="task_name" value="<?php echo string_display($value['name'])?>">
+					<input type="hidden" name="task_description" value="<?php echo string_display($value['description'])?>">
 					<input type="hidden" name="task_status" value="<?php echo $value['status']?>">
 					<input type="hidden" name="rest_capacity" value="<?php echo $value['rest_capacity']?>">
 					<input type="hidden" name="planned_capacity" value="<?php echo $value['planned_capacity']?>">
@@ -188,7 +188,7 @@ if( !empty( $t ) ) {
 				 <?php if( $s['status'] == 0 || ($value['developer_id'] == 0 
 				 		&& $value['planned_capacity'] == '0.00' && $value['status'] == 1 ) ) {?>
 					<form action="<?php echo plugin_page("sprint_backlog.php")?>" method="post">
-						<input type="hidden" name="sprintName" value="<?php echo string_display_links($s['name'])?>">
+						<input type="hidden" name="sprintName" value="<?php echo string_display($s['name'])?>">
 						<input type="hidden" name="task_id" value="<?php echo $value['id']?>">
 						<input type="hidden" name="fromSprintBacklog" value="1">
 						<input type="submit" name="deleteTask" value="<?php 
@@ -209,8 +209,8 @@ if( !empty( $t ) ) {
 						<input type="hidden" name="us_id" value="<?php echo $row['id']?>">
 						<input type="hidden" name="developer_id" value="<?php echo $value['developer_id']?>">
 						<input type="hidden" name="action" value="editTask">
-						<input type="hidden" name="task_name" value="<?php echo string_display_links($value['name'])?>">
-						<input type="hidden" name="task_description" value="<?php echo string_display_links($value['description'])?>">
+						<input type="hidden" name="task_name" value="<?php echo string_display($value['name'])?>">
+						<input type="hidden" name="task_description" value="<?php echo string_display($value['description'])?>">
 						<input type="hidden" name="task_status" value="<?php echo $value['status']?>">
 						<input type="hidden" name="rest_capacity" value="<?php echo $value['rest_capacity']?>">
 						<input type="hidden" name="planned_capacity" value="<?php echo $value['planned_capacity']?>">
@@ -230,8 +230,8 @@ if( !empty( $t ) ) {
 						<input type="hidden" name="us_id" value="<?php echo $row['id']?>">
 						<input type="hidden" name="developer" value="<?php echo $value['developer_id']?>">
 						<input type="hidden" name="action" value="editTask">
-						<input type="hidden" name="name" value="<?php echo string_display_links($value['name'])?>">
-						<input type="hidden" name="description" value="<?php echo string_display_links($value['description'])?>">
+						<input type="hidden" name="name" value="<?php echo string_display($value['name'])?>">
+						<input type="hidden" name="description" value="<?php echo string_display($value['description'])?>">
 						<input type="hidden" name="status" value="4">
 						<input type="hidden" name="rest_capacity" value="<?php echo $value['rest_capacity']?>">
 						<input type="hidden" name="planned_capacity" value="<?php echo $value['planned_capacity']?>">

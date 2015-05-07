@@ -37,7 +37,7 @@ class agileMantisPlugin extends MantisPlugin {
 		$this->name = "agileMantis";
 		$this->description = "Enables Scrum on your MantisBT-Installation";
 		$this->page = "info";
-		$this->version = "2.1.0";
+		$this->version = "2.1.1";
 		$this->requires = array( "MantisCore" => "1.2.5" );
 		$this->author = "gadiv GmbH";
 		$this->contact = "agileMantis@gadiv.de";
@@ -620,7 +620,7 @@ class agileMantisPlugin extends MantisPlugin {
 					FROM $mantis_config_table
 					WHERE config_id='plugin_agileMantis_gadiv_agilemantis_version'";
 
-        $t_result = db_query_bound( $p_sql );
+        $t_result = db_query_bound( $t_sql );
 		$t_result_set = array();
 		if( $t_result === TRUE ) {
 			$t_result_set = true;
