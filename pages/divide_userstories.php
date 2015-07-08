@@ -36,10 +36,7 @@ function copyUserStory( $us_id, $status, $sprintname ) {
 	global $agilemantis_tasks;
 	global $agilemantis_sprint;
 	
-	$new_bug_id = bug_copy( $us_id, $p_target_project_id = null, $p_copy_custom_fields = true, 
-		$p_copy_relationships = true, $p_copy_history = false, $p_copy_attachments = true, 
-		$p_copy_bugnotes = true, $p_copy_monitoring_users = true );
-	
+	$new_bug_id = bug_copy( $us_id, null, true, true, false, true, true, true );
 	$agilemantis_pb->doUserStoryToSprint( $new_bug_id, $sprintname );
 	relationship_add( $new_bug_id, $us_id, 0 );
 	$task = $agilemantis_sprint->getSprintTasks( $us_id );
@@ -54,6 +51,7 @@ function copyUserStory( $us_id, $status, $sprintname ) {
 	$agilemantis_pb->addPresentable( $new_bug_id, $old_userstory['presentable'] );
 	$agilemantis_pb->AddInReleaseDocu( $new_bug_id, $old_userstory['inReleaseDocu'] );
 	$agilemantis_pb->AddPlannedWork( $new_bug_id, $old_userstory['plannedWork'] );
+	history_delete($new_bug_id);
 	
 	$bugnote_text_new = plugin_lang_get( 'divide_userstories_from' ) .
 		 $agilemantis_pb->getUserName( auth_get_current_user_id() ) .
@@ -225,7 +223,7 @@ if( $request['action'] == 'edit' ) {
 						<option value=""></option>
 					<?php if( !empty( $sprints ) ) { ?>
 					<?php foreach( $sprints AS $num => $row ) { ?>
-					<option value="<?php echo $row['name']?>"><?php echo string_display_links($row['name'])?></option>
+					<option value="<?php echo $row['name']?>"><?php echo string_display($row['name'])?></option>
 					<?php }?>
 					<?php }?>
 				</select>

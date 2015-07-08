@@ -224,8 +224,8 @@
 						onclick="<?php echo $functionName?>(<?php echo $row['id']?>, '<?php 
 						echo AGILEMANTIS_PLUGIN_URL?>');" height="16" width="16">
 			</td>
-			<td><?php echo string_display_links($row['summary'])?></td>
-			<td><a href="<?php echo $page_backlog?>&sprintName=<?php echo urlencode($row['sprint'])?>"><?php echo string_display_links($row['sprint']);?></a></td>
+			<td><?php echo string_display_line_links($row['summary'])?></td>
+			<td><a href="<?php echo $page_backlog?>&sprintName=<?php echo urlencode($row['sprint'])?>"><?php echo string_display($row['sprint']);?></a></td>
 		</tr>
 		<?php
 			# add bug list cookie

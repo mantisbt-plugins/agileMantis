@@ -26,9 +26,7 @@
 
 
 	html_page_top(plugin_lang_get( 'info_title' ));
-
-	$current_version = $agilemantis_au->agileMantisVersion;
-
+	
 	if(!config_is_set('plugin_agileMantis_gadiv_agilemantis_version')){
 		config_set('plugin_agileMantis_gadiv_agilemantis_version', 0);
 	}
@@ -51,7 +49,7 @@
 <tr <?php echo helper_alternate_class() ?>>
 	<td class="category">Version</td>
 	<td>
-		<?php echo $current_version?>
+		<?php echo $g_plugin_cache['agileMantis']->version;?>
 	</td>
 </tr>
 <tr <?php echo helper_alternate_class() ?>>

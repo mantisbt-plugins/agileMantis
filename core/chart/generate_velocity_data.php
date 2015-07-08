@@ -178,8 +178,8 @@ if( !empty( $avarage ) ) {
 			$SprintAvarageKid += $row['total_developer_capacity'] / $row['workday_length'];
 			$SprintAvarageWes += $row['work_performed'] / $row['workday_length'];
 			$SprintAvarageWorkPerformed += $row['work_performed'] / $row['workday_length'];
-		}else{
-			echo $agilemantis_commonlib->createAgManWarning( plugin_lang_get('warning_1').'workday_lenght of Sprint'.plugin_lang_get('warning_2') );
+		} else {
+			echo $agilemantis_commonlib->createAgManWarning( plugin_lang_get('warning_1', 'agileMantis').'workday_length of Sprint'.plugin_lang_get('warning_2', 'agileMantis') );
 		}
 	}
 }
@@ -202,9 +202,10 @@ if( $sprintinfo['workday_length'] != 0 ){
 if( $previous[0]['workday_length'] != 0 ){
 	$kidpre = $previous[0]['total_developer_capacity'] / $previous[0]['workday_length'];
 	$wespre = ($previous[0]['work_performed'] / $previous[0]['workday_length']);
-} else {
+} else if( $previous != 0  ) {
 	echo $agilemantis_commonlib->createAgManWarning('workday_lenght of previous Sprint');
 }
+
 #if(false){
 if( $referenced[0]['workday_length'] != 0 ){
 	$kidref = $referenced[0]['total_developer_capacity'] / $referenced[0]['workday_length'];

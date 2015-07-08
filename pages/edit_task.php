@@ -725,7 +725,7 @@ if( $getSprint['status'] > 0 ) {
 		  <?php echo plugin_lang_get( 'common_description' )?>
 		</td>
 				<td><textarea name="description"
-						style="height: 200px; width: 400px;"><?php echo string_textarea($task['description'])?></textarea>
+						style="height: 200px; width: 400px;"><?php echo string_display($task['description'])?></textarea>
 				</td>
 			</tr>
 			<tr <?php echo helper_alternate_class() ?>>

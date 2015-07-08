@@ -47,7 +47,7 @@ $teams = $agilemantis_team->getTeams();
 	<table align="center" class="width100" cellspacing="1">
 		<tr>
 			<td colspan="6"><b><?php echo plugin_lang_get( 'manage_teams_title' )?></b>
-				<form action="<?php echo plugin_page("edit_team.php")?>"
+				<form action="<?php echo plugin_page( "edit_team.php" )?>"
 					method="post">
 					<input type="submit" name="submit"
 						value="<?php echo plugin_lang_get( 'manage_teams_add' )?>">
@@ -56,18 +56,18 @@ $teams = $agilemantis_team->getTeams();
 		</tr>
 		<tr>
 			<td class="category"><a
-				href="<?php echo plugin_page("teams.php")?>&sort_by=name">Name</a></td>
+				href="<?php echo plugin_page( "teams.php" )?>&sort_by=name">Name</a></td>
 			<td class="category"><a
-				href="<?php echo plugin_page("teams.php")?>&sort_by=description">
+				href="<?php echo plugin_page( "teams.php" )?>&sort_by=description">
 						<?php echo plugin_lang_get( 'common_description' )?></a></td>
 			<td class="category"><a
-				href="<?php echo plugin_page("teams.php")?>&sort_by=product_backlog">Product
+				href="<?php echo plugin_page( "teams.php" )?>&sort_by=product_backlog">Product
 					Backlog</a></td>
 			<td class="category"><a
-				href="<?php echo plugin_page("teams.php")?>&sort_by=product_owner">Product
+				href="<?php echo plugin_page( "teams.php" )?>&sort_by=product_owner">Product
 					Owner</a></td>
 			<td class="category"><a
-				href="<?php echo plugin_page("teams.php")?>&sort_by=scrum_master">Scrum
+				href="<?php echo plugin_page( "teams.php" )?>&sort_by=scrum_master">Scrum
 					Master</a></td>
 			<td class="category"><?php echo plugin_lang_get( 'common_actions' )?></td>
 		</tr>
@@ -76,20 +76,20 @@ $teams = $agilemantis_team->getTeams();
 			foreach( $teams AS $num => $row ) { 
 	?>
 	<tr <?php echo helper_alternate_class() ?>>
-			<td><?php echo string_display_line( $row['name'])?></td>
-			<td><?php echo string_display_line($row['description'])?></td>
-			<td><?php echo string_display_line($agilemantis_team->getTeamBacklog( $row['product_backlog']) ) ?></td>
+			<td><?php echo string_display_line_links( $row['name'] )?></td>
+			<td><?php echo string_display_links( $row['description'] )?></td>
+			<td><?php echo string_display_line_links( $agilemantis_team->getTeamBacklog( $row['product_backlog'] ) ) ?></td>
 			<td><?php echo $agilemantis_team->getProductOwner( $row['id'] ) ?></td>
 			<td><?php echo $agilemantis_team->getScrumMaster( $row['id'] ) ?></td>
 			<td class="right" width="205">
 				<form method="post"
-					action="<?php echo plugin_page('edit_team.php') ?>">
+					action="<?php echo plugin_page( 'edit_team.php' ) ?>">
 					<input type="submit" name="edit[<?php echo $row['id']?>]"
 						value="<?php echo plugin_lang_get( 'button_edit' )?>"
 						style="width: 100px;">
 				</form>
 				<form method="post"
-					action="<?php echo plugin_page('delete_team.php') ?>">
+					action="<?php echo plugin_page( 'delete_team.php' ) ?>">
 					<input type="hidden" name="team_id"
 						value="<?php echo $row['id'] ?>"> <input type="submit"
 						name="deleteTeam"

@@ -1,7 +1,7 @@
 <?php
 # This file is part of agileMantis.
 #
-# Developed by: 
+# Developed by:
 # gadiv GmbH
 # Bövingen 148
 # 53804 Much
@@ -9,7 +9,7 @@
 #
 # Email: agilemantis@gadiv.de
 #
-# Copyright (C) 2012-2014 gadiv GmbH 
+# Copyright (C) 2012-2014 gadiv GmbH
 #
 # agileMantis is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by
@@ -25,8 +25,8 @@
 # along with agileMantis. If not, see <http://www.gnu.org/licenses/>.
 
 
-	html_page_top(plugin_lang_get( 'manage_user_title' )); 
-	
+	html_page_top(plugin_lang_get( 'manage_user_title' ));
+
 	# check if user has enough rights
 	$t_user_right = $agilemantis_au->authUser();
 	if( $t_user_right == 2 || $t_user_right == 3 || current_user_is_administrator() ) { ?>
@@ -40,92 +40,29 @@
 			$rsUser = $agilemantis_au->getAllUser();
 			foreach( $rsUser as $num => $usr ) {
 				$i = $usr[id];
-				
+
 				if( $_SESSION['participant'][$i] == 1 || $_SESSION['developer'][$i] == 1 ) {
 					$particpant = 1;
 				} else {
 					$particpant = 0;
 					$agilemantis_team->deleteStakeholderFromTeams( $i );
 				}
-				
+
 				if( $_SESSION['developer'][$i] == 1 ) {
 					$developer = 1;
 				} else {
 					$developer = 0;
 					$agilemantis_team->deleteScrumDeveloperFromTeams( $i );
 				}
-				
+
 				if( $_SESSION['administrator'][$i] == 1 ) {
 					$administrator = 1;
 				} else {
 					$administrator = 0;
 				}
-				
-				/*
-					$agilemantis_au->getUserRights($i, $isParticipant, $isDeveloper, $isAdmin);
-					
-					//send mail if rights change
-					if ($isParticipant != $particpant ||
-					    $isDeveloper   != $developer  ||
-					    $isAdmin       != $administrator) {
 
-						//No DIRECTORY_SEPARATOR it is an URI
-						$uri = explode('/',$_SERVER['REQUEST_URI']);
-						if(!empty($uri[1])){
-							$subdir = '/'.$uri[1].'/';
-						}
-						
-						include_once($_SERVER['DOCUMENT_ROOT'].$subdir.'config_defaults_inc.php');
-						include_once($_SERVER['DOCUMENT_ROOT'].$subdir.'library'.DIRECTORY_SEPARATOR.'phpmailer'.DIRECTORY_SEPARATOR.'class.phpmailer.php');
-						$adr_language = user_pref_get_language( $i );
-						if($adr_language == 'german'){
-							include( $path . 'plugins' . DIRECTORY_SEPARATOR . 'agileMantis' . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . 'strings_german.txt' );
-							$datum = date("d.m.Y");
-						} else {
-							include( $path . 'plugins' . DIRECTORY_SEPARATOR . 'agileMantis' . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . 'strings_english.txt' );
-							$datum = date("Y/m/d");
-						}
-							
-						try {
-							$login_username = current_user_get_field( 'username' );
-							$login_realname = current_user_get_field( 'realname' );
-							$login_email    = current_user_get_field( 'email'    );
-							
-							if (!empty($usr[0]['email']) && !empty($login_email) && !empty($g_smtp_host)) {
-																	
-								$yes = $s_plugin_agileMantis_mail_yes;
-								$no  = $s_plugin_agileMantis_mail_no;
-								
-								$mail = new PHPMailer(); 
-								$mail->IsSMTP();
-								$mail->Host       =  $g_smtp_host; 
-							
-								$mail->From       = $login_email;  
-								$mail->FromName   = $login_realname;
-								$mail->Sender	  = $login_email;   
-								$mail->AddAddress($usr[0]['email']);
-								$mail->Subject  = $s_plugin_agileMantis_mail_subject;
-								$mail->Body		= $s_plugin_agileMantis_mail_body_1. "\n\n";
-								$mail->Body		.= $s_plugin_agileMantis_mail_body_2 . $datum . "\n";
-								$mail->Body		.= $s_plugin_agileMantis_mail_body_3 . $login_username . "\n" ;
-								$mail->Body		.= $s_plugin_agileMantis_mail_body_4 . "\n";
-								$mail->Body		.= "   Participant : " . (($isParticipant == 1) ? $yes : $no) . " -> " . (($particpant == 1) ? $yes : $no) . "\n";
-								$mail->Body		.= "   Developer : " . (($isDeveloper == 1) ? $yes : $no) . " -> " . (($developer == 1) ? $yes : $no) . "\n";
-								$mail->Body		.= "   Administrator : " . (($isAdmin == 1) ? $yes : $no) . " -> " . (($administrator == 1) ? $yes : $no) . "\n";
-									
-								if(!$mail->Send()) {
-									echo 'Message was not sent.';
-									echo 'Mailer error: ' . $mail->ErrorInfo;
-								}
-							}
-						} catch (phpmailerException $e) {
-							echo $e->errorMessage();
-						}
-					}
-					*/
-				
-				$agilemantis_au->setAgileMantisUserRights( $i, $particpant, $developer, 
-					$administrator );
+				$agilemantis_au->setAgileMantisUserRights( $i, $particpant, $developer,$administrator );
+
 			}
 		} else {
 			$userArray = array_keys( $_SESSION['expert'] );
@@ -135,9 +72,9 @@
 			 plugin_lang_get( 'manage_user_successful_saved' ) . '</span></center><br>';
 	}
 	$user = $agilemantis_au->getAllUser();
-	
+
 	# create a filtered table view with all necassary information
-	function createTableView( $id, $username, $realname, $email, $participant, $developer, 
+	function createTableView( $id, $username, $realname, $email, $participant, $developer,
 		$administrator, $expert ) {
 		if( $participant == 1 ) {
 			$participant_check = 'checked';
@@ -167,7 +104,7 @@
 			$participant_disable = '';
 			$additional = '';
 		}
-		
+
 		return '<tr ' . helper_alternate_class() . '>
 					<td><b>' . $username . '</b></td>
 					<td><b>' . $realname . '</b></td>
@@ -244,11 +181,11 @@
 	<table align="center" class="width100" cellspacing="1">
 		<tr>
 			<td
-				colspan="<?php 
-					if( plugin_is_loaded( 'agileMantisExpert' ) ) { 
-						echo '6'; 
-					} else { 
-						echo '5'; 
+				colspan="<?php
+					if( plugin_is_loaded( 'agileMantisExpert' ) ) {
+						echo '6';
+					} else {
+						echo '5';
 					};?>">
 				<b><?php echo plugin_lang_get( 'manage_user_title' )?></b>
 					<?php if( user_get_name( auth_get_current_user_id() ) == 'administrator' ) { ?>
@@ -262,10 +199,10 @@
 		</tr>
 		<tr>
 			<td class="category"><b><a
-					href="<?php echo plugin_page("agileuser.php")?>&sort_by=username"><?php 
+					href="<?php echo plugin_page("agileuser.php")?>&sort_by=username"><?php
 							echo plugin_lang_get( 'manage_user_username' )?></a></b></td>
 			<td class="category"><b><a
-					href="<?php echo plugin_page("agileuser.php")?>&sort_by=realname"><?php 
+					href="<?php echo plugin_page("agileuser.php")?>&sort_by=realname"><?php
 							echo plugin_lang_get( 'manage_user_realname' )?></a></b></td>
 			<td class="category"><b><a
 					href="<?php echo plugin_page("agileuser.php")?>&sort_by=email">Email</a></b></td>
@@ -274,21 +211,21 @@
 				</center></td>
 			<td class="category"><center>
 					<b><?php echo plugin_lang_get( 'manage_user_developer' )?>
-				
-				
-				
+
+
+
 				</center> </b></td>
 			<td class="category"><center>
 					<b><?php echo plugin_lang_get( 'manage_user_administrator' )?>
 				</center> </b></td>
-				<?php 
+				<?php
 					if(plugin_is_loaded('agileMantisExpert')){
 				?>
 				<td class="category"><center>
 					<b><?php echo plugin_lang_get( 'manage_user_expert' )?>
 				</center> </b></td>
 				<?php
-					} 
+					}
 				?>
 			</tr>
 		<form action="<?php echo plugin_page('save_agileusers.php')?>"
@@ -300,28 +237,28 @@
 							$mantis_role = $agilemantis_au->getAdditionalUserFields( $row['id'] );
 				?>
 				<?php if( $_POST['agileMantisParticipant'] && $mantis_role[0]['participant'] == 1 ) {?>
-					<?php echo createTableView($row['id'], $row['username'], $row['realname'], 
-								$row['email'], $mantis_role[0]['participant'], 
-								$mantis_role[0]['developer'], $mantis_role[0]['administrator'], 
+					<?php echo createTableView($row['id'], $row['username'], $row['realname'],
+								$row['email'], $mantis_role[0]['participant'],
+								$mantis_role[0]['developer'], $mantis_role[0]['administrator'],
 								$mantis_role[0]['expert'])?>
 				<?php }?>
 				<?php if( $_POST['agileMantisAdmin'] && $mantis_role[0]['administrator'] == 1 ) { ?>
-					<?php echo createTableView($row['id'], $row['username'], $row['realname'], 
-								$row['email'], $mantis_role[0]['participant'], 
-								$mantis_role[0]['developer'], $mantis_role[0]['administrator'], 
+					<?php echo createTableView($row['id'], $row['username'], $row['realname'],
+								$row['email'], $mantis_role[0]['participant'],
+								$mantis_role[0]['developer'], $mantis_role[0]['administrator'],
 								$mantis_role[0]['expert'])?>
 				<?php }?>
 				<?php if( $_POST['agileMantisDeveloper'] && $mantis_role[0]['developer'] == 1 ) { ?>
-					<?php echo createTableView($row['id'], $row['username'], $row['realname'], 
-								$row['email'], $mantis_role[0]['participant'], 
-								$mantis_role[0]['developer'], $mantis_role[0]['administrator'], 
+					<?php echo createTableView($row['id'], $row['username'], $row['realname'],
+								$row['email'], $mantis_role[0]['participant'],
+								$mantis_role[0]['developer'], $mantis_role[0]['administrator'],
 								$mantis_role[0]['expert'] ) ?>
 				<?php }?>
-				<?php if( $_POST['agileMantisAdmin'] == "" && $_POST['agileMantisParticipant'] == "" 
+				<?php if( $_POST['agileMantisAdmin'] == "" && $_POST['agileMantisParticipant'] == ""
 								&& $_POST['agileMantisDeveloper'] == "" ) { ?>
-					<?php echo createTableView($row['id'], $row['username'], $row['realname'], 
-								$row['email'], $mantis_role[0]['participant'], 
-								$mantis_role[0]['developer'], $mantis_role[0]['administrator'], 
+					<?php echo createTableView($row['id'], $row['username'], $row['realname'],
+								$row['email'], $mantis_role[0]['participant'],
+								$mantis_role[0]['developer'], $mantis_role[0]['administrator'],
 								$mantis_role[0]['expert'])?>
 				<?php }?>
 				<?php
@@ -330,11 +267,11 @@
 				?>
 				<tr>
 				<td
-					colspan="<?php 
-						if( plugin_is_loaded('agileMantisExpert' ) ) { 
-							echo '6'; 
-						} else { 
-							echo '5'; 
+					colspan="<?php
+						if( plugin_is_loaded('agileMantisExpert' ) ) {
+							echo '6';
+						} else {
+							echo '5';
 						};?>"><center>
 						<input type="submit" name="edit"
 							value="<?php echo plugin_lang_get( 'button_save' )?>">
@@ -348,7 +285,7 @@
 ?>
 <br>
 <center>
-	<span class="message_error"><?php 
+	<span class="message_error"><?php
 		echo plugin_lang_get( 'manage_user_error_921A00' )?></span>
 </center>
 <?php

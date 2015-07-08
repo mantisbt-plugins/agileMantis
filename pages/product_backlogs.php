@@ -46,15 +46,15 @@
 <table align="center" class="width100" cellspacing="1">
 	<tr>
 		<td colspan="3"><b><?php echo plugin_lang_get( 'manage_product_backlogs_title' )?></b> 
-		<form action="<?php echo plugin_page("edit_product_backlog.php")?>" method="post">
+		<form action="<?php echo plugin_page( "edit_product_backlog.php" )?>" method="post">
 			<input type="submit" name="submit" value="<?php echo plugin_lang_get( 'manage_product_backlogs_add' )?>">
 			<input type="hidden" name="new_product_backlog" value="1">
 		</form>
 		</td>
 	</tr>
 	<tr>
-		<td class="category"><a href="<?php echo plugin_page("product_backlogs.php")?>&sort_by=name">Name</a></td>
-		<td class="category"><a href="<?php echo plugin_page("product_backlogs.php")?>&sort_by=description">
+		<td class="category"><a href="<?php echo plugin_page( "product_backlogs.php" )?>&sort_by=name">Name</a></td>
+		<td class="category"><a href="<?php echo plugin_page( "product_backlogs.php" )?>&sort_by=description">
 			<?php echo plugin_lang_get( 'common_description' )?></a></td>
 		<td class="category"><?php echo plugin_lang_get( 'common_actions' )?></td>
 	</tr>
@@ -64,22 +64,22 @@
 	$agilemantis_pb->productBacklogHasStoriesLeft( $row['name'] );
 	?>
 	<tr <?php echo helper_alternate_class() ?>>
-		<td><?php echo string_display_links($row['name'])?></td>
-		<td><?php echo nl2br(string_display_links($row['description']))?></td>
+		<td><?php echo string_display_line_links( $row['name'] )?></td>
+		<td><?php echo nl2br( string_display_links( $row['description'] ) )?></td>
 		<td class="right" width="205">
-			<form action="<?php echo plugin_page('edit_product_backlog.php') ?>" method="post">
+			<form action="<?php echo plugin_page( 'edit_product_backlog.php' ) ?>" method="post">
 				<input type="submit" name="edit[<?php echo $row['id']?>]" 
 					value="<?php echo plugin_lang_get( 'button_edit' )?>" style="width:100px;" />
 				<input type="hidden" name="pageFrom" value="product_backlogs.php">
 			</form>
-			<form action="<?php echo plugin_page('delete_product_backlog.php') ?>" method="post">
+			<form action="<?php echo plugin_page( 'delete_product_backlog.php' ) ?>" method="post">
 				<input type="hidden" name="product_backlog_id" value="<?php echo $row['id']?>">
 				<input type="submit" name="deleteProductBacklog" 
 					value="<?php echo plugin_lang_get( 'button_delete' )?>" 
 					style="width:100px;" 
 					<?php 
 						if( $agilemantis_pb->checkProductBacklogTeam( $row['id'] ) == true 
-						|| $agilemantis_pb->productBacklogHasStoriesLeft($row['name'] ) == false ) {
+						|| $agilemantis_pb->productBacklogHasStoriesLeft( $row['name'] ) == false ) {
 					?>
 						disabled
 					<?php }?>> 

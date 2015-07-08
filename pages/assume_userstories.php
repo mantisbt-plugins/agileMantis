@@ -268,7 +268,7 @@ if( plugin_is_loaded( 'agileMantisExpert' ) ) {
 					height="16" width="16">
 				</td>
 				<td>
-				<?php echo string_display_links($row['summary'])?>
+				<?php echo string_display_line_links($row['summary'])?>
 			</td>
 			</tr>
 	<?php

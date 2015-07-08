@@ -159,25 +159,25 @@ if( $no_sprints == false ) {?>
 				<form action="<?php echo plugin_page("sprint_backlog.php")?>"
 					method="post" style="float: right; margin: 0; padding: 0;">
 					<input type="hidden" name="id" value="<?php echo $s['id']?>"> <input
-						type="hidden" name="sprintName" value="<?php echo string_display_links($s['name'])?>"> <input
+						type="hidden" name="sprintName" value="<?php echo string_display( $s['name'] )?>"> <input
 						type="hidden" name="action" value="save_sprint_options"> <input
 						type="checkbox" name="show_project_target_version"
 						<?php if( config_get( 'show_project_target_version',
-										null,auth_get_current_user_id() ) == 1 ) { ?>
+										null, auth_get_current_user_id() ) == 1 ) { ?>
 						checked <?php 
 								}?> value="1"
 						onClick="this.form.submit();"> <?php 
 								echo plugin_lang_get( 'sprint_backlog_project' )?>
 					<input type="checkbox" name="show_only_open_userstories"
 						<?php if( config_get('show_only_open_userstories',
-										null,auth_get_current_user_id() ) == 1 ) {?>
+										null, auth_get_current_user_id() ) == 1 ) {?>
 						checked <?php 
 								}?> value="1"
 						onClick="this.form.submit();"> <?php 
 								echo plugin_lang_get( 'sprint_backlog_only_undone' )?>
 					<input type="checkbox" name="show_only_own_userstories"
-						<?php if( config_get('show_only_own_userstories',
-										null,auth_get_current_user_id() ) == 1 ) {?>
+						<?php if( config_get( 'show_only_own_userstories',
+										null, auth_get_current_user_id() ) == 1 ) {?>
 						checked <?php 
 								}?> value="1"
 						onClick="this.form.submit();"> <?php 
@@ -188,13 +188,13 @@ if( $no_sprints == false ) {?>
 		<tr>
 			<td class="category" width="20"></td>
 			<td class="category"><a
-				href="<?php echo plugin_page("sprint_backlog.php")?>&sprintName=<?php 
-					echo urlencode($s['name'])?>&sort_by=id&direction=<?php 
+				href="<?php echo plugin_page( "sprint_backlog.php" )?>&sprintName=<?php 
+					echo urlencode( $s['name'] )?>&sort_by=id&direction=<?php 
 					echo $direction?>">ID</a></td>
 			<td class="category" width="20"></td>
 			<td class="category"><a
-				href="<?php echo plugin_page("sprint_backlog.php")?>&sprintName=<?php 
-					echo urlencode($s['name'])?>&sort_by=summary&direction=<?php 
+				href="<?php echo plugin_page( "sprint_backlog.php" )?>&sprintName=<?php 
+					echo urlencode( $s['name'] )?>&sort_by=summary&direction=<?php 
 					echo $direction?>"><?php 
 					echo plugin_lang_get( 'sprint_backlog_summary' )?></a></td>
 			<td class="category"><?php echo plugin_lang_get( 'sprint_backlog_developer' )?></td>
@@ -207,14 +207,14 @@ if( $no_sprints == false ) {?>
 			<td class="category">Rest <?php echo $unit?></td>
 			<?php if( plugin_config_get('gadiv_show_storypoints') == '1' ) {?>
 			<td class="category"><a
-				href="<?php echo plugin_page("sprint_backlog.php")?>&sprintName=<?php 
-					echo urlencode($s['name'])?>&sort_by=storypoints&direction=<?php 
+				href="<?php echo plugin_page( "sprint_backlog.php" )?>&sprintName=<?php 
+					echo urlencode( $s['name'] )?>&sort_by=storypoints&direction=<?php 
 					echo $direction?>">SP</a></td>
 			<?php }?>
-			<?php if( plugin_config_get('gadiv_show_rankingorder') == '1' ) {?>
+			<?php if( plugin_config_get( 'gadiv_show_rankingorder' ) == '1' ) {?>
 			<td class="category"><a
-				href="<?php echo plugin_page("sprint_backlog.php")?>&sprintName=<?php 
-					echo urlencode($s['name'])?>&sort_by=rankingOrder&direction=<?php 
+				href="<?php echo plugin_page( "sprint_backlog.php" )?>&sprintName=<?php 
+					echo urlencode( $s['name'] )?>&sort_by=rankingOrder&direction=<?php 
 					echo $direction?>">R</a></td>
 			</td>
 			<?php }?>

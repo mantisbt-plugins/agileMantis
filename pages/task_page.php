@@ -224,7 +224,7 @@ if( $_GET['us_id'] > 0 ) {
 	<table align="center" class="width100" cellspacing="1">
 		<tr>
 			<td class="form-title" colspan="6">User Story - <span
-				style="font-weight: bold; color: grey;">"<?php echo string_display_links($usSumText[0]['summary'])?>"</span>
+				style="font-weight: bold; color: grey;">"<?php echo string_display_line_links($usSumText[0]['summary'])?>"</span>
 			</td>
 		</tr>
 		</tr>
@@ -358,10 +358,10 @@ if( $_GET['us_id'] > 0 ) {
 		?>
 		<tr <?php echo helper_alternate_class() ?>>
 			<td class="category">Produkt Backlog</td>
-			<td><?php echo string_display_links($productBacklog['name'])?></td>
+			<td><?php echo string_display_line_links( $productBacklog['name'] )?></td>
 			<?php if( $show_pr == true && $show_tech == true && $show_rd == true ) {?>
 				<td class="category">Sprint</td>
-			<td><?php echo string_display_links($sprint['name'])?></td>
+			<td><?php echo string_display_line_links( $sprint['name'] )?></td>
 			<td class="category"><?php echo plugin_lang_get( 'Presentable' )?></td>
 			<td><?php echo $presentable?></td>
 			<td class="category"><?php echo plugin_lang_get( 'Technical' )?></td>
@@ -373,27 +373,27 @@ if( $_GET['us_id'] > 0 ) {
 			<?php }?>
 			<?php if( $show_pr == true && $show_tech == false && $show_rd == false ) {?>
 				<td class="category">Sprint</td>
-			<td><?php echo string_display_links($sprint['name'])?></td>
+			<td><?php echo string_display_line_links( $sprint['name'] )?></td>
 			<td class="category"><?php echo plugin_lang_get( 'Presentable' )?></td>
 			<td colspan="5"><?php echo $presentable?></td>
 			<?php }?>
 			<?php if( $show_pr == false && $show_tech == true && $show_rd == false ) {?>
 				<td class="category">Sprint</td>
-			<td><?php echo string_display_links($sprint['name'])?></td>
+			<td><?php echo string_display_line_links( $sprint['name'] )?></td>
 			<td class="category"><?php echo plugin_lang_get( 'Technical' )?></td>
 			<td colspan="5"><input type="checkbox" name="technical"
 				<?php echo $technical?> value="1" disabled></td>
 			<?php }?>
 			<?php if( $show_pr == false && $show_tech == false && $show_rd == true ) {?>
 				<td class="category">Sprint</td>
-			<td><?php echo string_display_links($sprint['name'])?></td>
+			<td><?php echo string_display_line_links( $sprint['name'] )?></td>
 			<td class="category"><?php echo plugin_lang_get( 'InReleaseDocu' )?></td>
 			<td colspan="5"><input type="checkbox" name="inReleaseDocu"
 				<?php echo $inReleaseDocu?> value="1" disabled></td>
 			<?php }?>
 			<?php if( $show_pr == true && $show_tech == true && $show_rd == false ) {?>
 				<td class="category">Sprint</td>
-			<td><?php echo string_display_links($sprint['name'])?></td>
+			<td><?php echo string_display_line_links( $sprint['name'] )?></td>
 			<td class="category"><?php echo plugin_lang_get( 'Presentable' )?></td>
 			<td><?php echo $presentable?></td>
 			<td class="category"><?php echo plugin_lang_get( 'Technical' )?></td>
@@ -402,7 +402,7 @@ if( $_GET['us_id'] > 0 ) {
 			<?php }?>
 			<?php if( $show_pr == true && $show_tech == false && $show_rd == true ) {?>
 				<td class="category">Sprint</td>
-			<td><?php echo string_display_links($sprint['name'])?></td>
+			<td><?php echo string_display_line_links( $sprint['name'] )?></td>
 			<td class="category"><?php echo plugin_lang_get( 'Presentable' )?></td>
 			<td><?php echo $presentable?></td>
 			<td class="category"><?php echo plugin_lang_get( 'InReleaseDocu' )?></td>
@@ -411,7 +411,7 @@ if( $_GET['us_id'] > 0 ) {
 			<?php }?>
 			<?php if( $show_pr == false && $show_tech == true && $show_rd == true ) {?>
 				<td class="category">Sprint</td>
-			<td><?php echo string_display_links($sprint['name'])?></td>
+			<td><?php echo string_display_line_links( $sprint['name'] )?></td>
 			<td class="category"><?php echo plugin_lang_get( 'Technical' )?></td>
 			<td><input type="checkbox" name="technical" <?php echo $technical?>
 				value="1" disabled></td>
@@ -421,7 +421,7 @@ if( $_GET['us_id'] > 0 ) {
 			<?php }?>
 			<?php if( $show_pr == false && $show_tech == false && $show_rd == false ) {?>
 				<td class="category">Sprint</td>
-			<td colspan="7"><?php echo string_display_links($sprint['name'])?></td>
+			<td colspan="7"><?php echo string_display_line_links( $sprint['name'] )?></td>
 			<?php } ?>
 		</tr>
 		</tr>
@@ -430,7 +430,7 @@ if( $_GET['us_id'] > 0 ) {
 				<?php echo lang_get( 'summary' )?>
 			</td>
 			<td colspan="9">
-			  <?php echo string_display_links($usSumText[0]['summary'])?>
+			  <?php echo string_display_line_links( $usSumText[0]['summary'] )?>
 			</td>
 		</tr>
 		<tr <?php echo helper_alternate_class() ?>>
@@ -438,7 +438,7 @@ if( $_GET['us_id'] > 0 ) {
 				<?php echo plugin_lang_get( 'common_description' )?>
 			</td>
 			<td colspan="9">
-			  <?php echo nl2br(string_display_links($usSumText[0]['description']))?>
+			  <?php echo nl2br( string_display_links( $usSumText[0]['description'] ) )?>
 			</td>
 		</tr>
 		<tr <?php echo helper_alternate_class() ?>>
@@ -446,7 +446,7 @@ if( $_GET['us_id'] > 0 ) {
 				<?php echo lang_get( 'steps_to_reproduce' )?>
 			</td>
 			<td colspan="9">
-			  <?php echo nl2br(string_display_links($usSumText[0]['steps_to_reproduce']))?>
+			  <?php echo nl2br( string_display_links( $usSumText[0]['steps_to_reproduce'] ) )?>
 			</td>
 		</tr>
 		<tr <?php echo helper_alternate_class() ?>>
@@ -454,7 +454,7 @@ if( $_GET['us_id'] > 0 ) {
 				<?php echo lang_get( 'additional_information' )?>
 			</td>
 			<td colspan="9">
-			  <?php echo nl2br(string_display_links($usSumText[0]['additional_information']))?>
+			  <?php echo nl2br( string_display_links( $usSumText[0]['additional_information'] ) )?>
 			</td>
 		</tr>
 	</table>
@@ -464,7 +464,7 @@ if( $_GET['us_id'] > 0 ) {
 	<table align="center" class="width100" cellspacing="1">
 		<tr>
 			<td class="form-title" colspan="6">Tasks - <span
-				style="font-weight: bold; color: grey;">"<?php echo string_display_links($usSumText[0]['summary'])?>"</span>
+				style="font-weight: bold; color: grey;">"<?php echo string_display_line_links( $usSumText[0]['summary'] )?>"</span>
 			</td>
 		</tr>
 	<?php
@@ -503,13 +503,13 @@ if( $_GET['us_id'] > 0 ) {
 				}
 		?>
 			<tr style="background-color:<?php echo $status['color']?>" >
-			<td><?php echo string_display_links($row['name'])?></td>
-			<td><?php echo string_display_links($status['name'])?></td>
-			<td><?php echo $agilemantis_tasks->getUserName($row['developer_id'])?></td>
+			<td><?php echo string_display_line_links( $row['name'] )?></td>
+			<td><?php echo string_display( $status['name'] )?></td>
+			<td><?php echo $agilemantis_tasks->getUserName( $row['developer_id'] )?></td>
 			<td><?php echo $row['planned_capacity']?></td>
 			<td><?php echo $row['rest_capacity']?></td>
 			<td>
-				<form action="<?php echo  plugin_page('edit_task.php') ?>"
+				<form action="<?php echo  plugin_page( 'edit_task.php' ) ?>"
 					method="post">
 					<input type="hidden" name="id" value="<?php echo $row['id'] ?>"> <input
 						type="hidden" name="us_id"
@@ -534,7 +534,7 @@ if( $_GET['us_id'] > 0 ) {
 						value="<?php echo $row['developer_id']?>"> <input type="hidden"
 						name="task_name" value="<?php echo $row['name']?>"> <input
 						type="hidden" name="task_description"
-						value="<?php echo string_textarea($row['description'])?>"> <input type="hidden"
+						value="<?php echo string_display($row['description'])?>"> <input type="hidden"
 						name="task_status" value="<?php echo $row['status']?>"> <input
 						type="hidden" name="rest_capacity"
 						value="<?php echo $row['rest_capacity']?>"> <input type="hidden"
@@ -563,7 +563,7 @@ if( $_GET['us_id'] > 0 ) {
 		value="<?php echo $_POST['fromSprintBacklog']?>"> <input type="hidden"
 		name="sprintName" value="<?php echo $_POST['sprintName']?>"> <input
 		type="hidden" name="uniqformid"
-		value="<?php echo md5(uniqid(microtime(),1)) ?>" /> <input
+		value="<?php echo md5( uniqid( microtime(), 1 ) ) ?>" /> <input
 		type="hidden" name="currentUnit" value="<?php echo $currentUnit?>">
 	<div class="table-container">
 		<table align="center" class="width100" cellspacing="1">

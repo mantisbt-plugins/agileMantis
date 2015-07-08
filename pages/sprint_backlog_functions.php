@@ -84,7 +84,7 @@ if( $_POST['revoke_userstory'] ) {
 }
 
 # confirm sprint
-if( $_POST['confirmSprint'] == 1 ) {
+if( $_POST['confirmSprint'] == 1 ) {	
 	$agilemantis_sprint->sprint_id = $_POST['id'];
 	$sprintInfo = $agilemantis_sprint->getSprintByName();
 	$agilemantis_sprint->setSprintStatus( 1, $sprintInfo['id'] );

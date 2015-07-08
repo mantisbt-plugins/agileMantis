@@ -147,7 +147,7 @@ if( $page_name == 'statistics' ) {
 						<?php if( $page_name == 'daily_scrum_meeting' ) {?> disabled
 						<?php }?>>
 				</form> <a style="margin-left: 10px;"
-				href="<?php echo plugin_page("statistics.php")?>&sprintName=<?php echo $s['name']?>">
+				href="<?php echo plugin_page("statistics.php")?>&sprintName=<?php echo urlencode($s['name'])?>">
 				<?php echo plugin_lang_get( 'statistics_title' )?></a>
 			<?php } else { ?>
 			<form action="<?php echo plugin_page("taskboard.php")?>"
@@ -199,8 +199,8 @@ if( $page_name == 'statistics' ) {
 				$tomorrow = time() + 86400;
 				$sprint_start = $s['start'];
 				$is_begin_date_tomorrow_or_earlier = ( $sprint_start <= $tomorrow );
-				$prev_sprint_closed = $agilemantis_sprint->previousSprintIsClosed( 
-					$s['team_id'], $s['id'] );
+				$prev_sprint_closed = $agilemantis_sprint->previousSprintIsClosed( $s['team_id'], $s['id'] );
+
 				if( $is_begin_date_tomorrow_or_earlier &&
 					$has_userstories &&
 					$status_open &&
@@ -237,19 +237,18 @@ if( $page_name == 'statistics' ) {
 				$disable_close = 'disabled';
 				if( $s['status'] != 0 && $s['status'] != 2 &&
 					 $agilemantis_sprint->allTasksAndStoriesAreClosed( $s['name'] ) == false &&
-					 (time() >= $s['end'] || $s['start'] + 86400 > $s['end']) ) {
+					 ( time() >= $s['end'] || $s['start'] + 86400 > $s['end'] ) ) {
 					$disable_copy = '';
 				} elseif( $s['status'] != 0 && $s['status'] != 2 &&
 					 $agilemantis_sprint->allTasksAndStoriesAreClosed( $s['name'] ) == true &&
-					 (time() >= $s['end'] || $s['start'] + 86400 > $s['end']) ) {
+					 ( time() >= $s['end'] || $s['start'] + 86400 > $s['end'] ) ) {
 					$disable_close = '';
 				}
 				?>
 			<form action="<?php echo plugin_page($_GET['page'])?>" method="post">
 					<input type="hidden" name="closeUserStories" id="closeUserStories"
 						value=""> <input type="hidden" name="id"
-						value="<?php echo $s['id']?>"> <input type="hidden" name="name"
-						value="<?php echo $s['name']?>"> <input type="hidden"
+						value="<?php echo $s['id']?>"> <input type="hidden"
 						name="sprintName" value="<?php echo $s['name']?>"> <input
 						type="submit" name="close_sprint"
 						value="<?php echo plugin_lang_get( 'sprint_backlog_close_sprint_button' )?>"
@@ -277,7 +276,7 @@ if( $page_name == 'statistics' ) {
 						<?php echo $disable_button?>>
 				</form>
 			<?php } ?>
-			<form action="<?php echo plugin_page($_GET['page'])?>" method="post">
+			<form action="<?php echo plugin_page( $_GET['page'] )?>" method="post">
 					<input type="submit" name="chose_sprint"
 						value="<?php echo plugin_lang_get( 'sprint_backlog_chose_sprint' )?>">
 				</form></td>
@@ -311,26 +310,26 @@ if( $page_name == 'statistics' ) {
 		$productBacklog = $agilemantis_sprint->getSelectedProductBacklog();
 		?>
 		<tr style="background-color:<?php echo $bgcolor;?>">
-			<td><?php echo string_display_links($s['name'])?></td>
-			<td><?php echo date('d.m.Y',$s['start']) ?></td>
-			<td><?php echo date('d.m.Y',$s['end']) ?></td>
+			<td><?php echo string_display_line_links( $s['name'] )?></td>
+			<td><?php echo date( 'd.m.Y',$s['start'] ) ?></td>
+			<td><?php echo date( 'd.m.Y',$s['end'] ) ?></td>
 			<td><?php echo $gesamt_storypoints?></td>
 			<td><?php echo $anzahl_tage?> <?php echo plugin_lang_get( 'days' )?></td>
 			<td><?php echo $span_left?><?php echo sprintf( "%.2f", $planned_capacity )?>
 				<?php echo $span_right?></td>
 			<td><?php echo $span_left?><?php echo sprintf( "%.2f", $capacity )?>
 				<?php echo $span_right?></td>
-			<td><?php echo $agilemantis_sprint->getTeamById($s['team_id']);?></td>
-			<td><?php echo string_display_links($productBacklog[0]['name'])?></td>
+			<td><?php echo string_display_line_links( $agilemantis_sprint->getTeamById( $s['team_id'] ) );?></td>
+			<td><?php echo string_display_line_links( $productBacklog[0]['name'] )?></td>
 		</tr>
-	<?php if(!empty($s['description'])){?>
+	<?php if( !empty( $s['description'] ) ){?>
 		<tr>
 			<td class="category" colspan="9"><b>
 				<?php echo plugin_lang_get( 'sprint_backlog_sprint_goal' )?></b></td>
 		</tr>
 		<tr style="background-color:<?php echo $bgcolor;?>">
 			<td colspan="9">
-				<?php echo nl2br(string_display_links($s['description']))?>
+				<?php echo nl2br( string_display_links( $s['description'] ) )?>
 			</td>
 		</tr>
 	<?php }?>

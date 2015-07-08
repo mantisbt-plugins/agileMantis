@@ -109,8 +109,8 @@ $logged_in_user_is_po_of_selected_pb = ($user_id_po == $user_id);
 		<?php }?>
 	</tr>
 		<tr <?php echo helper_alternate_class() ?>>
-			<td><?php echo string_display_links($product_backlog)?></td>
-			<td><?php echo nl2br(string_display_links($pb_info[0]['description']))?></td>
+			<td><?php echo string_display_line_links( $product_backlog )?></td>
+			<td><?php echo nl2br( string_display_links( $pb_info[0]['description'] ) )?></td>
 		<?php if( $agilemantis_pb->checkProductBacklogMoreOneTeam( $product_backlog ) ) { ?>
 		<td><?php echo $team_info[0]['name']?></td>
 			<td><?php echo $agilemantis_team->getUserName( $agilemantis_team->getTeamProductOwner() )?></td>

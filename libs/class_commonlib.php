@@ -26,7 +26,6 @@
 
 
 class gadiv_commonlib {
-	var $agileMantisVersion = '2.1.0';
 	var $id;
 	var $pbid;
 	var $us_id;
@@ -162,7 +161,9 @@ class gadiv_commonlib {
 	}
 
 	function getConfigValueNoCache( $p_config_id ) {
-		$t_sql = "SELECT * FROM mantis_config_table WHERE config_id=" . db_param( 0 );
+		$t_mantis_config_table = db_get_table( 'mantis_config_table' );
+		
+		$t_sql = "SELECT * FROM $t_mantis_config_table WHERE config_id=" . db_param( 0 );
 		$t_params = array( $p_config_id );
 		$t_config = $this->executeQuery( $t_sql, $t_params );
 		return $t_config[0]['value'];
@@ -625,7 +626,10 @@ class gadiv_commonlib {
 	
 	# get product owner username
 	function getProductOwner( $p_id ) {
-		$t_sql = "SELECT * FROM gadiv_rel_team_user AS tu LEFT JOIN mantis_user_table AS ut " .
+		
+		$t_mantis_user_table = db_get_table( 'mantis_user_table' );
+		
+		$t_sql = "SELECT * FROM gadiv_rel_team_user AS tu LEFT JOIN $t_mantis_user_table AS ut " .
 			 "ON tu.user_id=ut.id WHERE role LIKE '%1%' AND team_id=" . db_param( 0 );
 		$t_params = array( $p_id );
 		$t_name = $this->executeQuery( $t_sql, $t_params );
@@ -634,7 +638,10 @@ class gadiv_commonlib {
 	
 	# get scrum master username
 	function getScrumMaster( $p_id ) {
-		$t_sql = "SELECT * FROM gadiv_rel_team_user AS tu LEFT JOIN mantis_user_table AS ut " .
+		
+		$t_mantis_user_table = db_get_table( 'mantis_user_table' );
+		
+		$t_sql = "SELECT * FROM gadiv_rel_team_user AS tu LEFT JOIN $t_mantis_user_table AS ut " .
 			 "ON tu.user_id=ut.id WHERE role LIKE '%2%' AND team_id=" . db_param( 0 );
 		$t_params = array( $p_id );
 		$t_name = $this->executeQuery( $t_sql, $t_params );
@@ -1105,7 +1112,6 @@ class gadiv_commonlib {
 	# restores agileMantis custom field value if user tries to enter wrong value
 	function restoreCustomFieldValue( $p_bug_id, $p_field_id, $p_value ) {
 		custom_field_set_value( $p_field_id, $p_bug_id, $p_value );
-		history_delete( $p_bug_id );
 	}
 	
 	# get product backlog id by product backlog name

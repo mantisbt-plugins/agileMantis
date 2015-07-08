@@ -28,6 +28,8 @@
 # agileMantis plugin class
 class agileMantisPlugin extends MantisPlugin {
 
+	var $version;
+
 	/**
 	 * Plugin registration information, some will be shown on plugin overview.
 	 *
@@ -37,7 +39,7 @@ class agileMantisPlugin extends MantisPlugin {
 		$this->name = "agileMantis";
 		$this->description = "Enables Scrum on your MantisBT-Installation";
 		$this->page = "info";
-		$this->version = "2.1.1";
+		$this->version = "2.1.2";
 		$this->requires = array( "MantisCore" => "1.2.5" );
 		$this->author = "gadiv GmbH";
 		$this->contact = "agileMantis@gadiv.de";
@@ -561,6 +563,8 @@ class agileMantisPlugin extends MantisPlugin {
  		// Install site key
  		plugin_config_set('gadiv_sitekey', md5(uniqid(rand(), true)));
 
+ 		$this->installConfigurationParams();
+
  		// Create custom fields
  		$this->create_custom_field( 'ProductBacklog',
  				array( 'possible_values'	=> '', 'type' => '6' ) ); // List
@@ -641,7 +645,9 @@ class agileMantisPlugin extends MantisPlugin {
 	 */
 	function upgrade() {
 
-		plugin_config_set( 'gadiv_agilemantis_version', $this->version = "2.1.0" );
+		plugin_config_set( 'gadiv_agilemantis_version', $this->version = "2.1.2" );
+
+		$this->installConfigurationParams();
 
 		return ( TRUE );
 	}
@@ -987,8 +993,14 @@ class agileMantisPlugin extends MantisPlugin {
 		# add agileMantis plugin functions after sending bug data to database when a bug is updated
 		# - adding custom field values to mantis and agilemantis tables
 		function event_update_bug( $p_bug_event, $p_bug_data, $p_bug_id ) {
-			global $agilemantis_pb;
+						global $agilemantis_pb;
 			global $agilemantis_commonlib;
+
+			$t_product_owner = "";
+			$t_handler_id = 0;
+			$t_product_backlog_id = 0;
+			$t_team_id = 0;
+			$f_bug_id = 0;
 
 			// Only projects with agilMantis backlog
 			if( !$agilemantis_commonlib->projectHasBacklogs( helper_get_current_project() ) ) {
@@ -1005,33 +1017,27 @@ class agileMantisPlugin extends MantisPlugin {
 						|| isset( $_POST['technical'] ) 	|| isset( $_POST['presentable'] )
 						|| isset( $_POST['inReleaseDocu'] ) || isset( $_POST['sprint'] ) ) {
 
-					$f_bug_id = $_POST['bug_id'];
+					$f_bug_id = (int) $_POST['bug_id'];
 					$agilemantis_pb->setCustomFieldValues( $f_bug_id );
 
 					# change Product Backlog
-					if( $_POST['old_product_backlog']
-							!= $_POST['backlog']
-							&& $_POST['backlog'] != "" ) {
-
+					if( $_POST['old_product_backlog'] != $_POST['backlog'] && $_POST['backlog'] != "" ) {
 						$p_bug_data->handler_id = $_SESSION['tracker_handler'];
 						$p_bug_data->status = 50;
 					}
 
 					# change back to Team User if no Product Backlog is selected
-					if( $_POST['old_product_backlog']
-							!= $_POST['backlog']
-							&& $_POST['backlog'] == "" ) {
+					if( $_POST['old_product_backlog'] != $_POST['backlog'] && $_POST['backlog'] == "" ) {
 
-						$product_backlog_id = $agilemantis_pb->get_product_backlog_id(
-											$_POST['old_product_backlog'] );
-						$handler_id = 0;
-						if( $agilemantis_pb->count_productbacklog_teams( $product_backlog_id ) > 0 ) {
-							$team_id = $agilemantis_pb->getTeamIdByBacklog( $product_backlog_id );
-							$product_owner = $agilemantis_pb->getProductOwner( $team_id );
-							$handler_id = $agilemantis_pb->getUserIdByName( $product_owner );
+						$t_product_backlog_id = $agilemantis_pb->get_product_backlog_id( $_POST['old_product_backlog'] );
+
+						if( $agilemantis_pb->count_productbacklog_teams( $t_product_backlog_id ) > 0 ) {
+							$t_team_id = $agilemantis_pb->getTeamIdByBacklog( $t_product_backlog_id );
+							$t_product_owner = $agilemantis_pb->getProductOwner( $t_team_id );
+							$t_handler_id = user_get_id_by_name( $t_product_owner );
 						}
 
-						$p_bug_data->handler_id = $handler_id;
+						$p_bug_data->handler_id = $t_handler_id;
 					}
 				}
 			}
@@ -1110,87 +1116,85 @@ class agileMantisPlugin extends MantisPlugin {
 
 			$t_custom_field_id = $_SESSION['custom_field_id'];
 
-			# restore values from selected bug list if necessary
-			foreach( $_POST['bug_arr'] AS $num => $row ) {
+			$pb_id 			= $agilemantis_commonlib->getProductBacklogIDByBugId( $p_bug_id );
+			$list_sprints 	= $agilemantis_commonlib->getSprintsByBacklogId( $pb_id );
+			$current_sprint = $agilemantis_commonlib->getSprintByBugId( $p_bug_id );
 
-				$pb_id 			= $agilemantis_commonlib->getProductBacklogIDByBugId( $row );
-				$list_sprints 	= $agilemantis_commonlib->getSprintsByBacklogId( $pb_id );
-				$current_sprint = $agilemantis_commonlib->getSprintByBugId( $row );
+			$t_custom_field_value = $_SESSION['custom_field'][$p_bug_id];
+			if( !$t_custom_field_value ) {
+				$t_custom_field_value = '';
+			}
 
-				$t_custom_field_value = $_SESSION['custom_field'][$row];
-				if( !$t_custom_field_value ) {
-					$t_custom_field_value = '';
+			$t_status = bug_get_field( $p_bug_id, 'status' );
+
+			# restore story points value
+			if( $t_custom_field_id == $agilemantis_commonlib->sp ) {
+				if( $current_sprint[0]['status'] > 1 || $pb_id == 0 || $t_status >= 80) {
+					$agilemantis_commonlib->restoreCustomFieldValue($p_bug_id, $t_custom_field_id, $t_custom_field_value );
 				}
+			}
 
-				# restore story points value
-				if( $t_custom_field_id == $agilemantis_commonlib->sp ) {
-					if( $current_sprint[0]['status'] > 0 || $pb_id == 0 ) {
-						$agilemantis_commonlib->restoreCustomFieldValue(
-										$row, $t_custom_field_id, $t_custom_field_value );
-					}
-				}
-
-				# restore product backlog value
-				if( $t_custom_field_id == $agilemantis_commonlib->pb ) {
-					$pbl = $agilemantis_commonlib->getProjectProductBacklogs(
-													helper_get_current_project() );
-					$do_not_reset = false;
-					if( !empty( $pbl ) ) {
-						foreach( $pbl AS $key => $value ) {
-							if( $value['pb_id'] == $pb_id ) {
-								$do_not_reset = true;
-							}
+			# restore product backlog value
+			if( $t_custom_field_id == $agilemantis_commonlib->pb ) {
+				$pbl = $agilemantis_commonlib->getProjectProductBacklogs(
+												helper_get_current_project() );
+				$do_not_reset = false;
+				if( !empty( $pbl ) ) {
+					foreach( $pbl AS $key => $value ) {
+						if( $value['pb_id'] == $pb_id ) {
+							$do_not_reset = true;
 						}
 					}
-
-					$value_resettet = false;
-					if( $current_sprint[0]['name'] != ''
-							|| $pb_id == 0
-							|| empty($pbl)
-							|| $do_not_reset == false ) {
-
-						$agilemantis_commonlib->restoreCustomFieldValue(
-											$row,
-											$t_custom_field_id,
-											$t_custom_field_value );
-
-						$value_resettet = true;
-					}
-
-					if( empty( $t_custom_field_value ) && $value_resettet == false ) {
-						$agilemantis_commonlib->setTrackerStatus( $row, 50 );
-						$agilemantis_commonlib->id = $pb_id;
-						$backlog = $agilemantis_commonlib->getSelectedProductBacklog();
-						$agilemantis_commonlib->updateTrackerHandler(
-									$row , $backlog[0]['user_id'] , $pb_id );
-					}
-
 				}
 
-				if( $t_custom_field_id == $agilemantis_commonlib->spr ) {
-					if( empty( $list_sprints ) ) {
-						$agilemantis_commonlib->restoreCustomFieldValue(
-							$row, $t_custom_field_id, $t_custom_field_value );
-					}
+				$value_resettet = false;
+				if( $current_sprint[0]['name'] != ''
+						|| $pb_id == 0
+						|| empty($pbl)
+						|| $do_not_reset == false ) {
 
-					# old sprint information
-					$agilemantis_commonlib->sprint_id = $t_custom_field_value;
-					$sprintInfo = $agilemantis_sprint->getSprintById();
+					$agilemantis_commonlib->restoreCustomFieldValue(
+										$p_bug_id,
+										$t_custom_field_id,
+										$t_custom_field_value );
 
-					if( $current_sprint[0]['pb_id'] != $pb_id ) {
-						$agilemantis_commonlib->restoreCustomFieldValue(
-							$row, $t_custom_field_id, $t_custom_field_value );
-					}
-
-					if( $sprintInfo['status'] > 0 || $pb_id == 0 ) {
-						$agilemantis_commonlib->restoreCustomFieldValue(
-							$row, $t_custom_field_id, $t_custom_field_value );
-					}
+					$value_resettet = true;
 				}
 
-				# update bug date
-				bug_update_date( $p_bug_id );
+				if( empty( $t_custom_field_value ) && $value_resettet == false ) {
+					$agilemantis_commonlib->setTrackerStatus( $p_bug_id, 50 );
+					$agilemantis_commonlib->id = $pb_id;
+					$backlog = $agilemantis_commonlib->getSelectedProductBacklog();
+					$agilemantis_commonlib->updateTrackerHandler(
+								$p_bug_id , $backlog[0]['user_id'] , $pb_id );
+				}
+
 			}
+
+			if( $t_custom_field_id == $agilemantis_commonlib->spr ) {
+				if( empty( $list_sprints ) ) {
+					$agilemantis_commonlib->restoreCustomFieldValue(
+						$p_bug_id, $t_custom_field_id, $t_custom_field_value );
+				}
+
+				# old sprint information
+				$agilemantis_commonlib->sprint_id = $t_custom_field_value;
+				$sprintInfo = $agilemantis_sprint->getSprintById();
+
+				if( $current_sprint[0]['pb_id'] != $pb_id ) {
+					$agilemantis_commonlib->restoreCustomFieldValue(
+						$p_bug_id, $t_custom_field_id, $t_custom_field_value );
+				}
+
+				if( $current_sprint[0]['status'] > 1 || $pb_id == 0 || $t_status >= 80 ) {
+					$agilemantis_commonlib->restoreCustomFieldValue(
+						$p_bug_id, $t_custom_field_id, $t_custom_field_value );
+				}
+			}
+
+			# update bug date
+			bug_update_date( $p_bug_id );
+
 		}
 
 		# add menu items to mantis main menu between "Summary" and "Manage"
@@ -1278,6 +1282,7 @@ class agileMantisPlugin extends MantisPlugin {
 		}
 
 		function event_layout_resources() {
+
 			echo '<link rel="stylesheet" href="'.AGILEMANTIS_PLUGIN_URL.'css/agileMantis.css">';
 			echo '<link rel="stylesheet" href="'.AGILEMANTIS_PLUGIN_URL.'css/jquery-ui.css">';
 			echo '<script src="' . AGILEMANTIS_PLUGIN_URL . 'js/jquery-1.9.1.js"></script>';
@@ -1308,6 +1313,69 @@ class agileMantisPlugin extends MantisPlugin {
 				$t_field_id = custom_field_create( $p_field_name );
 				// Update field settings
 				custom_field_update( $t_field_id, $p_def_array );
+			}
+		}
+
+		function installConfigurationParams(){
+
+			if( !config_is_set( 'plugin_agileMantis_gadiv_workday_in_hours' ) ) {
+				config_set( 'plugin_agileMantis_gadiv_workday_in_hours', 8 );
+			}
+
+			if( !config_is_set( 'plugin_agileMantis_gadiv_sprint_length' ) ) {
+				config_set( 'plugin_agileMantis_gadiv_sprint_length', 28 );
+			}
+
+			if( !config_is_set( 'plugin_agileMantis_gadiv_storypoint_mode' ) ) {
+				config_set( 'plugin_agileMantis_gadiv_storypoint_mode', 0 );
+			}
+
+			if( !config_is_set( 'plugin_agileMantis_gadiv_fibonacci_length' ) ) {
+				config_set( 'plugin_agileMantis_gadiv_fibonacci_length', 10 );
+			}
+
+			if( !config_is_set( 'plugin_agileMantis_gadiv_show_storypoints' ) ) {
+				config_set( 'plugin_agileMantis_gadiv_show_storypoints', 0 );
+			}
+
+			if( !config_is_set( 'plugin_agileMantis_gadiv_task_unit_mode' ) ) {
+				config_set( 'plugin_agileMantis_gadiv_task_unit_mode', 'h' );
+			}
+
+			if( !config_is_set( 'plugin_agileMantis_gadiv_userstory_unit_mode' ) ) {
+				config_set( 'plugin_agileMantis_gadiv_userstory_unit_mode', 'h' );
+			}
+
+			if( !config_is_set( 'plugin_agileMantis_gadiv_taskboard' ) ) {
+				config_set( 'plugin_agileMantis_gadiv_taskboard', 0 );
+			}
+
+			if( !config_is_set( 'plugin_agileMantis_gadiv_daily_scrum' ) ) {
+				config_set( 'plugin_agileMantis_gadiv_daily_scrum', 0 );
+			}
+
+			if( !config_is_set( 'plugin_agileMantis_gadiv_ranking_order' ) ) {
+				config_set( 'plugin_agileMantis_gadiv_ranking_order', 0 );
+			}
+
+			if( !config_is_set( 'plugin_agileMantis_gadiv_show_rankingorder' ) ) {
+				config_set( 'plugin_agileMantis_gadiv_show_rankingorder', 0 );
+			}
+
+			if( !config_is_set( 'plugin_agileMantis_gadiv_presentable' ) ) {
+				config_set( 'plugin_agileMantis_gadiv_presentable', 0 );
+			}
+
+			if( !config_is_set( 'plugin_agileMantis_gadiv_release_documentation' ) ) {
+				config_set( 'plugin_agileMantis_gadiv_release_documentation', 0 );
+			}
+
+			if( !config_is_set( 'plugin_agileMantis_gadiv_technical' ) ) {
+				config_set( 'plugin_agileMantis_gadiv_technical', 0 );
+			}
+
+			if( !config_is_set( 'plugin_agileMantis_gadiv_tracker_planned_costs' ) ) {
+				config_set( 'gadiv_tracker_planned_costs', 0 );
 			}
 		}
 

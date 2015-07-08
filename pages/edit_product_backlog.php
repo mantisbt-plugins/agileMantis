@@ -105,8 +105,8 @@
 		}
 		
 		// warning message if there are users without access rights
-		$result = $agilemantis_project->get_user_with_no_accessrights( 
-														$agilemantis_pb->id, $t_project_id );
+		$result = $agilemantis_project->get_user_with_no_accessrights( $agilemantis_pb->id, $t_project_id );
+														
 		if( count( $result ) > 0 ) {
 			$names = $result[0]["realname"];
 			for( $i = 1; $i < count( $result ); $i++ ) {
@@ -144,10 +144,16 @@
 					|| ( $agilemantis_pb->name == $pb_name_old ) ); // PB name didn't change, Ok!
 				
 
-				if( $isNewPBOk || $isExistingPbOk ) {
+				if( $isNewPBOk || $isExistingPbOk ) {			
 					if ( ! $agilemantis_pb->editProductBacklog() ) {
 						$system = plugin_lang_get( 'edit_product_backlog_error_982601' );
 					} else {
+						
+						if( $_POST['pbl_email'] != $_POST['pbl_email_old'] ){
+							$t_team_user_id = $agilemantis_pb->getTeamUserId( $agilemantis_pb->id );
+							user_set_field( $t_team_user_id, 'email',  $_POST['pbl_email'] );
+						}
+						
 						$agilemantis_pb->updatePBCustomFieldStrings( 
 														$pb_name_old, $agilemantis_pb->name );
 						
@@ -261,20 +267,26 @@
 			<tr <?php echo helper_alternate_class() ?>>
 				<td class="category">
 				*<?php echo plugin_lang_get( 'edit_product_backlog_user_email' )?>
+				
+				<a class="version_tooltip" href="javascript: void(0)" style="border-bottom: 0;">
+					<img src="<?php echo AGILEMANTIS_PLUGIN_URL?>images/info-icon.png" height="16" width="16">
+					<span style="font-weight: normal; width: 500px; left: 25px;">
+						<?php echo plugin_lang_get( 'edit_product_backlog_team_user_info' )?>
+					</span>
+				</a>
 			</td>
-				<td class="left"><?php
-				$t_email = "";
-				if($_POST['pbl_email']){
-					$t_email = $_POST['pbl_email'];
-				} else if (!empty($pbData[0]['user_id'])) {
-					$t_email = $agilemantis_pb->getUserEmail($pbData[0]['user_id']);
-				}
-				$t_readonly = "";
-				if($pbData[0]['id']>0){
-					$t_readonly = "readonly";
-				}
-			?><input type="text" size="105" maxlength="128" name="pbl_email"
-					value="<?php echo $t_email?>" <?php echo $t_readonly?>></td>
+				<td class="left">
+				<?php
+					$t_email = "";
+					if($_POST['pbl_email']){
+						$t_email = $_POST['pbl_email'];
+					} else if (!empty($pbData[0]['user_id'])) {
+						$t_email = $agilemantis_pb->getUserEmail($pbData[0]['user_id']);
+					}
+				?>
+				<input type="hidden" name="pbl_email_old" value="<?php echo $t_email?>">
+				<input type="text" size="105" maxlength="128" name="pbl_email" value="<?php echo $t_email?>">	
+				</td>
 			</tr>
 			<tr>
 				<td><span class="required"> * <?php echo lang_get( 'required' ) ?></span>

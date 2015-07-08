@@ -56,6 +56,7 @@ class gadiv_productBacklog extends gadiv_commonlib {
 		$p_email = trim( $p_email );
 		$t_seed = $p_email . $p_username;
 		$t_password = auth_generate_random_password( $t_seed );
+		
 		if( user_is_name_unique( $p_username ) === true ) {
 			user_create( $p_username, $t_password, $p_email, 55, false, true, 
 				'Team-User-' . $_POST['pbl_name'] );
@@ -578,7 +579,7 @@ class gadiv_productBacklog extends gadiv_commonlib {
 	# get the latest mantis user 
 	function getLatestUser() {
 		$t_mantis_user_table = db_get_table( 'mantis_user_table' );
-		$team = $this->executeQuery( "SELECT max(id) AS id FROM $t_mantis_user_table GROUP BY enabled" );
+		$team = $this->executeQuery( "SELECT max(id) AS id FROM $t_mantis_user_table" );
 		return $team[0]['id'];
 	}
 

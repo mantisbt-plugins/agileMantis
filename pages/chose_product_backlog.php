@@ -95,11 +95,11 @@
 			$running_sprints = '';
 			if( !empty( $sprints ) ) {
 				foreach( $sprints as $key => $value ) {
-					$convertedDateStart = substr($value['start'], 0, 10);
-					$convertedDateEnd = substr($value['end'], 0, 10);
+					$convertedDateStart = substr( $value['start'], 0, 10 );
+					$convertedDateEnd = substr( $value['end'], 0, 10 );
 					$date_start = explode( '-', $convertedDateStart );
 					$date_end = explode( '-', $convertedDateEnd );
-					$running_sprints .= '<b>' . string_display_links($value['name']) . '</b>' .
+					$running_sprints .= '<b>' . string_display_line_links( $value['name'] ) . '</b>' .
 						 plugin_lang_get( 'product_backlog_from' ) . $date_start[2] . '.' .
 						 $date_start[1] . '.' . $date_start[0] .
 						 plugin_lang_get( 'product_backlog_till' ) . $date_end[2] . '.' .
@@ -111,7 +111,7 @@
 			
 			if( !empty( $projects ) ) {
 				foreach( $projects as $key => $value ) {
-					$project_list .= string_display_links($value['name']) . ', ';
+					$project_list .= string_display( $value['name'] ) . ', ';
 				}
 			}
 			if( $show_all_teams === false ) {
@@ -119,15 +119,15 @@
 					foreach( $user_product_backlogs as $key => $value ) {
 						if( $value['pb_id'] == $row['id'] ) {
 							?>
-								<form action="<?php echo plugin_page("product_backlog")?>"
+								<form action="<?php echo plugin_page( "product_backlog" )?>"
 			method="post">
 			<input type="hidden" name="productBacklogName"
-				value="<?php echo string_display_links($row['name'])?>">
+				value="<?php echo string_display($row['name'])?>">
 			<tr <?php echo helper_alternate_class() ?>>
-				<td><?php echo string_display_links($row['name'])?></td>
-				<td><?php echo nl2br(string_display_links($row['description']))?></td>
-				<td><?php echo substr($running_sprints,0,-6)?></td>
-				<td><?php echo substr($project_list,0,-2)?></td>
+				<td><?php echo string_display_line_links( $row['name'] )?></td>
+				<td><?php echo nl2br( string_display_line_links( $row['description'] ) )?></td>
+				<td><?php echo substr( $running_sprints, 0, -6 )?></td>
+				<td><?php echo substr( $project_list, 0, -2 )?></td>
 				<td><input type="submit" name="submit"
 					value="<?php echo plugin_lang_get( 'product_backlog_open_backlog' )?>"></td>
 			</tr>
@@ -138,15 +138,15 @@
 				}
 			} elseif( $show_all_teams === true ) {
 				?>
-					<form action="<?php echo plugin_page("product_backlog")?>"
+					<form action="<?php echo plugin_page( "product_backlog" )?>"
 			method="post">
 			<input type="hidden" name="productBacklogName"
-				value="<?php echo string_display_links($row['name'])?>">
+				value="<?php echo string_display( $row['name'] )?>">
 			<tr <?php echo helper_alternate_class() ?>>
-				<td><?php echo string_display_links($row['name'])?></td>
-				<td><?php echo nl2br(string_display_links($row['description']))?></td>
-				<td><?php echo substr($running_sprints,0,-6)?></td>
-				<td><?php echo substr($project_list,0,-2)?></td>
+				<td><?php echo string_display_line_links( $row['name'] )?></td>
+				<td><?php echo nl2br( string_display_line_links( $row['description'] ) )?></td>
+				<td><?php echo substr( $running_sprints, 0, -6 )?></td>
+				<td><?php echo substr( $project_list, 0, -2 )?></td>
 				<td><input type="submit" name="submit"
 					value="<?php echo plugin_lang_get( 'product_backlog_open_backlog' )?>"></td>
 			</tr>

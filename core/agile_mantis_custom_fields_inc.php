@@ -90,7 +90,7 @@ echo '
 	<tr '.helper_alternate_class().'>
 		<td style="background-color:#B3B3CC;font-weight:bold;color:#000;">Story Points</td>
 		<td>';
-			if( plugin_config_get('gadiv_storypoint_mode') == 1 ) {
+			if( plugin_config_get( 'gadiv_storypoint_mode' ) == 1 ) {
 				echo '<input type="text" name="storypoints" value="'.
 						$story['storypoints'].'" '.$readonly.' '.$disable_storypoints.'>';
 			} else {
@@ -101,7 +101,7 @@ echo '
 			}
 		echo '</td>
 ';
-if( plugin_config_get('gadiv_tracker_planned_costs') == '1' 
+if( plugin_config_get( 'gadiv_tracker_planned_costs' ) == '1' 
 		&& $agilemantis_sprint->customFieldIsInProject( "PlannedWork" ) == true ) {
 	echo '
 		<td style="background-color:#B3B3CC;font-weight:bold;color:#000;">'.
@@ -136,7 +136,7 @@ echo '
 	if( $row['name'] == $story['name'] ) { 
 		echo 'selected';
 	}?>><?php 
-	echo string_display_links($row['name'])?></option>
+	echo string_display($row['name'])?></option>
 <?php }?>
 				<?php echo '
 			</select>
@@ -172,8 +172,8 @@ echo '
 	<?php if( $row['sname'] == $story['sprint'] ) { 
 			echo 'selected';
 			$selected = true;
-		}?>><?php 
-		echo string_display_links($row['sname'])?></option>
+		}?>><?php
+		echo string_display( $row['sname'] )?></option>
 <?php }}?>
 	<?php if($agilemantis_sprint->getUserStoryStatus( $p_project_id ) >= 80 
 				&& !empty( $story['sprint'] ) && $selected == false ) {?>

@@ -288,7 +288,7 @@ if( $_POST['back_button'] ) {
 					?>
 						<option value="<?php echo $row['sname']?>"
 							<?php if($row['sname'] == htmlspecialchars($_POST['sprint'])){?>
-							selected <?php }?>><?php echo string_display_links($row['sname'])?>
+							selected <?php }?>><?php echo string_display($row['sname'])?>
 							<?php echo plugin_lang_get( 'manage_capacity_realised_by' )?>
 							<?php echo $agilemantis_sprint->getTeamById($row['team_id'])?>
 							<?php echo plugin_lang_get( 'manage_capacity_from' )?>
@@ -391,7 +391,7 @@ $system = "";
 						style="color: grey;"><?php 
 						$agilemantis_team->id = $_POST['team'];
 						$currentTeam = $agilemantis_team->getSelectedTeam();
-						echo string_display_links($currentTeam[0]['name']);
+						echo string_display($currentTeam[0]['name']);
 						?>
 					</span>
 				</td>

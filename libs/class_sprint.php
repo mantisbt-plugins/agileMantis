@@ -220,14 +220,14 @@ class gadiv_sprint extends gadiv_commonlib {
 			$user_stories[] = $row;
 		}
 		
-		$sort_by = $this->getConfigValue( 'current_user_sprint_backlog_filter' );
+		$sort_by = config_get( 'current_user_sprint_backlog_filter', null, auth_get_current_user_id() );
 		if( !empty( $_GET['sort_by'] ) && isset( $_GET['sort_by'] ) ) {
 			config_set( 'current_user_sprint_backlog_filter', $_GET['sort_by'], 
 				auth_get_current_user_id() );
 			$sort_by = $_GET['sort_by'];
 		}
-		
-		$direction = $this->getConfigValue( 'current_user_sprint_backlog_filter_direction' );
+	
+		$direction = config_get( 'current_user_sprint_backlog_filter_direction', null, auth_get_current_user_id() );
 		if( !empty( $_GET['direction'] ) && isset( $_GET['direction'] ) ) {
 			config_set( 'current_user_sprint_backlog_filter_direction', $_GET['direction'], 
 				auth_get_current_user_id() );
@@ -604,6 +604,7 @@ class gadiv_sprint extends gadiv_commonlib {
 				GROUP BY team_id";
 		$t_params = array( $team_id, $sprint_id );
 		$result = $this->executeQuery( $t_sql, $t_params );
+		
 		if( $result[0]['amount'] > 0 ) {
 			return false;
 		} else {

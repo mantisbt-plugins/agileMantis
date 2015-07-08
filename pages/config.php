@@ -25,15 +25,6 @@
 # along with agileMantis. If not, see <http://www.gnu.org/licenses/>.
 
 	global $agilemantis_tasks;
-
-	# initial plugin config settings
-	if( !config_is_set( 'plugin_agileMantis_gadiv_show_storypoints' ) ) {
-		config_set( 'plugin_agileMantis_gadiv_show_storypoints', 0 );
-	}
-
-	if( !config_is_set( 'plugin_agileMantis_gadiv_show_rankingorder' ) ) {
-		config_set( 'plugin_agileMantis_gadiv_show_rankingorder', 0 );
-	}
 	
 	// Workaround to prevent error messages if custom_strings_inc.php is missing
 	function lang_get_failsave_custom_field( $p_custom_field_name ) {

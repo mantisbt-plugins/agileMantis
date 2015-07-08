@@ -154,19 +154,19 @@ if( $t_user_right == 2 || $t_user_right == 3 || current_user_is_administrator() 
 		?>
 	<tr>
 			<td style="background:<?php echo $color?>;">
-			<?php echo string_display_links($row['sname'])?>
+			<?php echo string_display_line_links( $row['sname'] )?>
 		</td>
 			<td style="background:<?php echo $color?>;">
-			<?php echo date('d.m.Y',$row['start'])?>
+			<?php echo date( 'd.m.Y',$row['start'] )?>
 		</td>
 			<td style="background:<?php echo $color?>;">
-			<?php echo date('d.m.Y',$row['end'])?>
+			<?php echo date( 'd.m.Y',$row['end'] )?>
 		</td>
 			<td style="background:<?php echo $color?>;">
 			<?php echo $anzahl_tage?> <?php echo plugin_lang_get( 'days' )?>
 		</td>
 			<td style="background:<?php echo $color?>;">
-			<?php echo $agilemantis_sprint->getTeamById( $row['team_id'] )?>
+			<?php echo string_display_line_links( $agilemantis_sprint->getTeamById( $row['team_id'] ))?>
 		</td>
 			<td style="background:<?php echo $color?>;">
 				<form method="post"
@@ -175,7 +175,7 @@ if( $t_user_right == 2 || $t_user_right == 3 || current_user_is_administrator() 
 						value="<?php echo plugin_lang_get( 'button_edit' )?>">
 				</form>
 				<form method="post"
-					action="<?php echo plugin_page('delete_sprint.php') ?>">
+					action="<?php echo plugin_page( 'delete_sprint.php' ) ?>">
 					<input type="hidden" name="sprint_id"
 						value="<?php echo $row['sid']?>"> <input type="submit"
 						name="deleteSprint"

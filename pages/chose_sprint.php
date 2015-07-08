@@ -154,18 +154,18 @@ print_recently_visited();
 			foreach( $userTeams as $key => $value ) {
 				if( $row['team_id'] == $value['team_id'] ) {
 					?>
-						<?php if($_GET['page'] == 'daily_scrum_meeting.php'){?>
-								<?php if($row['status'] == 1){?>
+						<?php if( $_GET['page'] == 'daily_scrum_meeting.php' ){?>
+								<?php if( $row['status'] == 1 ){?>
 								<tr style="background-color:<?php echo $bgcolor?>;">
-			<form action="<?php echo plugin_page($_GET['page'])?>" method="post">
+			<form action="<?php echo plugin_page( $_GET['page'] )?>" method="post">
 				<input type="hidden" name="sprintName"
 					value="<?php echo $row['sname']?>">
-				<td><?php echo string_display_links($row['sname'])?></td>
-				<td><?php echo date('d.m.Y',$row['start'])?></td>
-				<td><?php echo date('d.m.Y',$row['end'])?></td>
+				<td><?php echo string_display_line_links( $row['sname'] )?></td>
+				<td><?php echo date( 'd.m.Y',$row['start'] )?></td>
+				<td><?php echo date( 'd.m.Y',$row['end'] )?></td>
 				<td><?php echo $anzahl_tage?> <?php echo plugin_lang_get( 'days' ) ?></td>
-				<td><?php echo $agilemantis_sprint->getTeamById($row['team_id']);?></td>
-				<td><?php echo string_display_links($agilemantis_sprint->getProductBacklogByTeam($row['team_id']));?></td>
+				<td><?php echo string_display_line_links( $agilemantis_sprint->getTeamById( $row['team_id'] ) );?></td>
+				<td><?php echo string_display_line_links( $agilemantis_sprint->getProductBacklogByTeam( $row['team_id'] ) );?></td>
 				<td><input type="submit" name="submit"
 					value="<?php echo plugin_lang_get( 'sprint_backlog_backlog' )?>"></td>
 			</form>
@@ -176,12 +176,12 @@ print_recently_visited();
 			<form action="<?php echo plugin_page($_GET['page'])?>" method="post">
 				<input type="hidden" name="sprintName"
 					value="<?php echo $row['sname']?>">
-				<td><?php echo string_display_links($row['sname'])?></td>
+				<td><?php echo string_display_line_links( $row['sname'] )?></td>
 				<td><?php echo date('d.m.Y',$row['start'])?></td>
 				<td><?php echo date('d.m.Y',$row['end'])?></td>
 				<td><?php echo $anzahl_tage?> <?php echo plugin_lang_get( 'days' ) ?></td>
-				<td><?php echo $agilemantis_sprint->getTeamById($row['team_id']);?></td>
-				<td><?php echo string_display_links($agilemantis_sprint->getProductBacklogByTeam($row['team_id']));?></td>
+				<td><?php echo string_display_line_links( $agilemantis_sprint->getTeamById( $row['team_id'] ) );?></td>
+				<td><?php echo string_display_line_links( $agilemantis_sprint->getProductBacklogByTeam( $row['team_id'] ) );?></td>
 				<td><input type="submit" name="submit"
 					value="<?php echo plugin_lang_get( 'sprint_backlog_backlog' )?>"></td>
 			</form>
@@ -192,18 +192,18 @@ print_recently_visited();
 			}
 		} elseif( $show_all_teams === true ) {
 			?>
-				<?php if($_GET['page'] == 'daily_scrum_meeting.php'){?>
-					<?php if($row['status'] == 1){?>
+				<?php if( $_GET['page'] == 'daily_scrum_meeting.php' ){?>
+					<?php if( $row['status'] == 1 ){?>
 					<tr style="background-color:<?php echo $bgcolor?>;">
-			<form action="<?php echo plugin_page($_GET['page'])?>" method="post">
+			<form action="<?php echo plugin_page( $_GET['page'] )?>" method="post">
 				<input type="hidden" name="sprintName"
 					value="<?php echo $row['sname']?>">
-				<td><?php echo string_html_specialchars($row['sname'])?></td>
-				<td><?php echo date('d.m.Y',$row['start'])?></td>
-				<td><?php echo date('d.m.Y',$row['end'])?></td>
+				<td><?php echo string_display_line_links( $row['sname'] )?></td>
+				<td><?php echo date( 'd.m.Y',$row['start'] )?></td>
+				<td><?php echo date( 'd.m.Y',$row['end'] )?></td>
 				<td><?php echo $anzahl_tage?> <?php echo plugin_lang_get( 'days' ) ?></td>
-				<td><?php echo $agilemantis_sprint->getTeamById($row['team_id']);?></td>
-				<td><?php echo string_display_links($agilemantis_sprint->getProductBacklogByTeam($row['team_id']));?></td>
+				<td><?php echo string_display_line_links( $agilemantis_sprint->getTeamById( $row['team_id'] ) );?></td>
+				<td><?php echo string_display_line_links( $agilemantis_sprint->getProductBacklogByTeam( $row['team_id'] ) );?></td>
 				<td><input type="submit" name="submit"
 					value="<?php echo plugin_lang_get( 'sprint_backlog_backlog' )?>"></td>
 			</form>
@@ -211,15 +211,15 @@ print_recently_visited();
 					<?php } ?>
 				<?php } else {?>
 					<tr style="background-color:<?php echo $bgcolor?>;">
-			<form action="<?php echo plugin_page($_GET['page'])?>" method="post">
+			<form action="<?php echo plugin_page( $_GET['page'] )?>" method="post">
 				<input type="hidden" name="sprintName"
 					value="<?php echo $row['sname']?>">
-				<td><?php echo string_display_links($row['sname'])?></td>
-				<td><?php echo date('d.m.Y',$row['start'])?></td>
-				<td><?php echo date('d.m.Y',$row['end'])?></td>
+				<td><?php echo string_display_line_links( $row['sname'] )?></td>
+				<td><?php echo date( 'd.m.Y',$row['start'] )?></td>
+				<td><?php echo date( 'd.m.Y',$row['end'] )?></td>
 				<td><?php echo $anzahl_tage?> <?php echo plugin_lang_get( 'days' ) ?></td>
-				<td><?php echo $agilemantis_sprint->getTeamById($row['team_id']);?></td>
-				<td><?php echo string_display_links($agilemantis_sprint->getProductBacklogByTeam($row['team_id']));?></td>
+				<td><?php echo string_display_line_links( $agilemantis_sprint->getTeamById( $row['team_id'] ) );?></td>
+				<td><?php echo string_display_line_links( $agilemantis_sprint->getProductBacklogByTeam( $row['team_id'] ) );?></td>
 				<td><input type="submit" name="submit"
 					value="<?php echo plugin_lang_get( 'sprint_backlog_backlog' )?>"></td>
 			</form>

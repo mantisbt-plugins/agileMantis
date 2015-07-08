@@ -40,7 +40,7 @@ require_once ($mantisBtPath . 'config_inc.php');
 // Load agileMantis configuration
 require_once (AGILEMANTIS_CORE_URI . 'config_api.php');
 
-$_COOKIE['MANTIS_STRING_COOKIE'] = $_POST['cookie_string'];
+$_COOKIE[ $g_cookie_prefix . '_STRING_COOKIE'] = $_POST['cookie_string'];
 
 // Zugriff auf die Mantis Funktionen
 //require_once ($mantisPath . 'core.php');
@@ -133,6 +133,7 @@ if( $_POST['user'] ) {
 					echo '<sprint>';
 					echo '<id>' . $sprintData['id'] . '</id>';
 					echo '<name>' . $agilemantis_commonlib->safeCData($sprintData['name']) . '</name>';
+					echo '<convertedName>' . $agilemantis_commonlib->safeCData(string_display_line_links(utf8_decode($sprintData['name']))) . '</convertedName>';
 					echo '<status>' . $sprintData['status'] . '</status>';
 					echo '<team>' . $agilemantis_sprint->getTeamById( $sprintData['team_id'] ) . '</team>';
 					echo '<start>' . date( 'd.m.Y', $sprintData['start'] ) . '</start>';
@@ -752,13 +753,13 @@ if( $_POST['user'] ) {
 					$team_sprint = $agilemantis_sprint->getLatestSprints( $sprintData['team_id'] );
 					echo '<team_sprints>';
 					foreach( $team_sprint as $num => $row ) {
-						echo '<sprint id="' . $row['id'] . '" name="' . string_display_links($row['name']) . '" />';
+						echo '<sprint id="' . $row['id'] . '" name="' . string_display($row['name']) . '" />';
 					}
 					echo '</team_sprints>';
 					break;
 				case 'setCookie':
 					$buglist = str_replace( '-', ',', $_POST['bugList'] );
-					setcookie( 'MANTIS_BUG_LIST_COOKIE', $buglist, 0, '/' );
+					setcookie( $g_cookie_prefix . 'BUG_LIST_COOKIE', $buglist, 0, '/' );
 					echo 1;
 					break;
 				case 'sendEmail':
