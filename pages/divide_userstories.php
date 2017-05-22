@@ -175,11 +175,6 @@ if( $request['action'] == 'edit' ) {
 			 urlencode( $request['sprintName'] );
 	}
 	
-	if( $request['fromPage'] == 'taskboard' ) {
-		$header = "Location: " . plugin_page( 'taskboard.php' ) . "&sprintName=" .
-			 urlencode( $request['sprintName'] );
-	}
-	
 	# return to taskboard or sprint backlog
 	header( $header );
 } else {

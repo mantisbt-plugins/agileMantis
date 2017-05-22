@@ -10,7 +10,7 @@
 # Email: agilemantis@gadiv.de
 #
 # Copyright (C) 2012-2014 gadiv GmbH 
-#
+# 
 # agileMantis is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -42,8 +42,8 @@ $sprintinfo = $agilemantis_sprint->getSprintById();
 # check if different units existing
 $different_units = false;
 if( $agilemantis_sprint->getUnitId( plugin_config_get( 'gadiv_task_unit_mode' ) ) 
-		!= $sprintinfo['unit_planned_task'] 
-		&& isset( $request['action'] ) && $sprintinfo['status'] == 1 ) {
+	!= $sprintinfo['unit_planned_task'] 
+	&& isset( $request['action'] ) && $sprintinfo['status'] == 1 ) {
 	
 	$different_units = true;
 }
@@ -64,14 +64,14 @@ if( $request['action'] == 'save' ) {
 			bug_update_date( $row );
 		}
 		if( $resetPlannedCapacity ) {
-			echo '<br><center><span class="message_error">' . 
-				plugin_lang_get( 'assume_userstories_error_106C00' ) . '</span></center>';
+			echo '<br><center><span class="message_error">' .
+				 plugin_lang_get( 'assume_userstories_error_106C00' ) . '</span></center>';
 		}
-		echo '<br><center><span class="message_ok">' . 
-				plugin_lang_get( 'assume_userstories_assume_successfull' ) . '</span></center>';
+		echo '<br><center><span class="message_ok">' .
+			 plugin_lang_get( 'assume_userstories_assume_successfull' ) . '</span></center>';
 	} else {
-		echo '<br><center><span class="message_error">' . 
-				plugin_lang_get( 'assume_userstories_error_120C00' ) . '</span></center>';
+		echo '<br><center><span class="message_error">' .
+			 plugin_lang_get( 'assume_userstories_error_120C00' ) . '</span></center>';
 	}
 }
 
@@ -81,11 +81,12 @@ if( !config_is_set( 'current_user_assume_userstories_filter', auth_get_current_u
 }
 
 if( !config_is_set( 'current_user_assume_userstories_filter_direction', auth_get_current_user_id() ) ) {
-	config_set( 'current_user_assume_userstories_filter_direction', 'ASC', auth_get_current_user_id() );
+	config_set( 'current_user_assume_userstories_filter_direction', 'ASC', 
+		auth_get_current_user_id() );
 }
 
-if( config_get( 'current_user_assume_userstories_filter_direction', 
-				null, auth_get_current_user_id() ) == 'ASC' ) {
+if( config_get( 'current_user_assume_userstories_filter_direction', null, 
+	auth_get_current_user_id() ) == 'ASC' ) {
 	$direction = 'DESC';
 } else {
 	$direction = 'ASC';
@@ -100,8 +101,8 @@ if( plugin_config_get( 'gadiv_ranking_order' ) == 0 && config_get(
 }
 
 if( plugin_config_get( 'gadiv_tracker_planned_costs' ) == 0 && config_get( 
-		'current_user_assume_userstories_filter', null, auth_get_current_user_id() ) == 'plannedWork' ) {
-		
+		'current_user_assume_userstories_filter', null, auth_get_current_user_id() ) ==	 'plannedWork' ) {
+	
 	config_set( 'current_user_assume_userstories_filter', '', auth_get_current_user_id() );
 	config_set( 'current_user_assume_userstories_filter_direction', 'ASC', auth_get_current_user_id() );
 }
@@ -110,23 +111,26 @@ if( plugin_config_get( 'gadiv_tracker_planned_costs' ) == 0 && config_get(
 $undone = $agilemantis_pb->getAllUndoneUserStories( $product_backlog );
 
 if( empty( $undone ) ) {
-	echo '<br><center><span class="message_error">' . 
-		plugin_lang_get( 'assume_userstories_error_120C01' ) . '</span></center>';
+	echo '<br><center><span class="message_error">' .
+		 plugin_lang_get( 'assume_userstories_error_120C01' ) . '</span></center>';
 }
 if( plugin_is_loaded( 'agileMantisExpert' ) ) {
-	event_signal( 'EVENT_LOAD_USERSTORY' );
-} else {
-	?>
-<?php }?>
+	event_signal( 'EVENT_LOAD_USERSTORY', array( "", $product_backlog ) );
+}
+?>
 <br>
 
 <form action="" method="post">
-	<input type="hidden" name="action" value="save"> <input type="hidden"
-		name="product_backlog" value="<?php echo $product_backlog?>"> <input
-		type="hidden" name="sprintName" value="<?php echo $sprintName?>"> <input
-		type="hidden" name="fromPage" value="<?php echo $fromPage?>"> <input
-		type="hidden" name="fromDailyScrum"
-		value="<?php echo $_POST['fromDailyScrum']?>"> <input type="hidden"
+	<input type="hidden" name="action" value="save"> 
+	<input type="hidden" name="product_backlog" 
+		value="<?php echo $product_backlog?>"> 
+	<input type="hidden" name="sprintName" 
+		value="<?php echo $sprintName?>"> 
+	<input type="hidden" name="fromPage" 
+		value="<?php echo $fromPage?>"> 
+	<input type="hidden" name="fromDailyScrum"
+		value="<?php echo $_POST['fromDailyScrum']?>"> 
+	<input type="hidden"
 		name="fromStatistics" value="<?php echo $_POST['fromStatistics']?>">
 	<div class="table-container">
 		<table align="center" class="width100" cellspacing="1">
@@ -136,95 +140,107 @@ if( plugin_is_loaded( 'agileMantisExpert' ) ) {
 						<b><?php echo plugin_lang_get( 'assume_userstories_title' )?></b>
 					</div>
 					<div style="float: right">
-						<span id="selectedUserStories"><b>0</b> User Stories</span>, <b><span
-							id="chosenStoryPoints">0</span></b> <?php echo plugin_lang_get( 'assume_userstories_chosen_sp' )?></div>
+						<span id="selectedUserStories"><b>0</b> User Stories</span>, 
+						<b><span id="chosenStoryPoints">0</span></b> 
+						<?php echo plugin_lang_get( 'assume_userstories_chosen_sp' )?>
+					</div>
 				</td>
 			</tr>
 			<tr>
 		<?php if(plugin_config_get('gadiv_ranking_order')=='1'){?>
-			<td class="category" width="60"><a
-					href="<?php echo plugin_page("assume_userstories.php")
-					?>&sort_by=rankingOrder&product_backlog=<?php echo urlencode($product_backlog)
-					?>&sprintName=<?php echo urlencode($sprintName)
-					?>&fromPage=<?php echo urlencode($fromPage)?>&direction=<?php echo $direction
-					?>"><?php echo plugin_lang_get( 'assume_userstories_rankingorder' )?></a>
-				</td>
+			<td class="category" width="60">
+				<a href="<?php echo plugin_page("assume_userstories.php")?>
+					&sort_by=rankingOrder&product_backlog=<?php echo urlencode($product_backlog)?>
+					&sprintName=<?php echo urlencode($sprintName)?>
+					&fromPage=<?php echo urlencode($fromPage)?>
+					&direction=<?php echo $direction?>">
+					<?php echo plugin_lang_get( 'assume_userstories_rankingorder' )?>
+				</a>
+			</td>
 		<?php }?>
-		<td class="category" width="60"><a
-					href="<?php echo plugin_page("assume_userstories.php")
-					?>&sort_by=businessValue&product_backlog=<?php echo urlencode($product_backlog)
-					?>&sprintName=<?php echo urlencode($sprintName)
-					?>&fromPage=<?php echo urlencode($fromPage)
-					?>&direction=<?php echo $direction?>">Business
-						Value</a></td>
+		<td class="category" width="60">
+			<a href="<?php echo plugin_page("assume_userstories.php")?>
+				&sort_by=businessValue&product_backlog=<?php echo urlencode($product_backlog)?>
+				&sprintName=<?php echo urlencode($sprintName)?>
+				&fromPage=<?php echo urlencode($fromPage)?>
+				&direction=<?php echo $direction?>">Business Value
+			</a>
+		</td>
 		<?php if(plugin_config_get('gadiv_tracker_planned_costs')=='1'){?>
-			<td class="category" width="100"><a
-					href="<?php echo plugin_page("assume_userstories.php")
-					?>&sort_by=plannedWork&product_backlog=<?php echo urlencode($product_backlog)
-					?>&sprintName=<?php echo urlencode($sprintName)
-					?>&fromPage=<?php echo urlencode($fromPage)
-					?>&direction=<?php echo $direction
-					?>"><?php echo plugin_lang_get( 'assume_userstories_planned_work' )?></a>
-				</td>
+			<td class="category" width="100">
+				<a href="<?php echo plugin_page("assume_userstories.php")?>
+					&sort_by=plannedWork&product_backlog=<?php echo urlencode($product_backlog)?>
+					&sprintName=<?php echo urlencode($sprintName)?>
+					&fromPage=<?php echo urlencode($fromPage)?>
+					&direction=<?php echo $direction?>">
+					<?php echo plugin_lang_get( 'assume_userstories_planned_work' )?>
+				</a>
+			</td>
 		<?php }?>
-		<td class="category" width="50"><a
-					href="<?php echo plugin_page("assume_userstories.php")
-					?>&sort_by=storyPoints&product_backlog=<?php echo urlencode($product_backlog)
-					?>&sprintName=<?php echo urlencode($sprintName)
-					?>&fromPage=<?php echo urlencode($fromPage)
-					?>&direction=<?php echo $direction?>">Story
-						Points</a></td>
-				<td class="category"><a
-					href="<?php echo plugin_page("assume_userstories.php")
-					?>&sort_by=version&product_backlog=<?php echo urlencode($product_backlog)
-					?>&sprintName=<?php echo urlencode($sprintName)
-					?>&fromPage=<?php echo urlencode($fromPage)
-					?>&direction=<?php echo $direction?>">Version</a>
-				</td>
-				<td class="category" width="20"></td>
-				<td class="category" width="50"><a
-					href="<?php echo plugin_page("assume_userstories.php")
-					?>&sort_by=id&product_backlog=<?php echo urlencode($product_backlog)
-					?>&sprintName=<?php echo urlencode($sprintName)
-					?>&fromPage=<?php echo urlencode($fromPage)
-					?>&direction=<?php echo $direction?>">ID</a>
-				</td>
-				<td class="category" width="20"></td>
-				<td class="category"><a
-					href="<?php echo plugin_page("assume_userstories.php")
-					?>&sort_by=summary&product_backlog=<?php echo urlencode($product_backlog)
-					?>&sprintName=<?php echo urlencode($sprintName)
-					?>&fromPage=<?php echo urlencode($fromPage)
-					?>&direction=<?php echo $direction
-					?>"><?php echo plugin_lang_get( 'assume_userstories_summary' )?></a>
-				</td>
-			</tr>
+		<td class="category" width="50">
+			<a href="<?php echo plugin_page("assume_userstories.php")?>
+				&sort_by=storyPoints&product_backlog=<?php echo urlencode($product_backlog)?>
+				&sprintName=<?php echo urlencode($sprintName)?>
+				&fromPage=<?php echo urlencode($fromPage)?>
+				&direction=<?php echo $direction?>">Story Points
+			</a>
+		</td>
+		<td class="category">
+			<a
+			href="<?php echo plugin_page("assume_userstories.php")
+			?>&sort_by=version&product_backlog=<?php echo urlencode($product_backlog)
+			?>&sprintName=<?php echo urlencode($sprintName)
+			?>&fromPage=<?php echo urlencode($fromPage)
+			?>&direction=<?php echo $direction?>">Version
+			</a>
+		</td>
+		<td class="category" width="20"></td>
+		<td class="category" width="50">
+			<a
+			href="<?php echo plugin_page("assume_userstories.php")
+			?>&sort_by=id&product_backlog=<?php echo urlencode($product_backlog)
+			?>&sprintName=<?php echo urlencode($sprintName)
+			?>&fromPage=<?php echo urlencode($fromPage)
+			?>&direction=<?php echo $direction?>">ID
+			</a>
+		</td>
+		<td class="category" width="20"></td>
+		<td class="category">
+			<a href="<?php echo plugin_page("assume_userstories.php")?>
+				&sort_by=summary&product_backlog=<?php echo urlencode($product_backlog)?>
+				&sprintName=<?php echo urlencode($sprintName)?>
+				&fromPage=<?php echo urlencode($fromPage)?>	
+				&direction=<?php echo $direction?>">
+				<?php echo plugin_lang_get( 'assume_userstories_summary' )?>
+			</a>
+		</td>
+	</tr>
 	<?php
-
+	
 	# for navigation between bugs
 	$t_buglist = "";
 	
 	# change background color according to user story status
-	if(!empty($undone)){
-		foreach($undone AS $num => $row){
-
-			$t_buglist .= $row['id'].',';
-
-			switch ($row['status']){
+	if( !empty( $undone ) ) {
+		foreach( $undone as $num => $row ) {
+			
+			$t_buglist .= $row['id'] . ',';
+			
+			switch( $row['status'] ) {
 				case '40':
 					$bgcolor = '#FFF494';
-				break;
+					break;
 				case '50':
 					$bgcolor = '#C2DFFF';
-				break;
+					break;
 				case '80':
 					$bgcolor = '#D2F5B0';
-				break;
+					break;
 				case '90':
 					$bgcolor = '#B7C4A1';
-				break;
+					break;
 			}
-		?>
+			?>
 		<tr style="background-color:<?php echo $bgcolor?>;">
 			<?php if(plugin_config_get('gadiv_ranking_order')=='1'){?>
 			<td>
@@ -251,21 +267,34 @@ if( plugin_is_loaded( 'agileMantisExpert' ) ) {
 					type="hidden" name="storypoints[<?php echo $row['id']?>]"
 					id="storypoints_<?php echo $row['id']?>"
 					value="<?php echo $row['storyPoints']?>"></td>
-				<td><a href="view.php?id=<?php echo $row['id']?>"><?php echo $row['id']?></a>
+				<td>
+					<a href="view.php?id=<?php echo $row['id']?>">
+						<?php echo $row['id']?>
+					</a>
 				</td>
-				<td width="20">
-				<?php
-					$functionName = 'loadUserstoryNoExpert';
-					if(plugin_is_loaded('agileMantisExpert')) {
-						$functionName = 'loadUserstoryExpert';
-					}
+				<td width="20">		
+					<?php
+			if( !plugin_is_loaded( 'agileMantisExpert' ) ) {
 				?>
 				<img src="<?php echo AGILEMANTIS_PLUGIN_URL?>images/info-icon.png"
 					alt="<?php echo plugin_lang_get( 'product_backlog_show_info' );?>"
-					onclick="<?php 
-						echo $functionName?>(<?php echo $row['id']?>, '<?php 
-											echo AGILEMANTIS_PLUGIN_URL ?>');"
+					onclick="loadUserstoryNoExpert(<?php 
+						echo $row['id']?>, '<?php echo AGILEMANTIS_PLUGIN_URL ?>');"
 					height="16" width="16">
+					<?php
+			} else {
+				?>
+				<a href="<?php echo AGILEMANTIS_EXPERT_PLUGIN_URL; ?>
+					pages/file_download.php?webstart_file=
+					userstory_<?php echo auth_get_current_user_id()?>
+					_<?php echo $row['id']?>.jnlp"> 
+					<img src="<?php echo AGILEMANTIS_PLUGIN_URL?>images/info-icon.png"
+						alt="<?php echo plugin_lang_get( 'product_backlog_show_info' );?>"
+						height="16" width="16">
+				</a>
+			<?php
+				}
+			?>
 				</td>
 				<td>
 				<?php echo string_display_line_links($row['summary'])?>
@@ -275,11 +304,11 @@ if( plugin_is_loaded( 'agileMantisExpert' ) ) {
 		}
 		
 		# add bug list cookie
-		gpc_set_cookie( config_get( 'bug_list_cookie' ), substr($t_buglist,0,-1) );
+		gpc_set_cookie( config_get( 'bug_list_cookie' ), substr( $t_buglist, 0, -1 ) );
 	}
 	$additional_fields = 7;
-	$additional_fields += plugin_config_get('gadiv_tracker_planned_costs');
-	$additional_fields += plugin_config_get('gadiv_ranking_order');
+	$additional_fields += plugin_config_get( 'gadiv_tracker_planned_costs' );
+	$additional_fields += plugin_config_get( 'gadiv_ranking_order' );
 	?>
 	<tr>
 		<?php if(plugin_config_get('gadiv_ranking_order')=='1'){?>
@@ -303,13 +332,15 @@ if( plugin_is_loaded( 'agileMantisExpert' ) ) {
 					value="<?php echo plugin_lang_get( 'assume_userstories_assume_to_sprint' )?>"
 					onclick="deleteCookie();">
 					</form>
-					<form
-						action="<?php echo plugin_page($fromPage)?>&sprintName=<?php 
-									echo urlencode($sprintName);?>"
+					<form action="<?php echo plugin_page($fromPage)?>
+						&sprintName=<?php
+						echo urlencode( $sprintName );
+						?>"
 						method="post">
 						<input type="submit" name="back_button"
 							value="<?php echo plugin_lang_get( 'button_back' )?>">
-					</form></td>
+					</form>
+				</td>
 			</tr>
 		</table>
 	</div>

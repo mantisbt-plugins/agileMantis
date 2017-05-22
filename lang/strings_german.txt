@@ -468,7 +468,7 @@
 	$s_plugin_agileMantis_statistics_edit							=	'Statistiken bearbeiten';
 
 	# Taskboard
-	$s_plugin_agileMantis_taskboard_title							=	'Taskboard bearbeiten';
+	$s_plugin_agileMantis_taskboard_title							=	'Taskboard';
 
 	# Version
 	$s_plugin_agileMantis_version_issue 							=	'Einträge';

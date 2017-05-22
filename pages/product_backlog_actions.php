@@ -30,7 +30,7 @@ if( empty( $pb_id ) ) {
 	$pb = $agilemantis_pb->getProductBacklogByName( $product_backlog );
 	$pb_id = $pb[0]['id'];
 }
-$user_id_po = $agilemantis_pb->getUserIdOfPoByPbId($pb_id);
+$user_id_po = $agilemantis_pb->getUserIdOfPoByPbId( $pb_id );
 $logged_in_user_is_po_of_selected_pb = ($user_id_po == $user_id);
 
 ?>
@@ -60,22 +60,22 @@ $logged_in_user_is_po_of_selected_pb = ($user_id_po == $user_id);
 					method="post">
 					<input type="submit" name="edit_product_backlog"
 						value="<?php echo plugin_lang_get( 'edit_product_backlog_title' )?>"
-						<?php 
-							if( !$logged_in_user_is_po_of_selected_pb ) {
-								echo " disabled";
-							}
-						?> />
-					<input type="hidden" name="pageFrom" value="product_backlog.php">
-					<?php 
-						if( $logged_in_user_is_po_of_selected_pb ) {
-							echo '<input type="hidden" name="id" value="' . $pb_id . '" />';
+						<?php
+						if( !$logged_in_user_is_po_of_selected_pb ) {
+							echo " disabled";
 						}
+						?> /> <input type="hidden" name="pageFrom"
+						value="product_backlog.php">
+					<?php
+					if( $logged_in_user_is_po_of_selected_pb ) {
+						echo '<input type="hidden" name="id" value="' . $pb_id . '" />';
+					}
 					?>
 				</form>
 			</td>
 		</tr>
 	<?php
-		# get all sprint which work on a product backlog and get the latest out of it
+	# get all sprint which work on a product backlog and get the latest out of it
 	$pb_info = $agilemantis_pb->getProductBacklogByName( $product_backlog );
 	if( $agilemantis_pb->checkProductBacklogMoreOneTeam( $product_backlog ) ) {
 		$agilemantis_team->id = $agilemantis_pb->getTeamIdByBacklog( $pb_info[0]['id'] );
@@ -83,8 +83,8 @@ $logged_in_user_is_po_of_selected_pb = ($user_id_po == $user_id);
 		$sprints = $agilemantis_pb->productBacklogHasRunningSprint( $pb_info[0]['id'] );
 		if( !empty( $sprints ) ) {
 			foreach( $sprints as $num => $row ) {
-				$convertedDateStart = substr($row['start'], 0, 10);
-				$convertedDateEnd = substr($row['end'], 0, 10);
+				$convertedDateStart = substr( $row['start'], 0, 10 );
+				$convertedDateEnd = substr( $row['end'], 0, 10 );
 				$sprint_start_date = explode( '-', $convertedDateStart );
 				$sprint_end_date = explode( '-', $convertedDateEnd );
 				$row['start'] = mktime( 0, 0, 0, $sprint_start_date[1], $sprint_start_date[2], 
@@ -93,7 +93,7 @@ $logged_in_user_is_po_of_selected_pb = ($user_id_po == $user_id);
 					$sprint_end_date[0] );
 				if( $agilemantis_team->id == $row['team_id'] ) {
 					$sprintName = $row['name'];
-				} 
+				}
 			}
 		}
 	}
@@ -115,9 +115,11 @@ $logged_in_user_is_po_of_selected_pb = ($user_id_po == $user_id);
 		<td><?php echo $team_info[0]['name']?></td>
 			<td><?php echo $agilemantis_team->getUserName( $agilemantis_team->getTeamProductOwner() )?></td>
 			<td><?php echo $agilemantis_team->getUserName( $agilemantis_team->getTeamScrumMaster() )?></td>
-			<td><a
-				href="<?php echo plugin_page( 'sprint_backlog.php' )."&sprintName=".
-							urlencode( $sprintName )?>"><?php echo $sprintName?></a></td>
+			<td><a href="<?php echo plugin_page( 'sprint_backlog.php' ) .
+					"&sprintName=" . urlencode( $sprintName )?>">
+					<?php echo $sprintName?>
+				</a>
+			</td>
 		<?php }?>
 	</tr>
 	</table>

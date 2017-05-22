@@ -40,9 +40,7 @@ if( $show_all_sprints == true ) {
 	<br>
 	<center>
 	<?php 
-		if( plugin_is_loaded('agileMantisExpert' ) ) {
-			event_signal( 'EVENT_LOAD_TASKBOARD', array( "" , $s['name'], 1 ) );
-		}  else {
+		if( !plugin_is_loaded( 'agileMantisExpert' ) ) {
 			$images = array();
 			
 			$images[] = AGILEMANTIS_PLUGIN_URL.'images/taskboard_before_sprint_starts.png';

@@ -60,7 +60,7 @@ define("AGILEMANTIS_SCHNITTSTELLEN_URL",
 define( "AGILEMANTIS_DEMO_VERSION_HOST", 'agilemantis.sourceforge.net' );
 
 // URL to agileMantisExpert order website
-define( "AGILEMANTIS_ORDER_PAGE_URL", 'http://wp12122798.server-he.de/' );
+define( "AGILEMANTIS_ORDER_PAGE_URL", 'https://getagilemantislicense.com/' );
 
 // URL to agileMantisExpert plugin download
 define( "AGILEMANTIS_EXPERT_DOWNLOAD_LINK" , 

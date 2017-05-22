@@ -39,7 +39,7 @@ class agileMantisPlugin extends MantisPlugin {
 		$this->name = "agileMantis";
 		$this->description = "Enables Scrum on your MantisBT-Installation";
 		$this->page = "info";
-		$this->version = "2.1.2";
+		$this->version = "2.2";
 		$this->requires = array( "MantisCore" => "1.2.5" );
 		$this->author = "gadiv GmbH";
 		$this->contact = "agileMantis@gadiv.de";
@@ -77,7 +77,6 @@ class agileMantisPlugin extends MantisPlugin {
 			'gadiv_workday_in_hours' 		=> '8',
 			'gadiv_storypoint_mode' 		=> 0,
 			'gadiv_fibonacci_length' 		=> 12,
-			'gadiv_taskboard' 				=> 0,
 			'gadiv_sprint_length' 			=> 28,
 			'gadiv_scrum' 					=> 0,
 			'gadiv_daily_scrum' 			=> 0,
@@ -93,6 +92,7 @@ class agileMantisPlugin extends MantisPlugin {
 	function events () {
 		return array (
 			'EVENT_LOAD_TASKBOARD' 	=> EVENT_TYPE_EXECUTE,
+			'EVENT_LOAD_DAILYSCRUM' => EVENT_TYPE_EXECUTE,
 			'EVENT_LOAD_STATISTICS' => EVENT_TYPE_EXECUTE,
 			'EVENT_LOAD_USERSTORY' 	=> EVENT_TYPE_EXECUTE,
 			'EVENT_LOAD_SETTINGS'	=> EVENT_TYPE_EXECUTE,
@@ -645,7 +645,7 @@ class agileMantisPlugin extends MantisPlugin {
 	 */
 	function upgrade() {
 
-		plugin_config_set( 'gadiv_agilemantis_version', $this->version = "2.1.2" );
+		plugin_config_set( 'gadiv_agilemantis_version', $this->version = "2.2" );
 
 		$this->installConfigurationParams();
 
@@ -897,11 +897,7 @@ class agileMantisPlugin extends MantisPlugin {
 				if( $sprint_name == "" ) {
 					$disable_sprint_button = 'disabled';
 				} else {
-					if( plugin_config_get( 'gadiv_taskboard' ) == 0 ) {
-						$page_backlog = plugin_page( "sprint_backlog.php" );
-					} else {
-						$page_backlog = plugin_page( "taskboard.php" );
-					}
+					$page_backlog = plugin_page( "sprint_backlog.php" );
 				}
 				require_once( AGILEMANTIS_CORE_URI."agile_mantis_custom_fields_inc.php" );
 
@@ -1200,6 +1196,7 @@ class agileMantisPlugin extends MantisPlugin {
 		# add menu items to mantis main menu between "Summary" and "Manage"
 		function event_add_structure() {
 			global $agilemantis_commonlib;
+			global $agilemantis_sprint;
 
 			$user = $agilemantis_commonlib->getAdditionalUserFields( auth_get_current_user_id() );
 			$menu = array();
@@ -1219,25 +1216,11 @@ class agileMantisPlugin extends MantisPlugin {
 					|| $user[0]['developer'] == 1
 					|| $user[0]['administrator'] == 1 ) {
 
-				if( plugin_config_get( 'gadiv_taskboard' ) == 0 ) {
 					$menu[0] =  '<a href="' . plugin_page( "sprint_backlog.php" ) .
 						'" class="agile_menu">Sprint Backlog</a>';
-				} else {
-					$menu[0] =  '<a href="' . plugin_page( "taskboard.php" ) .
-						'" class="agile_menu">Sprint Backlog</a>';
-				}
+
 			}
-
-			# add daily scrum board
-			if( ( $user[0]['participant'] == 1
-					|| $user[0]['developer'] == 1
-					|| $user[0]['administrator'] == 1 )
-					&& plugin_config_get( 'gadiv_daily_scrum' ) == 1 ) {
-
-				$menu[1] =  '<a href="' . plugin_page("daily_scrum_meeting.php") .
-					'" class="agile_menu">Daily Scrum Meeting</a>';
-			}
-
+			
 			# add agileMantis menu item
 			if( current_user_is_administrator() || $user[0]['administrator'] == 1 ) {
 				$menu[3] =  '<a href="' . plugin_page( "info.php" ) .
@@ -1345,11 +1328,7 @@ class agileMantisPlugin extends MantisPlugin {
 			if( !config_is_set( 'plugin_agileMantis_gadiv_userstory_unit_mode' ) ) {
 				config_set( 'plugin_agileMantis_gadiv_userstory_unit_mode', 'h' );
 			}
-
-			if( !config_is_set( 'plugin_agileMantis_gadiv_taskboard' ) ) {
-				config_set( 'plugin_agileMantis_gadiv_taskboard', 0 );
-			}
-
+			
 			if( !config_is_set( 'plugin_agileMantis_gadiv_daily_scrum' ) ) {
 				config_set( 'plugin_agileMantis_gadiv_daily_scrum', 0 );
 			}

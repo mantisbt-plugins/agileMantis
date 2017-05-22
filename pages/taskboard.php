@@ -24,8 +24,8 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with agileMantis. If not, see <http://www.gnu.org/licenses/>.
 
-	
-	
+
+
 	# add sprint backlog functions
 	include (AGILEMANTIS_PLUGIN_URI . 'pages/sprint_backlog_functions.php');
 	if( $show_all_sprints == true ) {
@@ -39,10 +39,7 @@
 <br>
 <center>
 	<?php
-		if( plugin_is_loaded( 'agileMantisExpert' ) ) {
-			event_signal( 'EVENT_LOAD_TASKBOARD', 
-				array( auth_get_current_user_id(), $s['name'], 0 ) );
-		} else {
+		if( !plugin_is_loaded( 'agileMantisExpert' ) ) {
 			$images = array();
 			
 			$images[] = AGILEMANTIS_PLUGIN_URL . 'images/taskboard_before_sprint_starts.png';
@@ -53,8 +50,8 @@
 				 'images/taskboard_end_resolved_userstories_of_the_sprint.png';
 			$images[] = AGILEMANTIS_PLUGIN_URL .
 				 'images/taskboard_end_closed_userstories_of_the_sprint.png';
-		
-	?>
+			
+			?>
 		<h2><?php echo plugin_lang_get( 'screenshot_title' );?></h2>
 	<center>
 		<a href="<?php echo AGILEMANTIS_EXPERT_DOWNLOAD_LINK ?>"><?php 

@@ -37,21 +37,6 @@ if( $page_name == 'sprint_backlog' ) {
 	$switch_button_tag = 'taskboard';
 	$switch_form_link = 'taskboard.php';
 }
-if( $page_name == 'taskboard' ) {
-	$header_title = plugin_lang_get( 'taskboard_title' );
-	$switch_button_text = 'Sprint Backlog';
-	$switch_button_tag = 'sprint_backlog';
-	$switch_form_link = 'sprint_backlog.php';
-}
-if( $page_name == 'daily_scrum_meeting' ) {
-	$header_title = 'Daily Scrum Taskboard';
-	$switch_button_text = 'Taskboard';
-	$switch_button_tag = 'taskboard';
-	$switch_form_link = 'sprint_backlog.php';
-}
-if( $page_name == 'statistics' ) {
-	$header_title = plugin_lang_get( 'statistics_edit' );
-}
 ?>
 <div class="table-container">
 	<table align="center" class="width100" cellspacing="1">
@@ -60,34 +45,26 @@ if( $page_name == 'statistics' ) {
 				<form action="<?php echo plugin_page("availability.php")?>"
 					method="post">
 					<input type="hidden" name="team_id"
-						value="<?php echo $s['team_id']?>"> <input type="hidden"
-						name="month" value="2"> <input type="hidden" name="sprintName"
+						value="<?php echo $s['team_id']?>"> 
+					<input type="hidden" name="month" value="2"> 
+					<input type="hidden" name="sprintName"
 						value="<?php echo $s['name']?>">
 				<?php if( $page_name == 'sprint_backlog' ) { ?>
 					<input type="hidden" name="fromSprintBacklog" value="1">
 				<?php }?>
-				<?php if( $page_name == 'taskboard' ) {?>
-					<input type="hidden" name="fromTaskboard" value="1">
-				<?php } ?>
-				<?php if( $page_name == 'daily_scrum_meeting' ) {?>
-					<input type="hidden" name="fromDailyScrum" value="1">
-				<?php } ?>
-				<?php if( $page_name == 'statistics' ) {?>
-					<input type="hidden" name="fromStatistics" value="1">
-				<?php } ?>
 				<?php
-					# get all team developer
-					$agilemantis_team->id = $s['team_id'];
-					$team_member = $agilemantis_team->getTeamDeveloper();
-					if( !empty( $team_member ) ) {
-						foreach( $team_member AS $num => $row ) {
-							if( $row['id'] > 0 ) {?>
-							<input type="hidden" name="kalender[<?php echo $row['id']?>]"
-						value="Open Calender">
+				# get all team developer
+				$agilemantis_team->id = $s['team_id'];
+				$team_member = $agilemantis_team->getTeamDeveloper();
+				if( !empty( $team_member ) ) {
+					foreach( $team_member AS $num => $row ) {
+						if( $row['id'] > 0 ) {?>
+						<input type="hidden" name="kalender[<?php echo $row['id']?>]"
+					value="Open Calender">
 				<?php
-							}
 						}
 					}
+				}
 				?>
 				<input type="submit" name="manage_availability"
 						value="<?php echo plugin_lang_get( 'sprint_backlog_availability' )?>"
@@ -99,69 +76,58 @@ if( $page_name == 'statistics' ) {
 				<?php if( $page_name == 'sprint_backlog' ) {?>
 					<input type="hidden" name="fromSprintBacklog" value="1">
 				<?php }?>
-				<?php if( $page_name == 'taskboard' ) { ?>
-					<input type="hidden" name="fromTaskboard" value="1">
-				<?php } ?>
-				<?php if( $page_name == 'daily_scrum_meeting' ) {?>
-					<input type="hidden" name="fromDailyScrum" value="1">
-				<?php } ?>
-				<?php if( $page_name == 'statistics' ) {?>
-					<input type="hidden" name="fromStatistics" value="1">
-				<?php } ?>
 				<input type="hidden" name="sprintName"
 						value="<?php echo $s['name']?>"> <input type="hidden" name="start"
-						value="<?php echo date('d.m.Y',$s['start'])?>"> <input
-						type="hidden" name="end"
-						value="<?php echo date('d.m.Y',$s['end'])?>"> <input type="hidden"
-						name="team" value="<?php echo $s['team_id']?>"> <input
-						type="hidden" name="submit_button"
-						value="Zu den Entwicklungskapazitäten"> <input type="submit"
-						name="manage_developer_capacities"
-						value="<?php echo plugin_lang_get( 'sprint_backlog_capacity' )?>"
+						value="<?php echo date('d.m.Y',$s['start'])?>"> 
+						<input type="hidden" name="end"
+							value="<?php echo date('d.m.Y',$s['end'])?>"> 
+						<input type="hidden" name="team"
+							value="<?php echo $s['team_id']?>"> 
+						<input type="hidden" name="submit_button"
+							value="Zu den Entwicklungskapazitäten"> 
+						<input type="submit" name="manage_developer_capacities"
+							value="<?php echo plugin_lang_get( 'sprint_backlog_capacity' )?>"
 						<?php echo $disable_button?>>
 				</form>
-			<?php if( $page_name != 'statistics' ) {?>
-			<form action="<?php echo plugin_page( "assume_userstories.php" )?>"
+				<form action="<?php echo plugin_page( "assume_userstories.php" )?>"
 					method="post">
 					<input type="hidden" name="product_backlog"
 						value="<?php echo $agilemantis_sprint->getProductBacklogByTeam( $s['team_id'] );?>">
 					<input type="hidden" name="sprintName"
-						value="<?php echo $s['name']?>"> <input type="hidden"
-						name="fromPage" value="<?php echo $_GET['page']?>">
-				<?php if( $page_name == 'taskboard' ) {?>
-					<input type="hidden" name="fromTaskboard" value="1">
-				<?php } ?>
-				<?php if( $page_name == 'daily_scrum_meeting' ) {?>
-					<input type="hidden" name="fromDailyScrum" value="1">
-				<?php } ?>
-				<input type="submit" name="assume_userstories"
+						value="<?php echo $s['name']?>">
+					<input type="hidden" name="fromPage"
+						value="<?php echo $_GET['page']?>"> 
+					<input type="submit" name="assume_userstories"
 						value="<?php echo plugin_lang_get( 'sprint_backlog_assume_userstory' )?>"
 						<?php echo $disable_button?>>
 				</form>
-				<form action="<?php echo plugin_page($switch_form_link)?>"
-					method="post">
-					<input type="hidden" name="sprintName"
-						value="<?php echo $s['name']?>"> <input type="submit"
-						name="<?php echo $switch_button_tag?>"
-						value="<?php echo $switch_button_text?>"
-						<?php if( $page_name == 'daily_scrum_meeting' ) {?> disabled
-						<?php }?>>
-				</form> <a style="margin-left: 10px;"
-				href="<?php echo plugin_page("statistics.php")?>&sprintName=<?php echo urlencode($s['name'])?>">
-				<?php echo plugin_lang_get( 'statistics_title' )?></a>
-			<?php } else { ?>
-			<form action="<?php echo plugin_page("taskboard.php")?>"
-					method="post">
-					<input type="hidden" name="sprintName"
-						value="<?php echo $request['sprintName']?>"> <input type="submit"
-						name="taskboard" value="Taskboard">
-				</form>
-				<form action="<?php echo plugin_page("sprint_backlog.php")?>"
-					method="post">
-					<input type="hidden" name="sprintName"
-						value="<?php echo $request['sprintName']?>"> <input type="submit"
-						name="submit" value="Sprint Backlog">
-				</form>
+				<?php
+				if( plugin_is_loaded('agileMantisExpert' ) )  {
+					event_signal( 'EVENT_LOAD_TASKBOARD', 
+						array( auth_get_current_user_id(), 
+						$s['name']) );
+					event_signal( 'EVENT_LOAD_DAILYSCRUM', 
+						array( auth_get_current_user_id(), 
+						$s['name'] ) );
+					event_signal( 'EVENT_LOAD_STATISTICS', 
+						array( auth_get_current_user_id() ) );
+				} else {
+				?>	
+					<a style="margin-left: 10px;"
+				 		href="<?php echo plugin_page("taskboard.php")?>
+				 		&sprintName=<?php echo urlencode($s['name'])?>">
+				 		Taskboard
+				 	</a>
+					<a style="margin-left: 10px;"
+						href="<?php echo plugin_page("daily_scrum_meeting.php")?>
+						&sprintName=<?php echo urlencode($s['name'])?>">
+						Daily Scrum Meeting
+					</a>
+					<a style="margin-left: 10px;"
+					 	href="<?php echo plugin_page("statistics.php")?>
+					 	&sprintName=<?php echo urlencode($s['name'])?>">
+					 	<?php echo plugin_lang_get( 'statistics_title' )?>
+					 </a>
 			<?php } ?>
 		</td>
 		</tr>
@@ -174,37 +140,28 @@ if( $page_name == 'statistics' ) {
 			<td colspan="7"><b>Sprint</b>
 				<form action="<?php echo plugin_page("edit_sprint.php")?>"
 					method="post">
-					<input type="hidden" name="id" value="<?php echo $s['id']?>"> <input
-						type="hidden" name="sprintName" value="<?php echo $s['name']?>">
+					<input type="hidden" name="id" value="<?php echo $s['id']?>"> 
+					<input type="hidden" name="sprintName" 
+						value="<?php echo $s['name']?>">
 				<?php if( $page_name == 'sprint_backlog' ) {?>
 					<input type="hidden" name="fromSprintBacklog" value="1">
 				<?php }?>
-				<?php if( $page_name == 'taskboard' ) {?>
-					<input type="hidden" name="fromTaskboard" value="1">
-				<?php } ?>
-				<?php if( $page_name == 'daily_scrum_meeting' ) {?>
-					<input type="hidden" name="fromDailyScrum" value="1">
-				<?php } ?>
-				<?php if( $page_name == 'statistics' ) {?>
-					<input type="hidden" name="fromStatistics" value="1">
-				<?php } ?>
 				<input type="submit" name="edit_sprint"
 						value="<?php echo plugin_lang_get( 'sprint_backlog_edit_sprint' )?>"
 						<?php echo $disable_button?>>
 				</form>
-			<?php if( $page_name != 'statistics' ) {?>
 			<?php
 				$status_open = $s['status'] == 0;
 				$has_userstories = $agilemantis_sprint->sprintHasUserStories( $s['name'] );
 				$tomorrow = time() + 86400;
 				$sprint_start = $s['start'];
-				$is_begin_date_tomorrow_or_earlier = ( $sprint_start <= $tomorrow );
+				$is_begin_date_tomorrow_or_earlier = ($sprint_start <= $tomorrow);
 				$prev_sprint_closed = $agilemantis_sprint->previousSprintIsClosed( $s['team_id'], $s['id'] );
-
-				if( $is_begin_date_tomorrow_or_earlier &&
-					$has_userstories &&
+				
+				if( $is_begin_date_tomorrow_or_earlier && 
+					$has_userstories && 
 					$status_open &&
-					$prev_sprint_closed) {
+					$prev_sprint_closed ) {
 					$disabled = '';
 				} else {
 					$disabled = 'disabled';
@@ -212,9 +169,9 @@ if( $page_name == 'statistics' ) {
 				
 				$commit_question = plugin_lang_get( "sprint_backlog_commit_question" );
 				$commit_question_2 = "";
-				if($stories_without_tasks_exist || 
-					$tasks_with_planned_capacity_exist && $tasks_without_planned_capacity_exist) {
-					$commit_question_2 = plugin_lang_get( "sprint_backlog_commit_question2" );;
+				if( $stories_without_tasks_exist ||
+					$tasks_with_planned_capacity_exist && $tasks_without_planned_capacity_exist ) {
+					$commit_question_2 = plugin_lang_get( "sprint_backlog_commit_question2" );
 				}
 			?>
 			<form action="<?php echo plugin_page($_GET['page'])?>" 
@@ -247,39 +204,39 @@ if( $page_name == 'statistics' ) {
 				?>
 			<form action="<?php echo plugin_page($_GET['page'])?>" method="post">
 					<input type="hidden" name="closeUserStories" id="closeUserStories"
-						value=""> <input type="hidden" name="id"
-						value="<?php echo $s['id']?>"> <input type="hidden"
-						name="sprintName" value="<?php echo $s['name']?>"> <input
-						type="submit" name="close_sprint"
+						value=""> 
+					<input type="hidden" name="id"
+						value="<?php echo $s['id']?>"> 
+					<input type="hidden" name="sprintName" 
+						value="<?php echo $s['name']?>"> 
+					<input type="submit" name="close_sprint"
 						value="<?php echo plugin_lang_get( 'sprint_backlog_close_sprint_button' )?>"
-						onClick="confirmCloseUserstories('<?php echo plugin_lang_get( 'sprint_backlog_close_sprint' )?>');" <?php echo $disable_close?>
-						<?php echo $disable?> <?php echo $disable_button?>>
+						onClick="confirmCloseUserstories('<?php echo plugin_lang_get( 'sprint_backlog_close_sprint' )?>');"
+						<?php echo $disable_close?> <?php echo $disable?>
+						<?php echo $disable_button?>>
 				</form>
 
 				<form action="<?php echo plugin_page('divide_userstories.php')?>"
 					method="post">
 					<input type="hidden" name="sprint_id" value="<?php echo $s['id']?>">
-					<input type="hidden" name="name" value="<?php echo $s['name']?>"> <input
-						type="hidden" name="fromPage" value="<?php echo $page_name?>">
-				<?php if( $page_name == 'taskboard' ) {?>
-					<input type="hidden" name="fromTaskboard" value="1">
-				<?php } ?>
-				<?php if( $page_name == 'daily_scrum_meeting' ) {?>
-					<input type="hidden" name="fromDailyScrum" value="1">
-				<?php } ?>
-				<input type="hidden" name="sprintName"
-						value="<?php echo $s['name']?>"> <input type="hidden"
-						name="team_id" value="<?php echo $s['team_id']?>"> <input
+					<input type="hidden" name="name" value="<?php echo $s['name']?>"> 
+					<input type="hidden" name="fromPage" 
+						value="<?php echo $page_name?>"> 
+					<input type="hidden" name="sprintName" 
+						value="<?php echo $s['name']?>"> 
+					<input type="hidden" name="team_id" 
+						value="<?php echo $s['team_id']?>"> 
+					<input
 						type="submit" name="copy_userstories"
 						value="<?php echo plugin_lang_get( 'sprint_backlog_divide_userstories' )?>"
 						<?php echo $disable_copy?> <?php echo $disable?>
 						<?php echo $disable_button?>>
 				</form>
-			<?php } ?>
 			<form action="<?php echo plugin_page( $_GET['page'] )?>" method="post">
 					<input type="submit" name="chose_sprint"
 						value="<?php echo plugin_lang_get( 'sprint_backlog_chose_sprint' )?>">
-				</form></td>
+				</form>
+			</td>
 		</tr>
 		<tr>
 			<td class="category">Sprint</td>

@@ -54,7 +54,7 @@ if( $_POST['do_not_enter_sprint'] ) {
 }
 if( $teams == 1 && $show_all_sprints == false && $_POST['sprintName'] == "" ) {
 	$sprInfo = $agilemantis_sprint->getCurrentUserSprint( $user_id );
-	if($sprInfo[0] == "") {
+	if( $sprInfo[0] == "" ) {
 		$show_all_sprints = true;
 	} else {
 		$_POST['sprintName'] = $sprInfo[0]['name'];
@@ -84,26 +84,28 @@ if( $_POST['revoke_userstory'] ) {
 }
 
 # confirm sprint
-if( $_POST['confirmSprint'] == 1 ) {	
+if( $_POST['confirmSprint'] == 1 ) {
 	$agilemantis_sprint->sprint_id = $_POST['id'];
 	$sprintInfo = $agilemantis_sprint->getSprintByName();
 	$agilemantis_sprint->setSprintStatus( 1, $sprintInfo['id'] );
 	$agilemantis_sprint->confirmInformation( $sprintInfo['id'], 
-		plugin_config_get( 'gadiv_storypoint_mode' ), plugin_config_get( 
-			'gadiv_userstory_unit_mode' ), plugin_config_get( 'gadiv_task_unit_mode' ), 
+		plugin_config_get( 'gadiv_storypoint_mode' ), 
+		plugin_config_get( 'gadiv_userstory_unit_mode' ), 
+		plugin_config_get( 'gadiv_task_unit_mode' ), 
 		str_replace( ',', '.', plugin_config_get( 'gadiv_workday_in_hours' ) ) );
 }
 
 # close sprint operations
 if( $_POST['close_sprint'] ) {
 	$agilemantis_sprint->closeInformation( $_POST['id'], 
-		plugin_config_get( 'gadiv_storypoint_mode' ), plugin_config_get( 
-			'gadiv_userstory_unit_mode' ), plugin_config_get( 'gadiv_task_unit_mode' ), 
+		plugin_config_get( 'gadiv_storypoint_mode' ), 
+		plugin_config_get( 'gadiv_userstory_unit_mode' ), 
+		plugin_config_get( 'gadiv_task_unit_mode' ), 
 		str_replace( ',', '.', plugin_config_get( 'gadiv_workday_in_hours' ) ) );
 	$userstories = $agilemantis_sprint->getSprintStories( $_POST['name'] );
-	foreach( $userstories as $num => $row ) {
+	foreach( $userstories AS $num => $row ) {
 		$task = $agilemantis_sprint->getSprintTasks( $row['id'] );
-		foreach( $task as $key => $value ) {
+		foreach( $task AS $key => $value ) {
 			$agilemantis_tasks->updateTaskLog( $value['id'], auth_get_current_user_id(), "closed" );
 			$agilemantis_tasks->setTaskStatus( $value['id'], 5 );
 		}
@@ -142,6 +144,121 @@ if( !config_is_set( 'plugin_agileMantis_gadiv_show_storypoints' ) ) {
 
 if( !config_is_set( 'plugin_agileMantis_gadiv_show_rankingorder' ) ) {
 	config_set( 'plugin_agileMantis_gadiv_show_rankingorder', 0 );
+}
+
+if( plugin_is_loaded( 'agileMantisExpert' ) ) {
+	
+	if( !config_is_set( 'velocity_checkbox_selected', auth_get_current_user_id() ) ) {
+		config_set( 'velocity_checkbox_selected', 1, auth_get_current_user_id() );
+	}
+	
+	if( !config_is_set( 'velocity_sp_gesamt', auth_get_current_user_id() ) ) {
+		config_set( 'velocity_sp_gesamt', 1, auth_get_current_user_id() );
+	}
+	
+	if( !config_is_set( 'velocity_je_entwickler', auth_get_current_user_id() ) ) {
+		config_set( 'velocity_je_entwickler', 1, auth_get_current_user_id() );
+	}
+	
+	if( !config_is_set( 'velocity_je_entwickler_tag', auth_get_current_user_id() ) ) {
+		config_set( 'velocity_je_entwickler_tag', 1, auth_get_current_user_id() );
+	}
+	
+	if( !config_is_set( 'velocity_je_aufwands_tag', auth_get_current_user_id() ) ) {
+		config_set( 'velocity_je_aufwands_tag', 1, auth_get_current_user_id() );
+	}
+	
+	if( !config_is_set( 'velocity_kapazitaet', auth_get_current_user_id() ) ) {
+		config_set( 'velocity_kapazitaet', 1, auth_get_current_user_id() );
+	}
+	
+	if( !config_is_set( 'velocity_referenz_sprint', auth_get_current_user_id() ) ) {
+		config_set( 'velocity_referenz_sprint', 1, auth_get_current_user_id() );
+	}
+	
+	if( !config_is_set( 'velocity_vorgaenger_sprint', auth_get_current_user_id() ) ) {
+		config_set( 'velocity_vorgaenger_sprint', 1, auth_get_current_user_id() );
+	}
+	
+	if( !config_is_set( 'velocity_letzte_x_vorg_sprints', auth_get_current_user_id() ) ) {
+		config_set( 'velocity_letzte_x_vorg_sprints', 1, auth_get_current_user_id() );
+	}
+	
+	if( !config_is_set( 'burndown_hours', auth_get_current_user_id() ) ) {
+		config_set( 'burndown_hours', 1, auth_get_current_user_id() );
+	}
+	
+	if( !config_is_set( 'burndown_hours_capacity', auth_get_current_user_id() ) ) {
+		config_set( 'burndown_hours_capacity', 1, auth_get_current_user_id() );
+	}
+	
+	if( !config_is_set( 'burndown_hours_optimal', auth_get_current_user_id() ) ) {
+		config_set( 'burndown_hours_optimal', 1, auth_get_current_user_id() );
+	}
+	
+	if( !config_is_set( 'burndown_hours_ideal', auth_get_current_user_id() ) ) {
+		config_set( 'burndown_hours_ideal', 1, auth_get_current_user_id() );
+	}
+	
+	if( !config_is_set( 'burndown_hours_actual', auth_get_current_user_id() ) ) {
+		config_set( 'burndown_hours_actual', 1, auth_get_current_user_id() );
+	}
+	
+	if( !config_is_set( 'burndown_hours_trend', auth_get_current_user_id() ) ) {
+		config_set( 'burndown_hours_trend', 1, auth_get_current_user_id() );
+	}
+	
+	if( !config_is_set( 'burndown_sp', auth_get_current_user_id() ) ) {
+		config_set( 'burndown_sp', 1, auth_get_current_user_id() );
+	}
+	
+	if( !config_is_set( 'burndown_sp_ideal', auth_get_current_user_id() ) ) {
+		config_set( 'burndown_sp_ideal', 1, auth_get_current_user_id() );
+	}
+	
+	if( !config_is_set( 'burndown_sp_actual', auth_get_current_user_id() ) ) {
+		config_set( 'burndown_sp_actual', 1, auth_get_current_user_id() );
+	}
+	
+	if( !config_is_set( 'burndown_sp_trend', auth_get_current_user_id() ) ) {
+		config_set( 'burndown_sp_trend', 1, auth_get_current_user_id() );
+	}
+	
+	if( !config_is_set( 'burndown_tasks', auth_get_current_user_id() ) ) {
+		config_set( 'burndown_tasks', 1, auth_get_current_user_id() );
+	}
+	
+	if( !config_is_set( 'burndown_tasks_ideal', auth_get_current_user_id() ) ) {
+		config_set( 'burndown_tasks_ideal', 1, auth_get_current_user_id() );
+	}
+	
+	if( !config_is_set( 'burndown_tasks_actual', auth_get_current_user_id() ) ) {
+		config_set( 'burndown_tasks_actual', 1, auth_get_current_user_id() );
+	}
+	
+	if( !config_is_set( 'burndown_tasks_trend', auth_get_current_user_id() ) ) {
+		config_set( 'burndown_tasks_trend', 1, auth_get_current_user_id() );
+	}
+	
+	if( !config_is_set( 'utilization_distribution_planned', auth_get_current_user_id() ) ) {
+		config_set( 'utilization_distribution_planned', 1, auth_get_current_user_id() );
+	}
+	
+	if( !config_is_set( 'utilization_distribution_remains', auth_get_current_user_id() ) ) {
+		config_set( 'utilization_distribution_remains', 1, auth_get_current_user_id() );
+	}
+	
+	if( !config_is_set( 'utilization_utilizationdetailed', auth_get_current_user_id() ) ) {
+		config_set( 'utilization_utilizationdetailed', 1, auth_get_current_user_id() );
+	}
+	
+	if( !config_is_set( 'statistic_velocity_amount_of_sprints', auth_get_current_user_id() ) ) {
+		config_set( 'statistic_velocity_amount_of_sprints', 5, auth_get_current_user_id() );
+	}
+	
+	if( !config_is_set( 'statistic_velocity_referenced_sprint', auth_get_current_user_id() ) ) {
+		config_set( 'statistic_velocity_referenced_sprint', "", auth_get_current_user_id() );
+	}
 }
 
 # set sorting direction of the sprint backlog / user story table

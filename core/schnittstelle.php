@@ -124,21 +124,75 @@ if( $_POST['user'] ) {
 				case 'loadSprint':
 					$agilemantis_sprint->sprint_id = $_POST['sprintName'];
 					$sprintData = $agilemantis_sprint->getSprintById();
+				
+					# convert dates
 					$sprint_start_date = explode( '-', $sprintData['start'] );
 					$sprint_end_date = explode( '-', $sprintData['end'] );
 					$sprintData['start'] = mktime( 0, 0, 0, $sprint_start_date[1], $sprint_start_date[2], $sprint_start_date[0] );
 					$sprintData['end'] = mktime( 0, 0, 0, $sprint_end_date[1], $sprint_end_date[2], $sprint_end_date[0] );
+					
+					# get product backlog name
 					$pb = new gadiv_productBacklog();
 					$pbName = $agilemantis_pb->getProductBacklogNameById( $sprintData['pb_id'] );
+					
+					# Difference between two dates
+					$t_end_date = $sprintData['end'];
+					if( time() >= $sprintData['start'] ) {
+						$t_start_date = time();
+					} else {
+						$t_start_date = $sprintData['start'] ;
+					}
+					
+					if( $sprintData['status'] == 0 ) {
+						$t_start_date = $sprintData['start'] ;
+					}
+					
+					$t_time_difference = $t_end_date - $t_start_date;
+					$t_amount_of_days = ceil( $t_time_difference / 86400 );
+									
+					if( $t_amount_of_days == 0 && $t_end_date > time() ) {
+						$t_amount_of_days = 1;
+					} elseif( $t_amount_of_days <= 0 ) {
+						$t_amount_of_days = 0;
+					}
+	
+					#calcuating rest capacity
+					$t_remaining_effort = 0;
+					$t_userstories = $agilemantis_sprint->getSprintStories( $sprintData['name'], false );
+					if( !empty( $t_userstories ) ) {
+						foreach( $t_userstories as $num => $row ) {
+							$t_userstory_tasks = $agilemantis_sprint->getSprintTasks( $row['id'], 0 );
+							if( !empty( $t_userstory_tasks ) ) {
+								foreach( $t_userstory_tasks as $key => $value ) {
+									$t_remaining_effort += $value['rest_capacity'];	
+								}
+							}
+						}
+					}
+					
+					if( $t_remaining_effort <= 0 ) {
+						$t_remaining_effort = 0;
+					}
+					
+					# calculating rest capacity
+					$t_capacity = $agilemantis_av->getTeamCapacity( $sprintData['team_id'], date( 'Y-m-d', $t_start_date ), date( 'Y-m-d', $t_end_date ) );
+						
+					if( $t_capacity == "" ) {
+						$t_capacity = 0;
+					}
+					
 					echo '<sprint>';
 					echo '<id>' . $sprintData['id'] . '</id>';
 					echo '<name>' . $agilemantis_commonlib->safeCData($sprintData['name']) . '</name>';
 					echo '<convertedName>' . $agilemantis_commonlib->safeCData(string_display_line_links(utf8_decode($sprintData['name']))) . '</convertedName>';
 					echo '<status>' . $sprintData['status'] . '</status>';
+					echo '<timeRemaining>' . $t_amount_of_days . '</timeRemaining>';
+					echo '<effortRemaining>' . sprintf( "%.2f", $t_remaining_effort ) . '</effortRemaining>';
+					echo '<capacityRemaining>' . sprintf( "%.2f", $t_capacity ) . '</capacityRemaining>';
 					echo '<team>' . $agilemantis_sprint->getTeamById( $sprintData['team_id'] ) . '</team>';
 					echo '<start>' . date( 'd.m.Y', $sprintData['start'] ) . '</start>';
 					echo '<end>' . date( 'd.m.Y', $sprintData['end'] ) . '</end>';
-					echo '<description>' . $agilemantis_commonlib->safeCData($sprintData['description']) .'</description>';
+					echo '<description>' . $agilemantis_commonlib->safeCData( string_display_links( $sprintData['description'] ) ) .'</description>';
 					echo '<productBacklog>' . $agilemantis_commonlib->safeCData($pbName) . '</productBacklog>';
 					echo '</sprint>';
 					break;
@@ -928,6 +982,9 @@ if( $_POST['user'] ) {
 				case 'synchronizePluginParameter':
 					$agilemantis_tasks->setConfigValue( $_POST['config_id'], 0, $_POST['value'] );
 					echo 1;
+					break;
+				case 'getPluginParameter':
+					echo config_get( $_POST['config_id'], null, $user_id );
 					break;
 				case 'revokeUserstory':
 					if( $_POST['userstory_id'] > 0 ) {

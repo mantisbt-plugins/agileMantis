@@ -463,7 +463,7 @@
 	$s_plugin_agileMantis_statistics_edit							=	'Edit Statistics';
 	
 	# Taskboard
-	$s_plugin_agileMantis_taskboard_title							=	'Edit Taskboard';
+	$s_plugin_agileMantis_taskboard_title							=	'Taskboard';
 	
 	# Version
 	$s_plugin_agileMantis_version_issue 							=	'Issues';

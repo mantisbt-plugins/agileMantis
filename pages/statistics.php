@@ -27,9 +27,9 @@
 
 # merge global $_POST / $_GET array
 $request = array_merge( $_POST, $_GET );
-include( AGILEMANTIS_PLUGIN_URI . 'pages/sprint_backlog_functions.php' );
+include (AGILEMANTIS_PLUGIN_URI . 'pages/sprint_backlog_functions.php');
 if( $show_all_sprints == true ) {
-	include ( AGILEMANTIS_PLUGIN_URI . 'pages/chose_sprint.php' );
+	include (AGILEMANTIS_PLUGIN_URI . 'pages/chose_sprint.php');
 } else {
 	
 	if( !config_is_set( 'velocity_checkbox_selected', auth_get_current_user_id() ) ) {
@@ -145,24 +145,24 @@ if( $show_all_sprints == true ) {
 	}
 	
 	include (AGILEMANTIS_PLUGIN_URI . 'pages/sprint_backlog_header.php');
-?>
+	?>
 <br>
 <?php include(AGILEMANTIS_PLUGIN_URI.'pages/sprint_backlog_actions.php');?>
 <br>
 <center>
-<?php 
-	if( plugin_is_loaded('agileMantisExpert' ) ) {
-		event_signal( 'EVENT_LOAD_STATISTICS', array( auth_get_current_user_id() ) );
-	} else {
+<?php
+	if( !plugin_is_loaded( 'agileMantisExpert' ) ) {
 		$images = array();
 		
-		$images[] = AGILEMANTIS_PLUGIN_URL.'images/statistics_before_sprint_starts.png';
-		$images[] = AGILEMANTIS_PLUGIN_URL.'images/statistics_beginning_of_the_sprint.png';
-		$images[] = AGILEMANTIS_PLUGIN_URL.'images/statistics_during_of_the_sprint.png';
-		$images[] = AGILEMANTIS_PLUGIN_URL.'images/statistics_end_of_the_sprint.png';
-		$images[] = AGILEMANTIS_PLUGIN_URL.'images/statistics_end_resolved_userstories_of_the_sprint.png';
-		$images[] = AGILEMANTIS_PLUGIN_URL.'images/statistics_end_closed_userstories_of_the_sprint.png';
-?>
+		$images[] = AGILEMANTIS_PLUGIN_URL . 'images/statistics_before_sprint_starts.png';
+		$images[] = AGILEMANTIS_PLUGIN_URL . 'images/statistics_beginning_of_the_sprint.png';
+		$images[] = AGILEMANTIS_PLUGIN_URL . 'images/statistics_during_of_the_sprint.png';
+		$images[] = AGILEMANTIS_PLUGIN_URL . 'images/statistics_end_of_the_sprint.png';
+		$images[] = AGILEMANTIS_PLUGIN_URL .
+			 'images/statistics_end_resolved_userstories_of_the_sprint.png';
+		$images[] = AGILEMANTIS_PLUGIN_URL .
+			 'images/statistics_end_closed_userstories_of_the_sprint.png';
+		?>
 	<h2><?php echo plugin_lang_get( 'screenshot_title' );?></h2>
 	<a href="<?php echo AGILEMANTIS_EXPERT_DOWNLOAD_LINK ?>"><?php 
 			echo plugin_lang_get( 'license_download' )?></a>

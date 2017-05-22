@@ -97,7 +97,7 @@ if( $_POST['sprintName'] != "" || $sprInfo[0]['name'] ) {
 	
 	$calculate_storypoints = $agilemantis_sprint->countSprintStories( $s['name'] );
 	if( !empty( $calculate_storypoints ) ) {
-		foreach( $calculate_storypoints as $num => $row ) {
+		foreach( $calculate_storypoints AS $num => $row ) {
 			$gesamt_storypoints += $agilemantis_pb->getStoryPoints( $row['id'] );
 		}
 	}

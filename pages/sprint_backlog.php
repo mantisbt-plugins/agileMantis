@@ -120,15 +120,16 @@ if( ($_POST['submit_performed'] != "" || $_POST['resolved'] == plugin_lang_get( 
 	}
 }
 	# show chose sprint page or open chosen sprint directly
-
 	if( $show_all_sprints == true ) {
 		include(AGILEMANTIS_PLUGIN_URI.'pages/chose_sprint.php');
 	} else {
 		include(AGILEMANTIS_PLUGIN_URI.'pages/sprint_backlog_header.php');
 
-if( plugin_is_loaded('agileMantisExpert' ) )  {
-	event_signal('EVENT_LOAD_USERSTORY');
-} else {?>
+	if( plugin_is_loaded( 'agileMantisExpert' ) ) {
+		event_signal( 'EVENT_LOAD_USERSTORY', 
+		array( $agilemantis_sprint->sprint_id, "" ) );
+	} else {
+		?>
 <?php } 
 if( $no_sprints == false ) {?>
 <br>
@@ -216,7 +217,6 @@ if( $no_sprints == false ) {?>
 				href="<?php echo plugin_page( "sprint_backlog.php" )?>&sprintName=<?php 
 					echo urlencode( $s['name'] )?>&sort_by=rankingOrder&direction=<?php 
 					echo $direction?>">R</a></td>
-			</td>
 			<?php }?>
 			<?php if( config_get( 'show_project_target_version',
 								null, auth_get_current_user_id()) == 1 ) {?>
@@ -231,7 +231,7 @@ if( $no_sprints == false ) {?>
 		<?php
 			# show each user story which is in a specific sprint in a table
 		if( !empty( $us ) ) {
-			foreach( $us as $num => $row ) {
+			foreach( $us AS $num => $row ) {
 				$t_buglist .= $row['id'] . ',';
 				if( config_get( 'show_only_own_userstories', null, auth_get_current_user_id() ) == 1 ) {
 					$user_id = auth_get_current_user_id();

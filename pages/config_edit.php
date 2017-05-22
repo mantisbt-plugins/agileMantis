@@ -93,36 +93,6 @@ if( $_POST['gadiv_sprint_length'] == floor( $_POST['gadiv_sprint_length'] ) &&
 				plugin_config_set( 'gadiv_userstory_unit_mode', $f_gadiv_userstory_unit_mode );
 			}
 			
-			$f_gadiv_taskboard = gpc_get_int( 'gadiv_taskboard', 0 );
-			# make taskboard / sprint backlog checks
-			if( $f_gadiv_taskboard == 1 ) {
-				if( plugin_is_loaded( 'agileMantisExpert' ) ) {
-					if( is_file( AGILEMANTIS_LICENSE_PATH ) ) {
-						$filecontent = file_get_contents( AGILEMANTIS_LICENSE_PATH, 
-							FILE_USE_INCLUDE_PATH );
-						if( $filecontent != "" ) {
-							if( plugin_config_get( 'gadiv_taskboard' ) != $f_gadiv_taskboard ) {
-								plugin_config_set( 'gadiv_taskboard', $f_gadiv_taskboard );
-							}
-						} else {
-							$throw_error_3 = true;
-						}
-					} else {
-						plugin_config_set( 'gadiv_taskboard', 0 );
-						$throw_error_2 = true;
-					}
-				} else {
-					plugin_config_set( 'gadiv_taskboard', 0 );
-					$throw_error_1 = true;
-				}
-			}
-			
-			if( $f_gadiv_taskboard == 0 ) {
-				if( plugin_config_get( 'gadiv_taskboard' ) != $f_gadiv_taskboard ) {
-					plugin_config_set( 'gadiv_taskboard', 0 );
-				}
-			}
-			
 			$f_gadiv_daily_scrum = gpc_get_int( 'gadiv_daily_scrum', 0 );
 			
 			if( plugin_config_get( 'gadiv_daily_scrum' ) != $f_gadiv_daily_scrum ) {

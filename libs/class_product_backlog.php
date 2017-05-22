@@ -272,11 +272,11 @@ class gadiv_productBacklog extends gadiv_commonlib {
 			
 			$row['storyPoints'] = $this->getCustomFieldValueById( $row['id'], $this->sp );
 			
-			if( plugin_config_get( 'gadiv_ranking_order' ) == '1' ) {
+			if( config_get( 'plugin_agileMantis_gadiv_ranking_order' ) == '1' ) {
 				$row['rankingOrder'] = $this->getCustomFieldValueById( $row['id'], $this->ro );
 			}
 			
-			if( plugin_config_get( 'gadiv_tracker_planned_costs' ) == '1' ) {
+			if( config_get( 'plugin_agileMantis_gadiv_ranking_order' ) == '1' ) {
 				$row['plannedWork'] = $this->getCustomFieldValueById( $row['id'], $this->pw );
 			}
 			
@@ -478,11 +478,11 @@ class gadiv_productBacklog extends gadiv_commonlib {
 				continue;
 			}
 			
-			if( plugin_config_get( 'gadiv_ranking_order' ) == '1' ) {
+			if( config_get( 'plugin_agileMantis_gadiv_ranking_order' ) == '1' ) {
 				$row['rankingOrder'] = $this->getCustomFieldValueById( $row['id'], $this->ro );
 			}
 			
-			if( plugin_config_get( 'gadiv_tracker_planned_costs' ) == '1' ) {
+			if( config_get( 'plugin_agileMantis_gadiv_tracker_planned_costs' ) == '1' ) {
 				$row['plannedWork'] = $this->getCustomFieldValueById( $row['id'], $this->pw );
 			}
 			
