@@ -543,6 +543,10 @@ class gadiv_commonlib {
 		
 		$t_unit_id = $this->getUnitId( $this->unit );
 		
+		if ( !$this->planned_capacity){
+			$this->planned_capacity = 0.00;
+		}
+		
 		$t_sql = "UPDATE gadiv_tasks SET ";
 		$t_sql .= "us_id=" . db_param( 0 ) . ", ";
 		$t_sql .= "developer_id=" . db_param( 1 ) . ", ";

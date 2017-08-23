@@ -142,11 +142,11 @@ function copyUserStory( $us_id, $status, $sprintname ) {
 		}
 		$bugnote_text_new .= plugin_lang_get( 'divide_userstories_old_estimation' ) . " #" . $us_id .
 			 plugin_lang_get( 'divide_userstories_with' ) . $old_userstory['storypoints'] . " SP.";
-		bugnote_add( $new_bug_id, $bugnote_text_new );
+			 bugnote_add( $new_bug_id, $bugnote_text_new, $p_time_tracking = '0:00', $p_private = false, $p_type = BUGNOTE, $p_attr = '', $p_user_id = null, $p_send_email = FALSE, $p_log_history = TRUE);
 	}
 	
 	# add bug note
-	bugnote_add( $us_id, $bugnote_text_old );
+	bugnote_add( $us_id, $bugnote_text_old, $p_time_tracking = '0:00', $p_private = false, $p_type = BUGNOTE, $p_attr = '', $p_user_id = null, $p_send_email = FALSE, $p_log_history = TRUE);
 	
 	$agilemantis_tasks->setUserStoryStatus( $us_id, $status, auth_get_current_user_id() );
 	$agilemantis_tasks->closeUserStory( $us_id, $status, auth_get_current_user_id() );
