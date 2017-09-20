@@ -7,8 +7,8 @@ Webpages
 ===========
 
 For further information visit the following webpages:
-- gadiv Webpage - http://gadiv.de 
-- gadiv agileMantis Webpage - http://www.gadiv.de/de/opensource/agilemantis/agilemantisen.html
+- gadiv Webpage - https://gadiv.de 
+- gadiv agileMantis Webpage - https://www.gadiv.de/de/opensource/agilemantis/agilemantisen.html
 - Webpage with a demo of agileMantis  - http://agilemantis.sourceforge.net 
 - Project page on sourceforge - https://sourceforge.net/p/agilemantis 
-- Short documentations - http://www.gadiv.de/media/content/produkte/open_source/agilemantis/short_documentation_agileMantis_en.zip
+- Short documentations - https://www.gadiv.de/media/content/produkte/open_source/agilemantis/short_documentation_agileMantis_en.zip
