@@ -44,7 +44,7 @@ class gadiv_productBacklog extends gadiv_commonlib {
 		global $agilemantis_au;
 		
 		// Check if team-user name fits into MantisBT regulations
-		if ( ! ( utf8_strlen( $this->name ) <  22 // field size minus length of prefix  
+		if ( ! ( mb_strlen( $this->name ) <  22 // field size minus length of prefix
 				&& user_is_name_valid( $this->name ) 
 				&& user_is_name_unique( $this->name )  ) ) {
 			
