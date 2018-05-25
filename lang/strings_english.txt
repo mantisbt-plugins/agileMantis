@@ -54,6 +54,10 @@
 	$s_plugin_agileMantis_button_change								= 	'Change';
 	$s_plugin_agileMantis_button_assume								= 	'Adopt';
 	$s_plugin_agileMantis_button_resolve							= 	'Resolve';
+	$s_plugin_agileMantis_button_last								= 	'Last';
+	$s_plugin_agileMantis_button_first								= 	'First';
+	$s_plugin_agileMantis_button_prev								= 	'Prev';
+	$s_plugin_agileMantis_button_next								= 	'Next';
 	
 	# Common Language Strings 
 	$s_plugin_agileMantis_common_description						= 	'Description';

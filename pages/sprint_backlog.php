@@ -120,6 +120,7 @@ if( ($_POST['submit_performed'] != "" || $_POST['resolved'] == plugin_lang_get( 
 	}
 }
 	# show chose sprint page or open chosen sprint directly
+
 	if( $show_all_sprints == true ) {
 		include(AGILEMANTIS_PLUGIN_URI.'pages/chose_sprint.php');
 	} else {

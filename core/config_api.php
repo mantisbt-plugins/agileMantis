@@ -64,7 +64,7 @@ define( "AGILEMANTIS_ORDER_PAGE_URL", 'https://getagilemantislicense.com/' );
 
 // URL to agileMantisExpert plugin download
 define( "AGILEMANTIS_EXPERT_DOWNLOAD_LINK" , 
-	'http://www.gadiv.de/media/content/produkte/open_source/agilemantis/agileMantisExpert.zip');
+	'https://www.gadiv.de/media/files/opensource/agilemantis/agileMantisExpert220.zip');
 
 // Load agileMantis common Functions
 require_once (AGILEMANTIS_PLUGIN_CLASS_URI . 'class_commonlib.php');

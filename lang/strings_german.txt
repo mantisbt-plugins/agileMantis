@@ -55,6 +55,10 @@
 	$s_plugin_agileMantis_button_change								= 	'Ändern';
 	$s_plugin_agileMantis_button_assume								= 	'Übernehmen';
 	$s_plugin_agileMantis_button_resolve							= 	'Erledigen';
+	$s_plugin_agileMantis_button_last								= 	'Letzte';
+	$s_plugin_agileMantis_button_first								= 	'Erste';
+	$s_plugin_agileMantis_button_prev								= 	'Vorherige';
+	$s_plugin_agileMantis_button_next								= 	'Nächste';
 
 	# Allgemeine Sprachstrings
 	$s_plugin_agileMantis_common_description						= 	'Beschreibung';

@@ -410,6 +410,125 @@ class gadiv_productBacklog extends gadiv_commonlib {
 		return $this->executeQuery( $t_sql, $t_params );
 	}
 	
+	# get one page of user stories by product backlog name and page number
+	function getUserStoriesByProductBacklogNameAndPageNumber( $product_backlog, $page_number ) {
+		$t_mantis_bug_table = db_get_table( 'mantis_bug_table' );
+		$t_mantis_custom_field_string_table = db_get_table( 'mantis_custom_field_string_table' );
+		$t_mantis_project_table = db_get_table( 'mantis_project_table' );
+		$t_mantis_category_table = db_get_table( 'mantis_category_table' );
+		
+		$this->getAdditionalProjectFields();
+		
+		$t_sql = "SELECT
+				a.id AS id, a.project_id AS project_id, a.summary AS summary, a.status AS status,
+				a.target_version AS target_version, b.id AS b_category_id, b.name AS category_name,
+				c.id AS c_project_id, c.name AS project_name, d.value AS productBacklog
+			FROM $t_mantis_bug_table a
+			LEFT JOIN $t_mantis_category_table b ON a.category_id = b.id
+			LEFT JOIN $t_mantis_project_table c ON a.project_id = c.id
+			LEFT JOIN $t_mantis_custom_field_string_table d ON a.id = d.bug_id
+			WHERE d.field_id=" . db_param( 0 ) . " AND d.value=" . db_param( 1 );
+		
+		$t_params = array( $this->pb, $product_backlog );
+		
+		$show_resolved_userstories = $this->getConfigValue( 'show_resolved_userstories' );
+		$show_closed_userstories = $this->getConfigValue( 'show_closed_userstories' );
+		if( $show_resolved_userstories == 1 && $show_closed_userstories == 0 ) {
+			$t_sql .= " AND a.status <= 80";
+		}
+		
+		if( $show_closed_userstories == 1 && $show_resolved_userstories == 0 ) {
+			$t_sql .= " AND a.status != 80";
+		}
+		
+		if( $show_closed_userstories == 1 && $show_resolved_userstories == 1 ) {
+			$t_sql .= " AND a.status <= 90";
+		}
+		
+		if( $show_closed_userstories == 0 && $show_resolved_userstories == 0 ) {
+			$t_sql .= " AND a.status < 80";
+		}
+		
+		$show_only_project_userstories = $this->getConfigValue( 'show_only_project_userstories' );
+		if( $show_only_project_userstories == 1 && helper_get_current_project() > 0 ) {
+			$t_sql .= " AND a.project_id=" . db_param( sizeof( $t_params ) );
+			$t_params[] = helper_get_current_project();
+		}
+		
+		$t_sql .= $orderby;
+		
+		$bug_list = $this->executeQuery( $t_sql, $t_params );
+		
+		if( !$bug_list || sizeof( $bug_list ) == 0 ) {
+			return array();
+		}
+		
+		foreach( $bug_list as $row ) {
+			$row['businessValue'] = $this->getCustomFieldValueById( $row['id'], $this->bv );
+			
+			$row['storyPoints'] = $this->getCustomFieldValueById( $row['id'], $this->sp );
+			if( config_get( 'show_only_us_without_storypoints', 0, auth_get_current_user_id() ) ==
+				 1 && $row['storyPoints'] <> "" ) {
+				continue;
+			}
+			
+			$row['sprint'] = $this->getCustomFieldValueById( $row['id'], $this->spr );
+			if( config_get( 'show_only_userstories_without_sprint', 0, 
+				auth_get_current_user_id() ) == 1 && !empty( $row['sprint'] ) ) {
+				continue;
+			}
+			
+			if( config_get( 'plugin_agileMantis_gadiv_ranking_order' ) == '1' ) {
+				$row['rankingOrder'] = $this->getCustomFieldValueById( $row['id'], $this->ro );
+			}
+			
+			if( config_get( 'plugin_agileMantis_gadiv_tracker_planned_costs' ) == '1' ) {
+				$row['plannedWork'] = $this->getCustomFieldValueById( $row['id'], $this->pw );
+			}
+			
+			$user_stories[] = $row;
+		}
+		
+		
+		
+		$sort_by = config_get( 'current_user_product_backlog_filter', null, 
+			auth_get_current_user_id() );
+		if( !empty( $_GET['sort_by'] ) && isset( $_GET['sort_by'] ) ) {
+			config_set( 'current_user_product_backlog_filter', $_GET['sort_by'], 
+				auth_get_current_user_id() );
+			$sort_by = $_GET['sort_by'];
+		}
+		
+		$direction = config_get( 'current_user_product_backlog_filter_direction', null, 
+			auth_get_current_user_id() );
+		if( !empty( $_GET['direction'] ) && isset( $_GET['direction'] ) ) {
+			config_set( 'current_user_product_backlog_filter_direction', $_GET['direction'], 
+				auth_get_current_user_id() );
+			$direction = $_GET['direction'];
+		}
+		$user_stories = $this->sortUserStories( $sort_by, $direction, $user_stories );
+		
+		
+		$t_filter = current_user_get_bug_filter();
+		$t_filter = filter_ensure_valid_filter( $t_filter );
+		if($t_filter[FILTER_PROPERTY_ISSUES_PER_PAGE] > 0 && $t_filter[FILTER_PROPERTY_ISSUES_PER_PAGE] < count($user_stories)){
+			$pagesize = $t_filter[FILTER_PROPERTY_ISSUES_PER_PAGE];
+		} else {
+			$pagesize = 50;
+		}
+
+		$size = (int) $pagesize;
+		for($i = ($page_number-1)*$size; $i < (($page_number-1)*$size)+$size; $i++ ){
+			if(isset($user_stories[$i]) && !empty($user_stories[$i])){
+				$page_of_stories[] = $user_stories[$i];
+			}
+		}
+		
+		
+		return $page_of_stories;
+	}
+	
+	
 	# get all user stories by product backlog name
 	function getUserStoriesByProductBacklogName( $product_backlog ) {
 		$t_mantis_bug_table = db_get_table( 'mantis_bug_table' );

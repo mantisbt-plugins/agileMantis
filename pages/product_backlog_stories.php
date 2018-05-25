@@ -24,15 +24,40 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with agileMantis. If not, see <http://www.gnu.org/licenses/>.
 
+#get all userstories for a selected product backlog
+$all_stories = $agilemantis_pb->getUserStoriesByProductBacklogName( $product_backlog );
 
-# get all user stories from a selected product backlog
-$userstories = $agilemantis_pb->getUserStoriesByProductBacklogName( $product_backlog );
+$t_filter = current_user_get_bug_filter();
+$t_filter = filter_ensure_valid_filter( $t_filter );
+if($t_filter[FILTER_PROPERTY_ISSUES_PER_PAGE] > 0 && $t_filter[FILTER_PROPERTY_ISSUES_PER_PAGE] < count($all_stories)){
+	$pagesize = $t_filter[FILTER_PROPERTY_ISSUES_PER_PAGE];
+} else {
+	$pagesize = 50;
+}
+
+#identify the number of pages of this product backlog
+$storycount = count($all_stories);
+$pagecount = ceil($storycount/(int)$pagesize);
+
+# get the requested page of user stories from a selected product backlog or (if the requested pagenumber does not exist) get the first page
+if(isset($_GET['page_number']) && !empty($_GET['page_number']) && $_GET['page_number'] <= $pagecount){
+	$userstories = $agilemantis_pb->getUserStoriesByProductBacklogNameAndPageNumber( $product_backlog, $_GET['page_number'] );
+	$page_number = $_GET['page_number'];
+}else if(isset($_POST['page_number']) && !empty($_POST['page_number']) && $_POST['page_number'] <= $pagecount){
+	$userstories = $agilemantis_pb->getUserStoriesByProductBacklogNameAndPageNumber( $product_backlog, $_POST['page_number'] );
+	$page_number = $_POST['page_number'];
+} else {
+	$userstories = $agilemantis_pb->getUserStoriesByProductBacklogNameAndPageNumber( $product_backlog, 1 );
+	$page_number = 1;
+}
 if( config_get( 'current_user_product_backlog_filter_direction', 
 	null, auth_get_current_user_id() ) == 'ASC' ) {
 	$direction = 'DESC';
 } else {
 	$direction = 'ASC';
 }
+
+
 
 # calculate amount of table columns
 $columns = 4;
@@ -43,6 +68,12 @@ if( plugin_is_loaded( 'agileMantisExpert' ) ) {
 	event_signal( 'EVENT_LOAD_USERSTORY', array( "", $product_backlog ) );
 }
 ?>
+<br>
+<div style="float: right">
+<?php
+print_page_links( plugin_page("product_backlog.php"), 1, $pagecount, (int)$page_number );
+?>
+</div>
 <br>
 <?php echo $system?>
 <div class="table-container">
@@ -120,6 +151,8 @@ if( plugin_is_loaded( 'agileMantisExpert' ) ) {
 				<input type="hidden" name="action" value="save_values"> 
 				<input type="hidden" name="productBacklogName"
 					value="<?php echo $product_backlog?>">
+				<input type="hidden" name="page_number" 
+					value="<?php echo $page_number ?>">
 		<?php if(plugin_config_get('gadiv_ranking_order')=='1'){?>
 		<td class="category" width="60">
 			<a href="<?php echo plugin_page("product_backlog.php")?>
@@ -289,7 +322,7 @@ if( plugin_is_loaded( 'agileMantisExpert' ) ) {
 			</td>
 			<td><?php echo string_display_line_links($row['summary'])?></td>
 			<td>
-				<a href="<?php echo $page_backlog?>
+				<a href="<?php echo plugin_page('sprint_backlog.php')?>
 					&sprintName=<?php echo urlencode($row['sprint'])?>">
 					<?php echo string_display($row['sprint']);?>
 				</a>
@@ -327,6 +360,12 @@ if( plugin_is_loaded( 'agileMantisExpert' ) ) {
 			?>
 	</tr>
 	</table>
+</div>
+<br>
+<div style="float: right">
+<?php
+print_page_links( plugin_page("product_backlog.php"), 1, $pagecount, (int)$page_number );
+?>
 </div>
 <br>
 <center>
