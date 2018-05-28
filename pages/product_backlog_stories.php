@@ -24,6 +24,96 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with agileMantis. If not, see <http://www.gnu.org/licenses/>.
 
+# print a HTML page link
+function print_page_link_agile( $p_page_url, $p_text = '', $p_page_no = 0, $p_page_cur = 0, $p_temp_filter_id = 0, $p_productBacklog_name = '' ) {
+	if( is_blank( $p_text ) ) {
+		$p_text = $p_page_no;
+	}
+
+	if( ( 0 < $p_page_no ) && ( $p_page_no != $p_page_cur ) ) {
+		$t_delimiter = ( strpos( $p_page_url, "?" ) ? "&" : "?" );
+		if( $p_temp_filter_id !== 0 ) {
+			print_link( "$p_page_url${t_delimiter}filter=$p_temp_filter_id&productBacklogName=$p_productBacklog_name&page_number=$p_page_no", $p_text );
+		} else {
+			print_link( "$p_page_url${t_delimiter}productBacklogName=$p_productBacklog_name&page_number=$p_page_no", $p_text );
+		}
+	} else {
+		echo $p_text;
+	}
+}
+
+# print a list of page number links (eg [1 2 3])
+function print_page_links_agile( $p_page, $p_start, $p_end, $p_current, $p_temp_filter_id = 0, $p_productBacklog ) {
+	$t_items = array();
+	$t_link = '';
+
+	# Check if we have more than one page,
+	#  otherwise return without doing anything.
+
+	if( $p_end - $p_start < 1 ) {
+		return;
+	}
+
+	# Get localized strings
+	$t_first = lang_get( 'first' );
+	$t_last = lang_get( 'last' );
+	$t_prev = lang_get( 'prev' );
+	$t_next = lang_get( 'next' );
+
+	$t_page_links = 10;
+
+	print( "[ " );
+
+	# First and previous links
+	print_page_link_agile( $p_page, $t_first, 1, $p_current, $p_temp_filter_id, $p_productBacklog );
+	echo '&#160;';
+	print_page_link_agile( $p_page, $t_prev, $p_current - 1, $p_current, $p_temp_filter_id, $p_productBacklog );
+	echo '&#160;';
+
+	# Page numbers ...
+
+	$t_first_page = max( $p_start, $p_current - $t_page_links / 2 );
+	$t_first_page = min( $t_first_page, $p_end - $t_page_links );
+	$t_first_page = max( $t_first_page, $p_start );
+
+	if( $t_first_page > 1 ) {
+		print( " ... " );
+	}
+
+	$t_last_page = $t_first_page + $t_page_links;
+	$t_last_page = min( $t_last_page, $p_end );
+
+	for( $i = $t_first_page;$i <= $t_last_page;$i++ ) {
+		if( $i == $p_current ) {
+			array_push( $t_items, $i );
+		} else {
+			$t_delimiter = ( strpos( $p_page, "?" ) ? "&" : "?" ) ;
+			if( $p_temp_filter_id !== 0 ) {
+				array_push( $t_items, "<a href=\"$p_page${t_delimiter}filter=$p_temp_filter_id&productBacklogName=$p_productBacklog&page_number=$i\">$i</a>" );
+			} else {
+				array_push( $t_items, "<a href=\"$p_page${t_delimiter}productBacklogName=$p_productBacklog&page_number=$i\">$i</a>" );
+			}
+		}
+	}
+	echo implode( '&#160;', $t_items );
+
+	if( $t_last_page < $p_end ) {
+		print( ' ... ' );
+	}
+
+	# Next and Last links
+	echo '&#160;';
+	if( $p_current < $p_end ) {
+		print_page_link_agile( $p_page, $t_next, $p_current + 1, $p_current, $p_temp_filter_id, $p_productBacklog );
+	} else {
+		print_page_link_agile( $p_page, $t_next, null, null, $p_temp_filter_id, $p_productBacklog );
+	}
+	echo '&#160;';
+	print_page_link_agile( $p_page, $t_last, $p_end, $p_current, $p_temp_filter_id, $p_productBacklog );
+
+	print( ' ]' );
+}
+
 #get all userstories for a selected product backlog
 $all_stories = $agilemantis_pb->getUserStoriesByProductBacklogName( $product_backlog );
 
@@ -71,7 +161,7 @@ if( plugin_is_loaded( 'agileMantisExpert' ) ) {
 <br>
 <div style="float: right">
 <?php
-print_page_links( plugin_page("product_backlog.php"), 1, $pagecount, (int)$page_number );
+print_page_links_agile( plugin_page("product_backlog.php"), 1, $pagecount, (int)$page_number, 0, $product_backlog );
 ?>
 </div>
 <br>
@@ -364,7 +454,7 @@ print_page_links( plugin_page("product_backlog.php"), 1, $pagecount, (int)$page_
 <br>
 <div style="float: right">
 <?php
-print_page_links( plugin_page("product_backlog.php"), 1, $pagecount, (int)$page_number );
+print_page_links_agile( plugin_page("product_backlog.php"), 1, $pagecount, (int)$page_number, 0, $product_backlog );
 ?>
 </div>
 <br>
